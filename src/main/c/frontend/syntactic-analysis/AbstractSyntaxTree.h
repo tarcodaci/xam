@@ -8,11 +8,7 @@
 /** Initialize module's internal state. */
 ModuleDestructor initializeAbstractSyntaxTreeModule();
 
-/**
- * This type definitions allows self-referencing types (e.g., an expression
- * that is made of another expressions, such as talking about you in 3rd
- * person, but without the madness).
- */
+/* ── Calculator types (to be removed) ── */
 
 typedef enum ExpressionType ExpressionType;
 typedef enum FactorType FactorType;
@@ -20,11 +16,6 @@ typedef enum FactorType FactorType;
 typedef struct Constant Constant;
 typedef struct Expression Expression;
 typedef struct Factor Factor;
-typedef struct Program Program;
-
-/**
- * Node types for the Abstract Syntax Tree (AST).
- */
 
 enum ExpressionType {
 	ADDITION,
@@ -62,17 +53,49 @@ struct Expression {
 	ExpressionType type;
 };
 
-struct Program {
-	Expression * expression;
-};
-
-/**
- * Node recursive super-duper-trambolik-destructors.
- */
-
 void destroyConstant(Constant * constant);
 void destroyExpression(Expression * expression);
 void destroyFactor(Factor * factor);
+
+/* ── xam AST ── */
+
+typedef struct StringList StringList;
+typedef struct IntList IntList;
+typedef struct Header Header;
+typedef struct Item Item;
+typedef struct Program Program;
+
+struct StringList {
+	char * value;
+	StringList * next;
+};
+
+struct IntList {
+	int value;
+	IntList * next;
+};
+
+struct Header {
+	char * title;
+	char * subject;
+	char * date;
+	int duration;
+	int score_grid;
+	int answer_sheet;
+	int student_name;
+	int student_id;
+	int course;
+	char * instructions;
+};
+
+struct Program {
+	Header * header;
+	Item * items;
+};
+
+void destroyStringList(StringList * list);
+void destroyIntList(IntList * list);
+void destroyHeader(Header * header);
 void destroyProgram(Program * program);
 
 #endif

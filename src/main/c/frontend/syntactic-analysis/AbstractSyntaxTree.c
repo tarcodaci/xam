@@ -64,7 +64,38 @@ void destroyFactor(Factor * factor) {
 void destroyProgram(Program * program) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (program != NULL) {
-		destroyExpression(program->expression);
+		destroyHeader(program->header);
+		// TODO
 		free(program);
+	}
+}
+
+void destroyStringList(StringList * list) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	while (list != NULL) {
+		StringList * next = list->next;
+		free(list->value);
+		free(list);
+		list = next;
+	}
+}
+
+void destroyIntList(IntList * list) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	while (list != NULL) {
+		IntList * next = list->next;
+		free(list);
+		list = next;
+	}
+}
+
+void destroyHeader(Header * header) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (header != NULL) {
+		free(header->title);
+		free(header->subject);
+		free(header->date);
+		free(header->instructions);
+		free(header);
 	}
 }

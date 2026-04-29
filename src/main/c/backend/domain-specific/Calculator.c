@@ -140,6 +140,7 @@ ComputationResult computeFactor(Factor * factor) {
 }
 
 ComputationResult executeCalculator(CompilerState * compilerState) {
-	Program * program = compilerState->abstractSyntaxtTree;
-	return computeExpression(program->expression);
+	// TODO
+	ComputationResult result = { .succeeded = true, .value = 0 };
+	return result;
 }
