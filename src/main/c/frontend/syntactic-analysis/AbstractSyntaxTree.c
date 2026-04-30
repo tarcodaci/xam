@@ -99,3 +99,48 @@ void destroyHeader(Header * header) {
 		free(header);
 	}
 }
+
+void destroyMcOption(McOption * option) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	while (option != NULL) {
+		McOption * next = option->next;
+		free(option->value);
+		free(option);
+		option = next;
+	}
+}
+
+void destroyMcNode(McNode * node) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (node != NULL) {
+		free(node->question);
+		destroyMcOption(node->options);
+		free(node);
+	}
+}
+
+void destroyBlanksNode(BlanksNode * node) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (node != NULL) {
+		free(node->question);
+		destroyStringList(node->answers);
+		free(node);
+	}
+}
+
+void destroyDirectNode(DirectNode * node) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (node != NULL) {
+		free(node->question);
+		free(node->answer);
+		free(node);
+	}
+}
+
+void destroyTorfNode(TorfNode * node) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (node != NULL) {
+		free(node->question);
+		free(node);
+	}
+}

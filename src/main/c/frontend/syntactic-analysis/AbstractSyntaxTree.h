@@ -88,6 +88,46 @@ struct Header {
 	char * instructions;
 };
 
+/* ── Simple exercises ── */
+
+typedef struct McOption McOption;
+typedef struct McNode McNode;
+typedef struct BlanksNode BlanksNode;
+typedef struct DirectNode DirectNode;
+typedef struct TorfNode TorfNode;
+
+struct McOption {
+	char * value;
+	int is_correct;
+	McOption * next;
+};
+
+struct McNode {
+	char * question;
+	McOption * options;
+	int score;
+};
+
+struct BlanksNode {
+	char * question;
+	StringList * answers;
+	int score;
+};
+
+struct DirectNode {
+	char * question;
+	int lines;
+	char * answer;
+	int score;
+};
+
+struct TorfNode {
+	char * question;
+	int justify;
+	int answer;
+	int score;
+};
+
 struct Program {
 	Header * header;
 	Item * items;
@@ -96,6 +136,11 @@ struct Program {
 void destroyStringList(StringList * list);
 void destroyIntList(IntList * list);
 void destroyHeader(Header * header);
+void destroyMcOption(McOption * option);
+void destroyMcNode(McNode * node);
+void destroyBlanksNode(BlanksNode * node);
+void destroyDirectNode(DirectNode * node);
+void destroyTorfNode(TorfNode * node);
 void destroyProgram(Program * program);
 
 #endif
