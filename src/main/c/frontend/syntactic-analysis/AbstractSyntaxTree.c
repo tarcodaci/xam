@@ -65,7 +65,7 @@ void destroyProgram(Program * program) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (program != NULL) {
 		destroyHeader(program->header);
-		// TODO
+		destroyItem(program->items);
 		free(program);
 	}
 }
@@ -192,6 +192,57 @@ void destroyChooseFromNode(ChooseFromNode * node) {
 		destroyStringList(node->options);
 		free(node->text);
 		destroyIntList(node->answer);
+		free(node);
+	}
+}
+
+void destroyExercise(Exercise * exercise) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	while (exercise != NULL) {
+		Exercise * next = exercise->next;
+		switch (exercise->type) {
+			case EXERCISE_MC: destroyMcNode(exercise->mc); break;
+			case EXERCISE_BLANKS: destroyBlanksNode(exercise->blanks); break;
+			case EXERCISE_DIRECT: destroyDirectNode(exercise->direct); break;
+			case EXERCISE_CHOOSE_FROM: destroyChooseFromNode(exercise->chooseFrom); break;
+			case EXERCISE_MATCH: destroyMatchNode(exercise->match); break;
+			case EXERCISE_TORF: destroyTorfNode(exercise->torf); break;
+			case EXERCISE_CHART: destroyChartNode(exercise->chart); break;
+			case EXERCISE_SET: destroySetNode(exercise->set); break;
+		}
+		free(exercise);
+		exercise = next;
+	}
+}
+
+void destroySetNode(SetNode * node) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (node != NULL) {
+		free(node->text);
+		destroyExercise(node->exercises);
+		free(node);
+	}
+}
+
+void destroyItem(Item * item) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	while (item != NULL) {
+		Item * next = item->next;
+		switch (item->type) {
+			case ITEM_EXERCISE: destroyExercise(item->exercise); break;
+			case ITEM_SECTION: destroySectionNode(item->section); break;
+			case ITEM_TEXT: free(item->text); break;
+		}
+		free(item);
+		item = next;
+	}
+}
+
+void destroySectionNode(SectionNode * node) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (node != NULL) {
+		free(node->name);
+		destroyItem(node->items);
 		free(node);
 	}
 }

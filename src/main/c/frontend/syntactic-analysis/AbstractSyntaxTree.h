@@ -170,6 +170,68 @@ struct ChooseFromNode {
 	int shuffle;
 };
 
+typedef enum ExerciseType ExerciseType;
+typedef struct Exercise Exercise;
+typedef struct SetNode SetNode;
+typedef struct SectionNode SectionNode;
+
+enum ExerciseType {
+	EXERCISE_MC,
+	EXERCISE_BLANKS,
+	EXERCISE_DIRECT,
+	EXERCISE_CHOOSE_FROM,
+	EXERCISE_MATCH,
+	EXERCISE_TORF,
+	EXERCISE_CHART,
+	EXERCISE_SET
+};
+
+struct Exercise {
+	ExerciseType type;
+	union {
+		McNode * mc;
+		BlanksNode * blanks;
+		DirectNode * direct;
+		ChooseFromNode * chooseFrom;
+		MatchNode * match;
+		TorfNode * torf;
+		ChartNode * chart;
+		SetNode * set;
+	};
+	Exercise * next;
+};
+
+struct SetNode {
+	char * text;
+	int shuffle;
+	int score;
+	Exercise * exercises;
+};
+
+typedef enum ItemType ItemType;
+
+enum ItemType {
+	ITEM_EXERCISE,
+	ITEM_SECTION,
+	ITEM_TEXT
+};
+
+struct Item {
+	ItemType type;
+	union {
+		Exercise * exercise;
+		SectionNode * section;
+		char * text;
+	};
+	Item * next;
+};
+
+struct SectionNode {
+	char * name;
+	int select;
+	Item * items;
+};
+
 struct Program {
 	Header * header;
 	Item * items;
@@ -188,6 +250,10 @@ void destroyMatchNode(MatchNode * node);
 void destroyChartCell(ChartCell * cell);
 void destroyChartNode(ChartNode * node);
 void destroyChooseFromNode(ChooseFromNode * node);
+void destroyExercise(Exercise * exercise);
+void destroySetNode(SetNode * node);
+void destroyItem(Item * item);
+void destroySectionNode(SectionNode * node);
 void destroyProgram(Program * program);
 
 #endif
