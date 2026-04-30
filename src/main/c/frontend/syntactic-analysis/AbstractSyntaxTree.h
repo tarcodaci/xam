@@ -88,13 +88,18 @@ struct Header {
 	char * instructions;
 };
 
-/* ── Simple exercises ── */
+/* ── Exercises ── */
 
 typedef struct McOption McOption;
 typedef struct McNode McNode;
 typedef struct BlanksNode BlanksNode;
 typedef struct DirectNode DirectNode;
 typedef struct TorfNode TorfNode;
+typedef struct MatchPair MatchPair;
+typedef struct MatchNode MatchNode;
+typedef struct ChartCell ChartCell;
+typedef struct ChartNode ChartNode;
+typedef struct ChooseFromNode ChooseFromNode;
 
 struct McOption {
 	char * value;
@@ -128,6 +133,43 @@ struct TorfNode {
 	int score;
 };
 
+struct MatchPair {
+	char * left;
+	char * right;
+	MatchPair * next;
+};
+
+struct MatchNode {
+	char * question;
+	MatchPair * pairs;
+	int score;
+};
+
+struct ChartCell {
+	int row;
+	int col;
+	char * value;
+	ChartCell * next;
+};
+
+struct ChartNode {
+	char * task;
+	int dim_rows;
+	int dim_cols;
+	ChartCell * cells;
+	StringList * answer;
+	int score;
+};
+
+struct ChooseFromNode {
+	char * task;
+	StringList * options;
+	char * text;
+	IntList * answer;
+	int score;
+	int shuffle;
+};
+
 struct Program {
 	Header * header;
 	Item * items;
@@ -141,6 +183,11 @@ void destroyMcNode(McNode * node);
 void destroyBlanksNode(BlanksNode * node);
 void destroyDirectNode(DirectNode * node);
 void destroyTorfNode(TorfNode * node);
+void destroyMatchPair(MatchPair * pair);
+void destroyMatchNode(MatchNode * node);
+void destroyChartCell(ChartCell * cell);
+void destroyChartNode(ChartNode * node);
+void destroyChooseFromNode(ChooseFromNode * node);
 void destroyProgram(Program * program);
 
 #endif

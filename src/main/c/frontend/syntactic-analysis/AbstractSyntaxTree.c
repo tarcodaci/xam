@@ -144,3 +144,54 @@ void destroyTorfNode(TorfNode * node) {
 		free(node);
 	}
 }
+
+void destroyMatchPair(MatchPair * pair) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	while (pair != NULL) {
+		MatchPair * next = pair->next;
+		free(pair->left);
+		free(pair->right);
+		free(pair);
+		pair = next;
+	}
+}
+
+void destroyMatchNode(MatchNode * node) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (node != NULL) {
+		free(node->question);
+		destroyMatchPair(node->pairs);
+		free(node);
+	}
+}
+
+void destroyChartCell(ChartCell * cell) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	while (cell != NULL) {
+		ChartCell * next = cell->next;
+		free(cell->value);
+		free(cell);
+		cell = next;
+	}
+}
+
+void destroyChartNode(ChartNode * node) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (node != NULL) {
+		free(node->task);
+		destroyChartCell(node->cells);
+		destroyStringList(node->answer);
+		free(node);
+	}
+}
+
+void destroyChooseFromNode(ChooseFromNode * node) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (node != NULL) {
+		free(node->task);
+		destroyStringList(node->options);
+		free(node->text);
+		destroyIntList(node->answer);
+		free(node);
+	}
+}
