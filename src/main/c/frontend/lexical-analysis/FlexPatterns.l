@@ -66,6 +66,32 @@ whitespace			[[:space:]]+
 "set"								{ return KeywordLexemeAction(SET); }
 "section"							{ return KeywordLexemeAction(SECTION); }
 
+"title"								{ return KeywordLexemeAction(TITLE); }
+"subject"							{ return KeywordLexemeAction(SUBJECT); }
+"date"								{ return KeywordLexemeAction(DATE); }
+"duration"							{ return KeywordLexemeAction(DURATION); }
+"score_grid"						{ return KeywordLexemeAction(SCORE_GRID); }
+"answer_sheet"						{ return KeywordLexemeAction(ANSWER_SHEET); }
+"student_name"						{ return KeywordLexemeAction(STUDENT_NAME); }
+"student_id"						{ return KeywordLexemeAction(STUDENT_ID); }
+"course"							{ return KeywordLexemeAction(COURSE); }
+"instructions"						{ return KeywordLexemeAction(INSTRUCTIONS); }
+
+"question"							{ return KeywordLexemeAction(QUESTION); }
+"option"							{ return KeywordLexemeAction(OPTION); }
+"score"								{ return KeywordLexemeAction(SCORE); }
+"answer"							{ return KeywordLexemeAction(ANSWER); }
+"lines"								{ return KeywordLexemeAction(LINES); }
+"task"								{ return KeywordLexemeAction(TASK); }
+"options"							{ return KeywordLexemeAction(OPTIONS); }
+"shuffle"							{ return KeywordLexemeAction(SHUFFLE); }
+"pair"								{ return KeywordLexemeAction(PAIR); }
+"justify"							{ return KeywordLexemeAction(JUSTIFY); }
+"dim"								{ return KeywordLexemeAction(DIM); }
+"cell"								{ return KeywordLexemeAction(CELL); }
+"select"							{ return KeywordLexemeAction(SELECT); }
+"text"								{ return KeywordLexemeAction(TEXT_KW); }
+
 "{"									{ return EnterImportExpressionLexemeAction(IMPORT_EXPRESSION); }
 <IMPORT_EXPRESSION>[^{}]+			{ return SubexpressionLexemeAction(); }
 <IMPORT_EXPRESSION>"}"				{ return LeaveImportExpressionLexemeAction(); }

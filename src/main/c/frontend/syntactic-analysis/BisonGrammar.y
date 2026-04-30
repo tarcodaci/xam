@@ -73,6 +73,32 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> SET
 %token <token> SECTION
 
+%token <token> TITLE
+%token <token> SUBJECT
+%token <token> DATE
+%token <token> DURATION
+%token <token> SCORE_GRID
+%token <token> ANSWER_SHEET
+%token <token> STUDENT_NAME
+%token <token> STUDENT_ID
+%token <token> COURSE
+%token <token> INSTRUCTIONS
+
+%token <token> QUESTION
+%token <token> OPTION
+%token <token> SCORE
+%token <token> ANSWER
+%token <token> LINES
+%token <token> TASK
+%token <token> OPTIONS
+%token <token> SHUFFLE
+%token <token> PAIR
+%token <token> JUSTIFY
+%token <token> DIM
+%token <token> CELL
+%token <token> SELECT
+%token <token> TEXT_KW
+
 %token <token> IGNORED
 %token <token> UNKNOWN
 
