@@ -62,6 +62,17 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> OPEN_PARENTHESIS
 %token <token> SUB
 
+%token <token> HEADER
+%token <token> MC
+%token <token> BLANKS
+%token <token> DIRECT
+%token <token> CHOOSE_FROM
+%token <token> MATCH
+%token <token> TORF
+%token <token> CHART
+%token <token> SET
+%token <token> SECTION
+
 %token <token> IGNORED
 %token <token> UNKNOWN
 

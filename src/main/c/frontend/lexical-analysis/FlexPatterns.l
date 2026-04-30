@@ -20,6 +20,7 @@ extern CompilationStatus EnterMultilineCommentLexemeAction(FlexContext context);
 extern CompilationStatus EOFLexemeAction();
 extern CompilationStatus IgnoredLexemeAction();
 extern CompilationStatus IntegerLexemeAction();
+extern CompilationStatus KeywordLexemeAction(TokenLabel label);
 extern CompilationStatus LeaveImportExpressionLexemeAction();
 extern CompilationStatus LeaveMultilineCommentLexemeAction();
 extern CompilationStatus ParenthesisLexemeAction(TokenLabel label);
@@ -53,6 +54,17 @@ whitespace			[[:space:]]+
  */
 
 %}
+
+"header"							{ return KeywordLexemeAction(HEADER); }
+"mc"								{ return KeywordLexemeAction(MC); }
+"blanks"							{ return KeywordLexemeAction(BLANKS); }
+"direct"							{ return KeywordLexemeAction(DIRECT); }
+"chooseFrom"						{ return KeywordLexemeAction(CHOOSE_FROM); }
+"match"								{ return KeywordLexemeAction(MATCH); }
+"torf"								{ return KeywordLexemeAction(TORF); }
+"chart"								{ return KeywordLexemeAction(CHART); }
+"set"								{ return KeywordLexemeAction(SET); }
+"section"							{ return KeywordLexemeAction(SECTION); }
 
 "{"									{ return EnterImportExpressionLexemeAction(IMPORT_EXPRESSION); }
 <IMPORT_EXPRESSION>[^{}]+			{ return SubexpressionLexemeAction(); }
