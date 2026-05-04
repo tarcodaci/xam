@@ -15,4 +15,7 @@
 /** Initialize module's internal state. */
 ModuleDestructor initializeFlexActionsModule();
 
+CompilationStatus EnterStringLiteralLexemeAction(FlexContext context);
+CompilationStatus LeaveStringLiteralLexemeAction();
+
 #endif

@@ -17,12 +17,14 @@
 extern CompilationStatus ArithmeticOperatorLexemeAction(TokenLabel label);
 extern CompilationStatus EnterImportExpressionLexemeAction(FlexContext context);
 extern CompilationStatus EnterMultilineCommentLexemeAction(FlexContext context);
+extern CompilationStatus EnterStringLiteralLexemeAction(FlexContext context);
 extern CompilationStatus EOFLexemeAction();
 extern CompilationStatus IgnoredLexemeAction();
 extern CompilationStatus IntegerLexemeAction();
 extern CompilationStatus KeywordLexemeAction(TokenLabel label);
 extern CompilationStatus LeaveImportExpressionLexemeAction();
 extern CompilationStatus LeaveMultilineCommentLexemeAction();
+extern CompilationStatus LeaveStringLiteralLexemeAction();
 extern CompilationStatus ParenthesisLexemeAction(TokenLabel label);
 extern CompilationStatus SubexpressionLexemeAction();
 extern CompilationStatus UnknownLexemeAction();
@@ -36,6 +38,7 @@ extern CompilationStatus UnknownLexemeAction();
  */
 %x IMPORT_EXPRESSION
 %x MULTILINE_COMMENT
+%x STRING_LITERAL
 
 /**
  * Reusable patterns.
@@ -111,6 +114,10 @@ whitespace			[[:space:]]+
 ")"									{ return ParenthesisLexemeAction(CLOSE_PARENTHESIS); }
 
 [[:digit:]]+						{ return IntegerLexemeAction(); }
+
+"\""							{ return EnterStringLiteralLexemeAction(STRING_LITERAL); }
+<STRING_LITERAL>[^"\n]*			{ return LeaveStringLiteralLexemeAction(); }
+<STRING_LITERAL>"\n"			{ return UnknownLexemeAction(); }
 
 {whitespace}						{ return IgnoredLexemeAction(); }
 .									{ return UnknownLexemeAction(); }

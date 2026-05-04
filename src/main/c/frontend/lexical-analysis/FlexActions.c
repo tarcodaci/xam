@@ -167,3 +167,18 @@ CompilationStatus UnknownLexemeAction() {
 	destroyToken(token);
 	return FAILED;
 }
+
+CompilationStatus EnterStringLiteralLexemeAction(FlexContext context) {
+	enterLexicalAnalyzerContext(_lexicalAnalyzer, context);
+	return IN_PROGRESS;
+}
+
+CompilationStatus LeaveStringLiteralLexemeAction() {
+	Token * token = createToken(_lexicalAnalyzer, STRING);
+	token->semanticValue->string = strdup(token->lexeme);
+	_logTokenAction(__FUNCTION__, token);
+	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
+	leaveLexicalAnalyzerContext(_lexicalAnalyzer);
+	destroyToken(token);
+	return status;
+}
