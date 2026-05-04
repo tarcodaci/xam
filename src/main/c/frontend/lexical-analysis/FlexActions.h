@@ -17,5 +17,6 @@ ModuleDestructor initializeFlexActionsModule();
 
 CompilationStatus EnterStringLiteralLexemeAction(FlexContext context);
 CompilationStatus LeaveStringLiteralLexemeAction();
+CompilationStatus BooleanLexemeAction(TokenLabel label);
 
 #endif

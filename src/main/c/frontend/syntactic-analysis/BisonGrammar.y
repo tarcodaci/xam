@@ -53,6 +53,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 /** Terminals. */
 %token <integer> INTEGER
 %token <string> STRING
+%token <token> TRUE
+%token <token> FALSE
 %token <token> ADD
 %token <token> CLOSE_BRACE
 %token <token> CLOSE_COMMENT

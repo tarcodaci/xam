@@ -173,6 +173,14 @@ CompilationStatus EnterStringLiteralLexemeAction(FlexContext context) {
 	return IN_PROGRESS;
 }
 
+CompilationStatus BooleanLexemeAction(TokenLabel label) {
+	Token * token = createToken(_lexicalAnalyzer, label);
+	_logTokenAction(__FUNCTION__, token);
+	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
+	destroyToken(token);
+	return status;
+}
+
 CompilationStatus LeaveStringLiteralLexemeAction() {
 	Token * token = createToken(_lexicalAnalyzer, STRING);
 	token->semanticValue->string = strdup(token->lexeme);

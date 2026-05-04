@@ -15,6 +15,7 @@
  */
 
 extern CompilationStatus ArithmeticOperatorLexemeAction(TokenLabel label);
+extern CompilationStatus BooleanLexemeAction(TokenLabel label);
 extern CompilationStatus EnterImportExpressionLexemeAction(FlexContext context);
 extern CompilationStatus EnterMultilineCommentLexemeAction(FlexContext context);
 extern CompilationStatus EnterStringLiteralLexemeAction(FlexContext context);
@@ -112,6 +113,9 @@ whitespace			[[:space:]]+
 
 "("									{ return ParenthesisLexemeAction(OPEN_PARENTHESIS); }
 ")"									{ return ParenthesisLexemeAction(CLOSE_PARENTHESIS); }
+
+"true"								{ return BooleanLexemeAction(TRUE); }
+"false"								{ return BooleanLexemeAction(FALSE); }
 
 [[:digit:]]+						{ return IntegerLexemeAction(); }
 
