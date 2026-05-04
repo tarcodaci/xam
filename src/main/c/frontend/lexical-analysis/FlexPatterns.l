@@ -17,6 +17,7 @@
 extern CompilationStatus ArithmeticOperatorLexemeAction(TokenLabel label);
 extern CompilationStatus BooleanLexemeAction(TokenLabel label);
 extern CompilationStatus DelimiterLexemeAction(TokenLabel label);
+extern CompilationStatus IdentifierLexemeAction();
 extern CompilationStatus EnterMultilineCommentLexemeAction(FlexContext context);
 extern CompilationStatus EnterStringLiteralLexemeAction(FlexContext context);
 extern CompilationStatus EOFLexemeAction();
@@ -111,6 +112,7 @@ whitespace			[[:space:]]+
 "false"								{ return BooleanLexemeAction(FALSE); }
 
 [[:digit:]]+						{ return IntegerLexemeAction(); }
+[a-zA-Z][a-zA-Z0-9_]*				{ return IdentifierLexemeAction(); }
 
 "\""							{ return EnterStringLiteralLexemeAction(STRING_LITERAL); }
 <STRING_LITERAL>[^"\n]*			{ return LeaveStringLiteralLexemeAction(); }
