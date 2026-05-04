@@ -15,8 +15,9 @@
 /** Initialize module's internal state. */
 ModuleDestructor initializeFlexActionsModule();
 
+CompilationStatus BooleanLexemeAction(TokenLabel label);
+CompilationStatus DelimiterLexemeAction(TokenLabel label);
 CompilationStatus EnterStringLiteralLexemeAction(FlexContext context);
 CompilationStatus LeaveStringLiteralLexemeAction();
-CompilationStatus BooleanLexemeAction(TokenLabel label);
 
 #endif

@@ -57,13 +57,19 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> FALSE
 %token <token> ADD
 %token <token> CLOSE_BRACE
+%token <token> CLOSE_BRACKET
 %token <token> CLOSE_COMMENT
 %token <token> CLOSE_PARENTHESIS
+%token <token> COLON
+%token <token> COMMA
 %token <token> DIV
+%token <token> HASH
 %token <token> MUL
 %token <token> OPEN_BRACE
+%token <token> OPEN_BRACKET
 %token <token> OPEN_COMMENT
 %token <token> OPEN_PARENTHESIS
+%token <token> SEMICOLON
 %token <token> SUB
 
 %token <token> HEADER
