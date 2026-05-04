@@ -108,6 +108,8 @@ whitespace			[[:space:]]+
 <MULTILINE_COMMENT>[^*]+			{ return IgnoredLexemeAction(); }
 <MULTILINE_COMMENT>.				{ return IgnoredLexemeAction(); }
 
+"//"[^\n]*							{ return IgnoredLexemeAction(); }
+
 "true"								{ return BooleanLexemeAction(TRUE); }
 "false"								{ return BooleanLexemeAction(FALSE); }
 
