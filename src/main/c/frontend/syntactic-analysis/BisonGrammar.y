@@ -29,6 +29,7 @@
 	TokenLabel token;
 
 	Header * header;
+	HeaderProperty * headerProperty;
 	Program * program;
 }
 
@@ -99,6 +100,8 @@
 %token <token> UNKNOWN
 
 %type <header> header
+%type <header> header_props
+%type <headerProperty> header_prop
 %type <program> program
 
 %%
@@ -107,7 +110,28 @@ program: header							{ $$ = ProgramSemanticAction($1); }
 	| %empty							{ $$ = ProgramSemanticAction(NULL); }
 	;
 
-header: HEADER OPEN_BRACE TITLE COLON STRING SEMICOLON CLOSE_BRACE	{ $$ = HeaderSemanticAction($5); }
+header: HEADER OPEN_BRACE header_props CLOSE_BRACE		{ $$ = $3; }
+	;
+
+header_props: header_prop								{ $$ = CreateHeaderSemanticAction($1); }
+	| header_props header_prop							{ $$ = AddHeaderPropertySemanticAction($1, $2); }
+	;
+
+header_prop: TITLE COLON STRING SEMICOLON				{ $$ = HeaderPropertySemanticAction(HEADER_PROP_TITLE, $3, 0); }
+	| SUBJECT COLON STRING SEMICOLON					{ $$ = HeaderPropertySemanticAction(HEADER_PROP_SUBJECT, $3, 0); }
+	| DATE COLON STRING SEMICOLON						{ $$ = HeaderPropertySemanticAction(HEADER_PROP_DATE, $3, 0); }
+	| DURATION COLON INTEGER SEMICOLON					{ $$ = HeaderPropertySemanticAction(HEADER_PROP_DURATION, NULL, $3); }
+	| SCORE_GRID COLON TRUE SEMICOLON					{ $$ = HeaderPropertySemanticAction(HEADER_PROP_SCORE_GRID, NULL, 1); }
+	| SCORE_GRID COLON FALSE SEMICOLON					{ $$ = HeaderPropertySemanticAction(HEADER_PROP_SCORE_GRID, NULL, 0); }
+	| ANSWER_SHEET COLON TRUE SEMICOLON					{ $$ = HeaderPropertySemanticAction(HEADER_PROP_ANSWER_SHEET, NULL, 1); }
+	| ANSWER_SHEET COLON FALSE SEMICOLON				{ $$ = HeaderPropertySemanticAction(HEADER_PROP_ANSWER_SHEET, NULL, 0); }
+	| STUDENT_NAME COLON TRUE SEMICOLON					{ $$ = HeaderPropertySemanticAction(HEADER_PROP_STUDENT_NAME, NULL, 1); }
+	| STUDENT_NAME COLON FALSE SEMICOLON				{ $$ = HeaderPropertySemanticAction(HEADER_PROP_STUDENT_NAME, NULL, 0); }
+	| STUDENT_ID COLON TRUE SEMICOLON					{ $$ = HeaderPropertySemanticAction(HEADER_PROP_STUDENT_ID, NULL, 1); }
+	| STUDENT_ID COLON FALSE SEMICOLON					{ $$ = HeaderPropertySemanticAction(HEADER_PROP_STUDENT_ID, NULL, 0); }
+	| COURSE COLON TRUE SEMICOLON						{ $$ = HeaderPropertySemanticAction(HEADER_PROP_COURSE, NULL, 1); }
+	| COURSE COLON FALSE SEMICOLON						{ $$ = HeaderPropertySemanticAction(HEADER_PROP_COURSE, NULL, 0); }
+	| INSTRUCTIONS COLON STRING SEMICOLON				{ $$ = HeaderPropertySemanticAction(HEADER_PROP_INSTRUCTIONS, $3, 0); }
 	;
 
 %%
