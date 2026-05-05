@@ -36,11 +36,24 @@ static void _logSyntacticAnalyzerAction(const char * functionName) {
 
 /* PUBLIC FUNCTIONS */
 
-Program * ProgramSemanticAction() {
+Program * ProgramSemanticAction(Header * header) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Program * program = calloc(1, sizeof(Program));
-	program->header = NULL;
+	program->header = header;
 	program->items = NULL;
 	_compilerState->abstractSyntaxtTree = program;
 	return program;
+}
+
+Header * HeaderSemanticAction(char * title) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Header * header = calloc(1, sizeof(Header));
+	header->title = title;
+	header->duration = -1;
+	header->score_grid = -1;
+	header->answer_sheet = -1;
+	header->student_name = -1;
+	header->student_id = -1;
+	header->course = -1;
+	return header;
 }

@@ -28,6 +28,7 @@
 	char * string;
 	TokenLabel token;
 
+	Header * header;
 	Program * program;
 }
 
@@ -40,7 +41,6 @@
  * @see https://www.gnu.org/software/bison/manual/html_node/Destructor-Decl.html
  */
  %destructor { free($$); } <string>
-
 
 %token <integer> INTEGER
 %token <string> STRING
@@ -98,13 +98,16 @@
 %token <token> IGNORED
 %token <token> UNKNOWN
 
+%type <header> header
 %type <program> program
 
 %%
 
-// IMPORTANT: To use λ in the following grammar, use the %empty symbol.
+program: header							{ $$ = ProgramSemanticAction($1); }
+	| %empty							{ $$ = ProgramSemanticAction(NULL); }
+	;
 
-program: %empty		{ $$ = ProgramSemanticAction(); }
+header: HEADER OPEN_BRACE TITLE COLON STRING SEMICOLON CLOSE_BRACE	{ $$ = HeaderSemanticAction($5); }
 	;
 
 %%
