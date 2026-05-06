@@ -33,6 +33,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	Item * item;
 	McNode * mcNode;
 	TorfNode * torfNode;
+	DirectNode * directNode;
 	Program * program;
 }
 
@@ -111,6 +112,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <mcNode> mc_props
 %type <torfNode> torf_block
 %type <torfNode> torf_props
+%type <directNode> direct_block
+%type <directNode> direct_props
 %type <program> program
 
 %%
@@ -153,6 +156,7 @@ items: items item						{ $$ = AppendItemSemanticAction($1, $2); }
 
 item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
 	| torf_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_TORF, $1); }
+	| direct_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_DIRECT, $1); }
 	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
 	;
 
@@ -182,6 +186,18 @@ torf_props: torf_props QUESTION COLON STRING SEMICOLON	{ $$ = TorfSetQuestionSem
 	| torf_props ANSWER COLON FALSE SEMICOLON			{ $$ = TorfSetAnswerSemanticAction($1, 0); }
 	| torf_props SCORE COLON INTEGER SEMICOLON			{ $$ = TorfSetScoreSemanticAction($1, $4); }
 	| %empty											{ $$ = CreateTorfNodeSemanticAction(); }
+	;
+
+/* ── direct ── */
+
+direct_block: DIRECT OPEN_BRACE direct_props CLOSE_BRACE	{ $$ = $3; }
+	;
+
+direct_props: direct_props QUESTION COLON STRING SEMICOLON	{ $$ = DirectSetQuestionSemanticAction($1, $4); }
+	| direct_props LINES COLON INTEGER SEMICOLON			{ $$ = DirectSetLinesSemanticAction($1, $4); }
+	| direct_props ANSWER COLON STRING SEMICOLON			{ $$ = DirectSetAnswerSemanticAction($1, $4); }
+	| direct_props SCORE COLON INTEGER SEMICOLON			{ $$ = DirectSetScoreSemanticAction($1, $4); }
+	| %empty												{ $$ = CreateDirectNodeSemanticAction(); }
 	;
 
 %%

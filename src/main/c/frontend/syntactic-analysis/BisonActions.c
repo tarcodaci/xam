@@ -219,3 +219,35 @@ TorfNode * TorfSetScoreSemanticAction(TorfNode * node, int score) {
 	node->score = score;
 	return node;
 }
+
+DirectNode * CreateDirectNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	DirectNode * node = calloc(1, sizeof(DirectNode));
+	node->lines = -1;
+	node->score = -1;
+	return node;
+}
+
+DirectNode * DirectSetQuestionSemanticAction(DirectNode * node, char * question) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->question = question;
+	return node;
+}
+
+DirectNode * DirectSetLinesSemanticAction(DirectNode * node, int lines) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->lines = lines;
+	return node;
+}
+
+DirectNode * DirectSetAnswerSemanticAction(DirectNode * node, char * answer) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->answer = answer;
+	return node;
+}
+
+DirectNode * DirectSetScoreSemanticAction(DirectNode * node, int score) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->score = score;
+	return node;
+}

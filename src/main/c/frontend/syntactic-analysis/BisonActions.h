@@ -35,5 +35,10 @@ TorfNode * TorfSetQuestionSemanticAction(TorfNode * node, char * question);
 TorfNode * TorfSetJustifySemanticAction(TorfNode * node, int justify);
 TorfNode * TorfSetAnswerSemanticAction(TorfNode * node, int answer);
 TorfNode * TorfSetScoreSemanticAction(TorfNode * node, int score);
+DirectNode * CreateDirectNodeSemanticAction();
+DirectNode * DirectSetQuestionSemanticAction(DirectNode * node, char * question);
+DirectNode * DirectSetLinesSemanticAction(DirectNode * node, int lines);
+DirectNode * DirectSetAnswerSemanticAction(DirectNode * node, char * answer);
+DirectNode * DirectSetScoreSemanticAction(DirectNode * node, int score);
 
 #endif
