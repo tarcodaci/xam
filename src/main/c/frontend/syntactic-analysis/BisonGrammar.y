@@ -31,6 +31,7 @@
 	Header * header;
 	HeaderProperty * headerProperty;
 	Item * item;
+	McNode * mcNode;
 	Program * program;
 }
 
@@ -105,6 +106,8 @@
 %type <headerProperty> header_prop
 %type <item> items
 %type <item> item
+%type <mcNode> mc_block
+%type <mcNode> mc_props
 %type <program> program
 
 %%
@@ -145,7 +148,22 @@ items: items item						{ $$ = AppendItemSemanticAction($1, $2); }
 	| %empty							{ $$ = NULL; }
 	;
 
-item: TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
+item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
+	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
+	;
+
+/* ── mc ── */
+
+mc_block: MC OPEN_BRACE mc_props CLOSE_BRACE			{ $$ = $3; }
+	;
+
+mc_props: mc_props QUESTION COLON STRING SEMICOLON		{ $$ = McSetQuestionSemanticAction($1, $4); }
+	| mc_props OPTION COLON STRING SEMICOLON			{ $$ = McAddOptionSemanticAction($1, $4, 0); }
+	| mc_props OPTION COLON STRING HASH SEMICOLON		{ $$ = McAddOptionSemanticAction($1, $4, 1); }
+	| mc_props OPTION COLON INTEGER SEMICOLON			{ $$ = McAddIntOptionSemanticAction($1, $4, 0); }
+	| mc_props OPTION COLON INTEGER HASH SEMICOLON		{ $$ = McAddIntOptionSemanticAction($1, $4, 1); }
+	| mc_props SCORE COLON INTEGER SEMICOLON			{ $$ = McSetScoreSemanticAction($1, $4); }
+	| %empty											{ $$ = CreateMcNodeSemanticAction(); }
 	;
 
 %%

@@ -8,6 +8,8 @@
 #include "AbstractSyntaxTree.h"
 #include "BisonParser.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 /** Initialize module's internal state. */
 ModuleDestructor initializeBisonActionsModule();
@@ -21,6 +23,12 @@ HeaderProperty * HeaderPropertySemanticAction(HeaderPropertyType type, char * st
 Header * CreateHeaderSemanticAction(HeaderProperty * firstProp);
 Header * AddHeaderPropertySemanticAction(Header * header, HeaderProperty * prop);
 Item * TextItemSemanticAction(char * text);
+Item * ExerciseItemSemanticAction(ExerciseType type, void * node);
 Item * AppendItemSemanticAction(Item * list, Item * item);
+McNode * CreateMcNodeSemanticAction();
+McNode * McSetQuestionSemanticAction(McNode * node, char * question);
+McNode * McAddOptionSemanticAction(McNode * node, char * value, int isCorrect);
+McNode * McAddIntOptionSemanticAction(McNode * node, int value, int isCorrect);
+McNode * McSetScoreSemanticAction(McNode * node, int score);
 
 #endif
