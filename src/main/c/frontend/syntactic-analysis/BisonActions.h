@@ -30,5 +30,10 @@ McNode * McSetQuestionSemanticAction(McNode * node, char * question);
 McNode * McAddOptionSemanticAction(McNode * node, char * value, int isCorrect);
 McNode * McAddIntOptionSemanticAction(McNode * node, int value, int isCorrect);
 McNode * McSetScoreSemanticAction(McNode * node, int score);
+TorfNode * CreateTorfNodeSemanticAction();
+TorfNode * TorfSetQuestionSemanticAction(TorfNode * node, char * question);
+TorfNode * TorfSetJustifySemanticAction(TorfNode * node, int justify);
+TorfNode * TorfSetAnswerSemanticAction(TorfNode * node, int answer);
+TorfNode * TorfSetScoreSemanticAction(TorfNode * node, int score);
 
 #endif

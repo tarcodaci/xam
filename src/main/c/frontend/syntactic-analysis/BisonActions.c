@@ -186,3 +186,36 @@ McNode * McSetScoreSemanticAction(McNode * node, int score) {
 	node->score = score;
 	return node;
 }
+
+TorfNode * CreateTorfNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	TorfNode * node = calloc(1, sizeof(TorfNode));
+	node->justify = -1;
+	node->answer = -1;
+	node->score = -1;
+	return node;
+}
+
+TorfNode * TorfSetQuestionSemanticAction(TorfNode * node, char * question) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->question = question;
+	return node;
+}
+
+TorfNode * TorfSetJustifySemanticAction(TorfNode * node, int justify) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->justify = justify;
+	return node;
+}
+
+TorfNode * TorfSetAnswerSemanticAction(TorfNode * node, int answer) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->answer = answer;
+	return node;
+}
+
+TorfNode * TorfSetScoreSemanticAction(TorfNode * node, int score) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->score = score;
+	return node;
+}

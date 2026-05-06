@@ -12,7 +12,7 @@
  * @see https://www.gnu.org/software/bison/manual/html_node/Error-Reporting-Function.html
  * @see https://www.gnu.org/software/bison/manual/html_node/Tracking-Locations.html
  */
- void yyerror(const YYLTYPE * location, const char * message) {}
+void yyerror(const YYLTYPE * location, const char * message) {}
 
 %}
 
@@ -32,6 +32,7 @@
 	HeaderProperty * headerProperty;
 	Item * item;
 	McNode * mcNode;
+	TorfNode * torfNode;
 	Program * program;
 }
 
@@ -43,7 +44,7 @@
  *
  * @see https://www.gnu.org/software/bison/manual/html_node/Destructor-Decl.html
  */
- %destructor { free($$); } <string>
+%destructor { free($$); } <string>
 
 %token <integer> INTEGER
 %token <string> STRING
@@ -108,6 +109,8 @@
 %type <item> item
 %type <mcNode> mc_block
 %type <mcNode> mc_props
+%type <torfNode> torf_block
+%type <torfNode> torf_props
 %type <program> program
 
 %%
@@ -149,6 +152,7 @@ items: items item						{ $$ = AppendItemSemanticAction($1, $2); }
 	;
 
 item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
+	| torf_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_TORF, $1); }
 	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
 	;
 
@@ -164,6 +168,20 @@ mc_props: mc_props QUESTION COLON STRING SEMICOLON		{ $$ = McSetQuestionSemantic
 	| mc_props OPTION COLON INTEGER HASH SEMICOLON		{ $$ = McAddIntOptionSemanticAction($1, $4, 1); }
 	| mc_props SCORE COLON INTEGER SEMICOLON			{ $$ = McSetScoreSemanticAction($1, $4); }
 	| %empty											{ $$ = CreateMcNodeSemanticAction(); }
+	;
+
+/* ── torf ── */
+
+torf_block: TORF OPEN_BRACE torf_props CLOSE_BRACE		{ $$ = $3; }
+	;
+
+torf_props: torf_props QUESTION COLON STRING SEMICOLON	{ $$ = TorfSetQuestionSemanticAction($1, $4); }
+	| torf_props JUSTIFY COLON TRUE SEMICOLON			{ $$ = TorfSetJustifySemanticAction($1, 1); }
+	| torf_props JUSTIFY COLON FALSE SEMICOLON			{ $$ = TorfSetJustifySemanticAction($1, 0); }
+	| torf_props ANSWER COLON TRUE SEMICOLON			{ $$ = TorfSetAnswerSemanticAction($1, 1); }
+	| torf_props ANSWER COLON FALSE SEMICOLON			{ $$ = TorfSetAnswerSemanticAction($1, 0); }
+	| torf_props SCORE COLON INTEGER SEMICOLON			{ $$ = TorfSetScoreSemanticAction($1, $4); }
+	| %empty											{ $$ = CreateTorfNodeSemanticAction(); }
 	;
 
 %%
