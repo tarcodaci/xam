@@ -15,9 +15,12 @@ ModuleDestructor initializeBisonActionsModule();
 /**
  * Bison semantic actions.
  */
-Program * ProgramSemanticAction(Header * header);
+Program * ProgramSemanticAction(Item * items);
+Program * ProgramWithHeaderSemanticAction(Header * header, Item * items);
 HeaderProperty * HeaderPropertySemanticAction(HeaderPropertyType type, char * stringValue, int intValue);
 Header * CreateHeaderSemanticAction(HeaderProperty * firstProp);
 Header * AddHeaderPropertySemanticAction(Header * header, HeaderProperty * prop);
+Item * TextItemSemanticAction(char * text);
+Item * AppendItemSemanticAction(Item * list, Item * item);
 
 #endif

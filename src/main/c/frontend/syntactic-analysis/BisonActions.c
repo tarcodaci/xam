@@ -36,13 +36,44 @@ static void _logSyntacticAnalyzerAction(const char * functionName) {
 
 /* PUBLIC FUNCTIONS */
 
-Program * ProgramSemanticAction(Header * header) {
+Program * ProgramSemanticAction(Item * items) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Program * program = calloc(1, sizeof(Program));
+	program->header = NULL;
+	program->items = items;
+	_compilerState->abstractSyntaxtTree = program;
+	return program;
+}
+
+Program * ProgramWithHeaderSemanticAction(Header * header, Item * items) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Program * program = calloc(1, sizeof(Program));
 	program->header = header;
-	program->items = NULL;
+	program->items = items;
 	_compilerState->abstractSyntaxtTree = program;
 	return program;
+}
+
+Item * TextItemSemanticAction(char * text) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Item * item = calloc(1, sizeof(Item));
+	item->type = ITEM_TEXT;
+	item->text = text;
+	item->next = NULL;
+	return item;
+}
+
+Item * AppendItemSemanticAction(Item * list, Item * item) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (list == NULL) {
+		return item;
+	}
+	Item * current = list;
+	while (current->next != NULL) {
+		current = current->next;
+	}
+	current->next = item;
+	return list;
 }
 
 HeaderProperty * HeaderPropertySemanticAction(HeaderPropertyType type, char * stringValue, int intValue) {

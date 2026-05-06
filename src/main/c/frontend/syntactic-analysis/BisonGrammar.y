@@ -30,6 +30,7 @@
 
 	Header * header;
 	HeaderProperty * headerProperty;
+	Item * item;
 	Program * program;
 }
 
@@ -102,13 +103,17 @@
 %type <header> header
 %type <header> header_props
 %type <headerProperty> header_prop
+%type <item> items
+%type <item> item
 %type <program> program
 
 %%
 
-program: header							{ $$ = ProgramSemanticAction($1); }
-	| %empty							{ $$ = ProgramSemanticAction(NULL); }
+program: header items					{ $$ = ProgramWithHeaderSemanticAction($1, $2); }
+	| items								{ $$ = ProgramSemanticAction($1); }
 	;
+
+/* ── header ── */
 
 header: HEADER OPEN_BRACE header_props CLOSE_BRACE		{ $$ = $3; }
 	;
@@ -132,6 +137,15 @@ header_prop: TITLE COLON STRING SEMICOLON				{ $$ = HeaderPropertySemanticAction
 	| COURSE COLON TRUE SEMICOLON						{ $$ = HeaderPropertySemanticAction(HEADER_PROP_COURSE, NULL, 1); }
 	| COURSE COLON FALSE SEMICOLON						{ $$ = HeaderPropertySemanticAction(HEADER_PROP_COURSE, NULL, 0); }
 	| INSTRUCTIONS COLON STRING SEMICOLON				{ $$ = HeaderPropertySemanticAction(HEADER_PROP_INSTRUCTIONS, $3, 0); }
+	;
+
+/* ── items ── */
+
+items: items item						{ $$ = AppendItemSemanticAction($1, $2); }
+	| %empty							{ $$ = NULL; }
+	;
+
+item: TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
 	;
 
 %%
