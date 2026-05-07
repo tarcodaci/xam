@@ -40,5 +40,9 @@ DirectNode * DirectSetQuestionSemanticAction(DirectNode * node, char * question)
 DirectNode * DirectSetLinesSemanticAction(DirectNode * node, int lines);
 DirectNode * DirectSetAnswerSemanticAction(DirectNode * node, char * answer);
 DirectNode * DirectSetScoreSemanticAction(DirectNode * node, int score);
+BlanksNode * CreateBlanksNodeSemanticAction();
+BlanksNode * BlanksSetQuestionSemanticAction(BlanksNode * node, char * question);
+BlanksNode * BlanksAddAnswerSemanticAction(BlanksNode * node, char * answer);
+BlanksNode * BlanksSetScoreSemanticAction(BlanksNode * node, int score);
 
 #endif

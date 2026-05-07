@@ -251,3 +251,39 @@ DirectNode * DirectSetScoreSemanticAction(DirectNode * node, int score) {
 	node->score = score;
 	return node;
 }
+
+BlanksNode * CreateBlanksNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	BlanksNode * node = calloc(1, sizeof(BlanksNode));
+	node->score = -1;
+	return node;
+}
+
+BlanksNode * BlanksSetQuestionSemanticAction(BlanksNode * node, char * question) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->question = question;
+	return node;
+}
+
+BlanksNode * BlanksAddAnswerSemanticAction(BlanksNode * node, char * answer) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	StringList * entry = calloc(1, sizeof(StringList));
+	entry->value = answer;
+	entry->next = NULL;
+	if (node->answers == NULL) {
+		node->answers = entry;
+	} else {
+		StringList * current = node->answers;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = entry;
+	}
+	return node;
+}
+
+BlanksNode * BlanksSetScoreSemanticAction(BlanksNode * node, int score) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->score = score;
+	return node;
+}

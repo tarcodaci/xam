@@ -34,6 +34,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	McNode * mcNode;
 	TorfNode * torfNode;
 	DirectNode * directNode;
+	BlanksNode * blanksNode;
 	Program * program;
 }
 
@@ -114,6 +115,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <torfNode> torf_props
 %type <directNode> direct_block
 %type <directNode> direct_props
+%type <blanksNode> blanks_block
+%type <blanksNode> blanks_props
 %type <program> program
 
 %%
@@ -157,6 +160,7 @@ items: items item						{ $$ = AppendItemSemanticAction($1, $2); }
 item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
 	| torf_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_TORF, $1); }
 	| direct_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_DIRECT, $1); }
+	| blanks_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_BLANKS, $1); }
 	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
 	;
 
@@ -198,6 +202,17 @@ direct_props: direct_props QUESTION COLON STRING SEMICOLON	{ $$ = DirectSetQuest
 	| direct_props ANSWER COLON STRING SEMICOLON			{ $$ = DirectSetAnswerSemanticAction($1, $4); }
 	| direct_props SCORE COLON INTEGER SEMICOLON			{ $$ = DirectSetScoreSemanticAction($1, $4); }
 	| %empty												{ $$ = CreateDirectNodeSemanticAction(); }
+	;
+
+/* ── blanks ── */
+
+blanks_block: BLANKS OPEN_BRACE blanks_props CLOSE_BRACE	{ $$ = $3; }
+	;
+
+blanks_props: blanks_props QUESTION COLON STRING SEMICOLON	{ $$ = BlanksSetQuestionSemanticAction($1, $4); }
+	| blanks_props ANSWER COLON STRING SEMICOLON			{ $$ = BlanksAddAnswerSemanticAction($1, $4); }
+	| blanks_props SCORE COLON INTEGER SEMICOLON			{ $$ = BlanksSetScoreSemanticAction($1, $4); }
+	| %empty												{ $$ = CreateBlanksNodeSemanticAction(); }
 	;
 
 %%
