@@ -36,6 +36,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	DirectNode * directNode;
 	BlanksNode * blanksNode;
 	ChooseFromNode * chooseFromNode;
+	MatchNode * matchNode;
 	StringList * stringList;
 	IntList * intList;
 	Program * program;
@@ -122,6 +123,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <blanksNode> blanks_props
 %type <chooseFromNode> choose_from_block
 %type <chooseFromNode> choose_from_props
+%type <matchNode> match_block
+%type <matchNode> match_props
 %type <stringList> string_list
 %type <stringList> string_items
 %type <intList> int_list
@@ -171,6 +174,7 @@ item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
 	| direct_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_DIRECT, $1); }
 	| blanks_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_BLANKS, $1); }
 	| choose_from_block					{ $$ = ExerciseItemSemanticAction(EXERCISE_CHOOSE_FROM, $1); }
+	| match_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_MATCH, $1); }
 	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
 	;
 
@@ -223,6 +227,17 @@ blanks_props: blanks_props QUESTION COLON STRING SEMICOLON	{ $$ = BlanksSetQuest
 	| blanks_props ANSWER COLON STRING SEMICOLON			{ $$ = BlanksAddAnswerSemanticAction($1, $4); }
 	| blanks_props SCORE COLON INTEGER SEMICOLON			{ $$ = BlanksSetScoreSemanticAction($1, $4); }
 	| %empty												{ $$ = CreateBlanksNodeSemanticAction(); }
+	;
+
+/* ── match ── */
+
+match_block: MATCH OPEN_BRACE match_props CLOSE_BRACE	{ $$ = $3; }
+	;
+
+match_props: match_props QUESTION COLON STRING SEMICOLON										{ $$ = MatchSetQuestionSemanticAction($1, $4); }
+	| match_props PAIR COLON OPEN_BRACKET STRING COMMA STRING CLOSE_BRACKET SEMICOLON			{ $$ = MatchAddPairSemanticAction($1, $5, $7); }
+	| match_props SCORE COLON INTEGER SEMICOLON													{ $$ = MatchSetScoreSemanticAction($1, $4); }
+	| %empty																					{ $$ = CreateMatchNodeSemanticAction(); }
 	;
 
 /* ── chooseFrom ── */

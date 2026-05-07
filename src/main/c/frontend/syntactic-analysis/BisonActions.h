@@ -55,5 +55,9 @@ ChooseFromNode * ChooseFromSetTextSemanticAction(ChooseFromNode * node, char * t
 ChooseFromNode * ChooseFromSetAnswerSemanticAction(ChooseFromNode * node, IntList * answer);
 ChooseFromNode * ChooseFromSetScoreSemanticAction(ChooseFromNode * node, int score);
 ChooseFromNode * ChooseFromSetShuffleSemanticAction(ChooseFromNode * node, int shuffle);
+MatchNode * CreateMatchNodeSemanticAction();
+MatchNode * MatchSetQuestionSemanticAction(MatchNode * node, char * question);
+MatchNode * MatchAddPairSemanticAction(MatchNode * node, char * left, char * right);
+MatchNode * MatchSetScoreSemanticAction(MatchNode * node, int score);
 
 #endif

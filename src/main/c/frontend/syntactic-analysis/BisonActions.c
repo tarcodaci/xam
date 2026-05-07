@@ -373,3 +373,40 @@ ChooseFromNode * ChooseFromSetShuffleSemanticAction(ChooseFromNode * node, int s
 	node->shuffle = shuffle;
 	return node;
 }
+
+MatchNode * CreateMatchNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	MatchNode * node = calloc(1, sizeof(MatchNode));
+	node->score = -1;
+	return node;
+}
+
+MatchNode * MatchSetQuestionSemanticAction(MatchNode * node, char * question) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->question = question;
+	return node;
+}
+
+MatchNode * MatchAddPairSemanticAction(MatchNode * node, char * left, char * right) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	MatchPair * pair = calloc(1, sizeof(MatchPair));
+	pair->left = left;
+	pair->right = right;
+	pair->next = NULL;
+	if (node->pairs == NULL) {
+		node->pairs = pair;
+	} else {
+		MatchPair * current = node->pairs;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = pair;
+	}
+	return node;
+}
+
+MatchNode * MatchSetScoreSemanticAction(MatchNode * node, int score) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->score = score;
+	return node;
+}
