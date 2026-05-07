@@ -287,3 +287,45 @@ BlanksNode * BlanksSetScoreSemanticAction(BlanksNode * node, int score) {
 	node->score = score;
 	return node;
 }
+
+StringList * CreateStringListSemanticAction(char * value) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	StringList * node = calloc(1, sizeof(StringList));
+	node->value = value;
+	node->next = NULL;
+	return node;
+}
+
+StringList * AppendStringListSemanticAction(StringList * list, char * value) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	StringList * node = calloc(1, sizeof(StringList));
+	node->value = value;
+	node->next = NULL;
+	StringList * current = list;
+	while (current->next != NULL) {
+		current = current->next;
+	}
+	current->next = node;
+	return list;
+}
+
+IntList * CreateIntListSemanticAction(int value) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	IntList * node = calloc(1, sizeof(IntList));
+	node->value = value;
+	node->next = NULL;
+	return node;
+}
+
+IntList * AppendIntListSemanticAction(IntList * list, int value) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	IntList * node = calloc(1, sizeof(IntList));
+	node->value = value;
+	node->next = NULL;
+	IntList * current = list;
+	while (current->next != NULL) {
+		current = current->next;
+	}
+	current->next = node;
+	return list;
+}

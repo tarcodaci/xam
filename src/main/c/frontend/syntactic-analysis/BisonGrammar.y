@@ -35,6 +35,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	TorfNode * torfNode;
 	DirectNode * directNode;
 	BlanksNode * blanksNode;
+	StringList * stringList;
+	IntList * intList;
 	Program * program;
 }
 
@@ -117,6 +119,10 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <directNode> direct_props
 %type <blanksNode> blanks_block
 %type <blanksNode> blanks_props
+%type <stringList> string_list
+%type <stringList> string_items
+%type <intList> int_list
+%type <intList> int_items
 %type <program> program
 
 %%
@@ -213,6 +219,22 @@ blanks_props: blanks_props QUESTION COLON STRING SEMICOLON	{ $$ = BlanksSetQuest
 	| blanks_props ANSWER COLON STRING SEMICOLON			{ $$ = BlanksAddAnswerSemanticAction($1, $4); }
 	| blanks_props SCORE COLON INTEGER SEMICOLON			{ $$ = BlanksSetScoreSemanticAction($1, $4); }
 	| %empty												{ $$ = CreateBlanksNodeSemanticAction(); }
+	;
+
+/* ── lists ── */
+
+string_list: OPEN_BRACKET string_items CLOSE_BRACKET		{ $$ = $2; }
+	;
+
+string_items: STRING										{ $$ = CreateStringListSemanticAction($1); }
+	| string_items COMMA STRING								{ $$ = AppendStringListSemanticAction($1, $3); }
+	;
+
+int_list: OPEN_BRACKET int_items CLOSE_BRACKET				{ $$ = $2; }
+	;
+
+int_items: INTEGER											{ $$ = CreateIntListSemanticAction($1); }
+	| int_items COMMA INTEGER								{ $$ = AppendIntListSemanticAction($1, $3); }
 	;
 
 %%

@@ -44,5 +44,9 @@ BlanksNode * CreateBlanksNodeSemanticAction();
 BlanksNode * BlanksSetQuestionSemanticAction(BlanksNode * node, char * question);
 BlanksNode * BlanksAddAnswerSemanticAction(BlanksNode * node, char * answer);
 BlanksNode * BlanksSetScoreSemanticAction(BlanksNode * node, int score);
+StringList * CreateStringListSemanticAction(char * value);
+StringList * AppendStringListSemanticAction(StringList * list, char * value);
+IntList * CreateIntListSemanticAction(int value);
+IntList * AppendIntListSemanticAction(IntList * list, int value);
 
 #endif
