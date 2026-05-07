@@ -48,5 +48,12 @@ StringList * CreateStringListSemanticAction(char * value);
 StringList * AppendStringListSemanticAction(StringList * list, char * value);
 IntList * CreateIntListSemanticAction(int value);
 IntList * AppendIntListSemanticAction(IntList * list, int value);
+ChooseFromNode * CreateChooseFromNodeSemanticAction();
+ChooseFromNode * ChooseFromSetTaskSemanticAction(ChooseFromNode * node, char * task);
+ChooseFromNode * ChooseFromSetOptionsSemanticAction(ChooseFromNode * node, StringList * options);
+ChooseFromNode * ChooseFromSetTextSemanticAction(ChooseFromNode * node, char * text);
+ChooseFromNode * ChooseFromSetAnswerSemanticAction(ChooseFromNode * node, IntList * answer);
+ChooseFromNode * ChooseFromSetScoreSemanticAction(ChooseFromNode * node, int score);
+ChooseFromNode * ChooseFromSetShuffleSemanticAction(ChooseFromNode * node, int shuffle);
 
 #endif

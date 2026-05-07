@@ -35,6 +35,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	TorfNode * torfNode;
 	DirectNode * directNode;
 	BlanksNode * blanksNode;
+	ChooseFromNode * chooseFromNode;
 	StringList * stringList;
 	IntList * intList;
 	Program * program;
@@ -119,6 +120,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <directNode> direct_props
 %type <blanksNode> blanks_block
 %type <blanksNode> blanks_props
+%type <chooseFromNode> choose_from_block
+%type <chooseFromNode> choose_from_props
 %type <stringList> string_list
 %type <stringList> string_items
 %type <intList> int_list
@@ -167,6 +170,7 @@ item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
 	| torf_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_TORF, $1); }
 	| direct_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_DIRECT, $1); }
 	| blanks_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_BLANKS, $1); }
+	| choose_from_block					{ $$ = ExerciseItemSemanticAction(EXERCISE_CHOOSE_FROM, $1); }
 	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
 	;
 
@@ -219,6 +223,21 @@ blanks_props: blanks_props QUESTION COLON STRING SEMICOLON	{ $$ = BlanksSetQuest
 	| blanks_props ANSWER COLON STRING SEMICOLON			{ $$ = BlanksAddAnswerSemanticAction($1, $4); }
 	| blanks_props SCORE COLON INTEGER SEMICOLON			{ $$ = BlanksSetScoreSemanticAction($1, $4); }
 	| %empty												{ $$ = CreateBlanksNodeSemanticAction(); }
+	;
+
+/* ── chooseFrom ── */
+
+choose_from_block: CHOOSE_FROM OPEN_BRACE choose_from_props CLOSE_BRACE		{ $$ = $3; }
+	;
+
+choose_from_props: choose_from_props TASK COLON STRING SEMICOLON			{ $$ = ChooseFromSetTaskSemanticAction($1, $4); }
+	| choose_from_props OPTIONS COLON string_list SEMICOLON					{ $$ = ChooseFromSetOptionsSemanticAction($1, $4); }
+	| choose_from_props TEXT_KW COLON STRING SEMICOLON						{ $$ = ChooseFromSetTextSemanticAction($1, $4); }
+	| choose_from_props ANSWER COLON int_list SEMICOLON						{ $$ = ChooseFromSetAnswerSemanticAction($1, $4); }
+	| choose_from_props SCORE COLON INTEGER SEMICOLON						{ $$ = ChooseFromSetScoreSemanticAction($1, $4); }
+	| choose_from_props SHUFFLE COLON TRUE SEMICOLON						{ $$ = ChooseFromSetShuffleSemanticAction($1, 1); }
+	| choose_from_props SHUFFLE COLON FALSE SEMICOLON						{ $$ = ChooseFromSetShuffleSemanticAction($1, 0); }
+	| %empty																{ $$ = CreateChooseFromNodeSemanticAction(); }
 	;
 
 /* ── lists ── */

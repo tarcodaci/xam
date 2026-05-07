@@ -329,3 +329,47 @@ IntList * AppendIntListSemanticAction(IntList * list, int value) {
 	current->next = node;
 	return list;
 }
+
+ChooseFromNode * CreateChooseFromNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	ChooseFromNode * node = calloc(1, sizeof(ChooseFromNode));
+	node->score = -1;
+	node->shuffle = -1;
+	return node;
+}
+
+ChooseFromNode * ChooseFromSetTaskSemanticAction(ChooseFromNode * node, char * task) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->task = task;
+	return node;
+}
+
+ChooseFromNode * ChooseFromSetOptionsSemanticAction(ChooseFromNode * node, StringList * options) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->options = options;
+	return node;
+}
+
+ChooseFromNode * ChooseFromSetTextSemanticAction(ChooseFromNode * node, char * text) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->text = text;
+	return node;
+}
+
+ChooseFromNode * ChooseFromSetAnswerSemanticAction(ChooseFromNode * node, IntList * answer) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->answer = answer;
+	return node;
+}
+
+ChooseFromNode * ChooseFromSetScoreSemanticAction(ChooseFromNode * node, int score) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->score = score;
+	return node;
+}
+
+ChooseFromNode * ChooseFromSetShuffleSemanticAction(ChooseFromNode * node, int shuffle) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->shuffle = shuffle;
+	return node;
+}
