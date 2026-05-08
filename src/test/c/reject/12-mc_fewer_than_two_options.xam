@@ -1,0 +1,4 @@
+mc {
+    question: "¿Cuántos bits tiene un byte?";
+    option: "8"#;
+}

@@ -1,0 +1,5 @@
+torf {
+    question: "Todo conjunto infinito es coordinable con N.";
+    answer: true;
+    answer: false;
+}

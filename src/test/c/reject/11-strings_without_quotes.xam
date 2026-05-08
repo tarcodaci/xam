@@ -1,0 +1,5 @@
+mc {
+    question: Pregunta sin comillas;
+    option: "A"#;
+    option: "B";
+}

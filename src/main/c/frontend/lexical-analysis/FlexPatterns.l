@@ -117,7 +117,7 @@ whitespace			[[:space:]]+
 [a-zA-Z][a-zA-Z0-9_]*				{ return IdentifierLexemeAction(); }
 
 "\""							{ return EnterStringLiteralLexemeAction(STRING_LITERAL); }
-<STRING_LITERAL>[^"\n]*			{ return LeaveStringLiteralLexemeAction(); }
+<STRING_LITERAL>[^"\n]*\"		{ return LeaveStringLiteralLexemeAction(); }
 <STRING_LITERAL>"\n"			{ return UnknownLexemeAction(); }
 
 {whitespace}						{ return IgnoredLexemeAction(); }

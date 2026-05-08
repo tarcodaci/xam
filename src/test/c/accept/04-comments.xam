@@ -1,0 +1,24 @@
+// Examen de Lógica Computacional
+
+/* Encabezado del examen */
+header{
+    title:    "Parcial de Lógica"; // título principal
+    subject:  "Lógica Computacional";
+    /* Fecha y duración */
+    date:     "2026-05-10";
+    duration: 120;
+}
+
+// Ejercicio 1: Multiple Choice
+mc {
+    question: "¿Cuántos bits tiene un byte?"; /* pregunta principal */
+    option: "4";
+    option: "8"#; // opción correcta
+    option: "16";
+}
+
+/* Ejercicio 2: Verdadero o Falso */
+torf {
+    question: "Todo conjunto infinito es coordinable con N.";
+    answer: false;
+}

@@ -1,0 +1,5 @@
+trueOrFalse{
+    question: "Todo conjunto infinito es coordinable con N.";
+    answer: false;
+    justify: true;
+}

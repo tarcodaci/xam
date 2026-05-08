@@ -1,0 +1,12 @@
+mc {
+    question: "¿Cuántos bits tiene un byte?";
+    option: "4";
+    option: "8"#;
+    option: "16";
+}
+text: "Nota: Recuerde que 1 byte = 8 bits en la mayoría de los sistemas modernos.";
+
+torf {
+    question: "Todo conjunto infinito es coordinable con N.";
+    answer: false;
+}

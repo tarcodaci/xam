@@ -1,0 +1,59 @@
+header{
+    title:        "Primer Parcial - Lógica";
+    subject:      "Lógica Computacional";
+    score_grid:   true;
+    answer_sheet: true;
+}
+
+mc {
+    score: 20;
+    question: "¿Cuántos bits tiene un byte?";
+    option: "4";
+    option: "8"#;
+    option: "16";
+}
+
+torf {
+    score: 10;
+    question: "Todo conjunto infinito es coordinable con N.";
+    answer: false;
+    justify: true;
+}
+
+direct {
+    score: 20;
+    question: "Definir conjunto numerable.";
+    lines: 3;
+    answer: "Un conjunto es numerable si es finito o coordinable con N.";
+}
+
+blanks {
+    score: 10;
+    question: "El conjunto de los naturales tiene cardinal _.";
+    answer: "\aleph0";
+}
+
+chooseFrom {
+    score: 20;
+    options: ["Finito", "Numerable", "Coordinable", "Biyectiva", "Inyectiva"];
+    text: "Dos conjuntos A y B son ___ si existe una función ___ f : A \-> B.";
+    answer: [3, 4];
+}
+
+match {
+    score: 10;
+    question: "Relacionar los conjuntos con su cardinal.";
+    pair: ["N", "\aleph0"];
+    pair: ["[0, 1]", "c"];
+    pair: ["\void", "\void"];
+}
+
+chart {
+    score: 10;
+    task: "Completar la tabla de verdad para A AND B.";
+    dim: [3, 3];
+    (1,1): "A";
+    (1,2): "B";
+    (1,3): "A AND B";
+    answer: ["A", "B", "A AND B", "V", "V", "V", "V", "F", "F"];
+}

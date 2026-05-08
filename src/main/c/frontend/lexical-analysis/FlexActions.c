@@ -147,6 +147,9 @@ CompilationStatus IdentifierLexemeAction() {
 
 CompilationStatus LeaveStringLiteralLexemeAction() {
 	Token * token = createToken(_lexicalAnalyzer, STRING);
+	if (token->length > 0 && token->lexeme[token->length - 1] == '"') {
+		token->lexeme[token->length - 1] = '\0';
+	}
 	token->semanticValue->string = strdup(token->lexeme);
 	_logTokenAction(__FUNCTION__, token);
 	CompilationStatus status = pushToken(_lexicalAnalyzer, token);

@@ -1,0 +1,8 @@
+header{
+    title: "Parcial de Lógica";
+    answer_sheet: true;
+}
+
+blanks {
+    question: "El lenguaje de programación _ es de tipado _ y hace uso de _.";
+}

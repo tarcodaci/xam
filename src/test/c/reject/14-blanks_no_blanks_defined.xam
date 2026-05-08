@@ -1,0 +1,3 @@
+blanks {
+    question: "El compilador transforma el código fuente en código ejecutable.";
+}
