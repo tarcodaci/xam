@@ -19,6 +19,7 @@ CompilationStatus BooleanLexemeAction(TokenLabel label);
 CompilationStatus DelimiterLexemeAction(TokenLabel label);
 CompilationStatus IdentifierLexemeAction();
 CompilationStatus EnterStringLiteralLexemeAction(FlexContext context);
+CompilationStatus StringContentLexemeAction();
 CompilationStatus LeaveStringLiteralLexemeAction();
 
 #endif

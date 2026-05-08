@@ -3,6 +3,7 @@
 /* MODULE INTERNAL STATE */
 
 static bool _logIgnoredLexemes = true;
+static char * _stringBuffer = NULL;
 static LexicalAnalyzer * _lexicalAnalyzer = NULL;
 static Logger * _logger = NULL;
 
@@ -145,12 +146,20 @@ CompilationStatus IdentifierLexemeAction() {
 	return status;
 }
 
+CompilationStatus StringContentLexemeAction() {
+	Token * token = createToken(_lexicalAnalyzer, STRING);
+	_stringBuffer = strdup(token->lexeme);
+	if (_logIgnoredLexemes) {
+		_logTokenAction(__FUNCTION__, token);
+	}
+	destroyToken(token);
+	return IN_PROGRESS;
+}
+
 CompilationStatus LeaveStringLiteralLexemeAction() {
 	Token * token = createToken(_lexicalAnalyzer, STRING);
-	if (token->length > 0 && token->lexeme[token->length - 1] == '"') {
-		token->lexeme[token->length - 1] = '\0';
-	}
-	token->semanticValue->string = strdup(token->lexeme);
+	token->semanticValue->string = _stringBuffer;
+	_stringBuffer = NULL;
 	_logTokenAction(__FUNCTION__, token);
 	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
 	leaveLexicalAnalyzerContext(_lexicalAnalyzer);
