@@ -59,5 +59,11 @@ MatchNode * CreateMatchNodeSemanticAction();
 MatchNode * MatchSetQuestionSemanticAction(MatchNode * node, char * question);
 MatchNode * MatchAddPairSemanticAction(MatchNode * node, char * left, char * right);
 MatchNode * MatchSetScoreSemanticAction(MatchNode * node, int score);
+ChartNode * CreateChartNodeSemanticAction();
+ChartNode * ChartSetTaskSemanticAction(ChartNode * node, char * task);
+ChartNode * ChartSetDimSemanticAction(ChartNode * node, int rows, int cols);
+ChartNode * ChartAddCellSemanticAction(ChartNode * node, int row, int col, char * value);
+ChartNode * ChartSetAnswerSemanticAction(ChartNode * node, StringList * answer);
+ChartNode * ChartSetScoreSemanticAction(ChartNode * node, int score);
 
 #endif

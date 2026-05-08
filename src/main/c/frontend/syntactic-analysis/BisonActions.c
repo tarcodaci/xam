@@ -410,3 +410,54 @@ MatchNode * MatchSetScoreSemanticAction(MatchNode * node, int score) {
 	node->score = score;
 	return node;
 }
+
+ChartNode * CreateChartNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	ChartNode * node = calloc(1, sizeof(ChartNode));
+	node->score = -1;
+	return node;
+}
+
+ChartNode * ChartSetTaskSemanticAction(ChartNode * node, char * task) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->task = task;
+	return node;
+}
+
+ChartNode * ChartSetDimSemanticAction(ChartNode * node, int rows, int cols) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->dim_rows = rows;
+	node->dim_cols = cols;
+	return node;
+}
+
+ChartNode * ChartAddCellSemanticAction(ChartNode * node, int row, int col, char * value) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	ChartCell * cell = calloc(1, sizeof(ChartCell));
+	cell->row = row;
+	cell->col = col;
+	cell->value = value;
+	cell->next = NULL;
+	if (node->cells == NULL) {
+		node->cells = cell;
+	} else {
+		ChartCell * current = node->cells;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = cell;
+	}
+	return node;
+}
+
+ChartNode * ChartSetAnswerSemanticAction(ChartNode * node, StringList * answer) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->answer = answer;
+	return node;
+}
+
+ChartNode * ChartSetScoreSemanticAction(ChartNode * node, int score) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->score = score;
+	return node;
+}
