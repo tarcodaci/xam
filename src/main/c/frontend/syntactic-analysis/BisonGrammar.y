@@ -53,6 +53,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
  */
 %destructor { free($$); } <string>
 
+/** Terminals. */
 %token <integer> INTEGER
 %token <string> STRING
 %token <string> IDENTIFIER
@@ -109,6 +110,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> IGNORED
 %token <token> UNKNOWN
 
+/** Non-terminals. */
 %type <header> header
 %type <header> header_props
 %type <headerProperty> header_prop

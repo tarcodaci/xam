@@ -36,6 +36,8 @@ static void _logSyntacticAnalyzerAction(const char * functionName) {
 
 /* PUBLIC FUNCTIONS */
 
+/* ── program ── */
+
 Program * ProgramSemanticAction(Item * items) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Program * program = calloc(1, sizeof(Program));
@@ -53,6 +55,8 @@ Program * ProgramWithHeaderSemanticAction(Header * header, Item * items) {
 	_compilerState->abstractSyntaxtTree = program;
 	return program;
 }
+
+/* ── items ── */
 
 Item * TextItemSemanticAction(char * text) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -75,6 +79,8 @@ Item * AppendItemSemanticAction(Item * list, Item * item) {
 	current->next = item;
 	return list;
 }
+
+/* ── header ── */
 
 HeaderProperty * HeaderPropertySemanticAction(HeaderPropertyType type, char * stringValue, int intValue) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -142,6 +148,8 @@ Item * ExerciseItemSemanticAction(ExerciseType type, void * node) {
 	return item;
 }
 
+/* ── mc ── */
+
 McNode * CreateMcNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	McNode * node = calloc(1, sizeof(McNode));
@@ -187,6 +195,8 @@ McNode * McSetScoreSemanticAction(McNode * node, int score) {
 	return node;
 }
 
+/* ── torf ── */
+
 TorfNode * CreateTorfNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	TorfNode * node = calloc(1, sizeof(TorfNode));
@@ -220,6 +230,8 @@ TorfNode * TorfSetScoreSemanticAction(TorfNode * node, int score) {
 	return node;
 }
 
+/* ── direct ── */
+
 DirectNode * CreateDirectNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	DirectNode * node = calloc(1, sizeof(DirectNode));
@@ -251,6 +263,8 @@ DirectNode * DirectSetScoreSemanticAction(DirectNode * node, int score) {
 	node->score = score;
 	return node;
 }
+
+/* ── blanks ── */
 
 BlanksNode * CreateBlanksNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -287,6 +301,8 @@ BlanksNode * BlanksSetScoreSemanticAction(BlanksNode * node, int score) {
 	node->score = score;
 	return node;
 }
+
+/* ── lists ── */
 
 StringList * CreateStringListSemanticAction(char * value) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -329,6 +345,8 @@ IntList * AppendIntListSemanticAction(IntList * list, int value) {
 	current->next = node;
 	return list;
 }
+
+/* ── chooseFrom ── */
 
 ChooseFromNode * CreateChooseFromNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -374,6 +392,8 @@ ChooseFromNode * ChooseFromSetShuffleSemanticAction(ChooseFromNode * node, int s
 	return node;
 }
 
+/* ── match ── */
+
 MatchNode * CreateMatchNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	MatchNode * node = calloc(1, sizeof(MatchNode));
@@ -410,6 +430,8 @@ MatchNode * MatchSetScoreSemanticAction(MatchNode * node, int score) {
 	node->score = score;
 	return node;
 }
+
+/* ── chart ── */
 
 ChartNode * CreateChartNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
