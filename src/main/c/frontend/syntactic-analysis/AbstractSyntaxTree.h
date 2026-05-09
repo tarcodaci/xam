@@ -10,6 +10,29 @@ ModuleDestructor initializeAbstractSyntaxTreeModule();
 
 /* ── xam AST ── */
 
+typedef enum HeaderPropertyType HeaderPropertyType;
+
+enum HeaderPropertyType {
+	HEADER_PROP_TITLE,
+	HEADER_PROP_SUBJECT,
+	HEADER_PROP_DATE,
+	HEADER_PROP_DURATION,
+	HEADER_PROP_SCORE_GRID,
+	HEADER_PROP_ANSWER_SHEET,
+	HEADER_PROP_STUDENT_NAME,
+	HEADER_PROP_STUDENT_ID,
+	HEADER_PROP_COURSE,
+	HEADER_PROP_INSTRUCTIONS
+};
+
+typedef struct HeaderProperty HeaderProperty;
+
+struct HeaderProperty {
+	HeaderPropertyType type;
+	char * stringValue;
+	int intValue;
+};
+
 typedef struct StringList StringList;
 typedef struct IntList IntList;
 typedef struct Header Header;
