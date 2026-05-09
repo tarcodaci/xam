@@ -485,6 +485,7 @@ ChartNode * ChartSetScoreSemanticAction(ChartNode * node, int score) {
 }
 
 /* ── set ── */
+
 SetNode * CreateSetNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	SetNode * node = calloc(1, sizeof(SetNode));
@@ -546,6 +547,62 @@ SetNode * SetAddExerciseSemanticAction(SetNode * node, ExerciseType type, void *
 			current = current->next;
 		}
 		current->next = exercise;
+	}
+
+	return node;
+}
+
+/* ── section ── */
+
+Item * SectionItemSemanticAction(SectionNode * section) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	Item * item = calloc(1, sizeof(Item));
+	item->type = ITEM_SECTION;
+	item->section = section;
+	item->next = NULL;
+
+	return item;
+}
+
+SectionNode * CreateSectionNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	SectionNode * node = calloc(1, sizeof(SectionNode));
+	node->select = -1;
+
+	return node;
+}
+
+SectionNode * SectionSetNameSemanticAction(SectionNode * node, char * name) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	node->name = name;
+
+	return node;
+}
+
+SectionNode * SectionSetSelectSemanticAction(SectionNode * node, int select) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	node->select = select;
+
+	return node;
+}
+
+SectionNode * SectionAddItemSemanticAction(SectionNode * node, Item * item) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	if (node->items == NULL) {
+		node->items = item;
+	} else {
+		Item * current = node->items;
+
+		while (current->next != NULL) {
+			current = current->next;
+		}
+
+		current->next = item;
 	}
 
 	return node;

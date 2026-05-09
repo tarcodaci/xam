@@ -39,6 +39,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	MatchNode * matchNode;
 	ChartNode * chartNode;
 	SetNode * setNode;
+	SectionNode * sectionNode;
 	StringList * stringList;
 	IntList * intList;
 	Program * program;
@@ -135,6 +136,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <chartNode> chart_props
 %type <setNode> set_block
 %type <setNode> set_props
+%type <sectionNode> section_block
+%type <sectionNode> section_props
 %type <stringList> string_list
 %type <stringList> string_items
 %type <intList> int_list
@@ -187,6 +190,7 @@ item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
 	| match_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_MATCH, $1); }
 	| chart_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_CHART, $1); }
 	| set_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_SET, $1); }
+	| section_block						{ $$ = SectionItemSemanticAction($1); }
 	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
 	;
 
@@ -295,6 +299,16 @@ set_props: set_props TEXT_KW COLON STRING SEMICOLON							{ $$ = SetSetTextSeman
 	| set_props match_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_MATCH, $2); }
 	| set_props chart_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHART, $2); }
 	| %empty																{ $$ = CreateSetNodeSemanticAction(); }
+	;
+
+/* ── section ── */
+
+section_block: SECTION IDENTIFIER OPEN_BRACE section_props CLOSE_BRACE		{ $$ = SectionSetNameSemanticAction($4, $2); }
+	;
+
+section_props: section_props SELECT COLON INTEGER SEMICOLON					{ $$ = SectionSetSelectSemanticAction($1, $4); }
+	| section_props item													{ $$ = SectionAddItemSemanticAction($1, $2); }
+	| %empty																{ $$ = CreateSectionNodeSemanticAction(); }
 	;
 
 /* ── lists ── */

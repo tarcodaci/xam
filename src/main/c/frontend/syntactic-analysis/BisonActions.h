@@ -94,4 +94,11 @@ SetNode * SetSetTextSemanticAction(SetNode * node, char * text);
 SetNode * SetSetScoreSemanticAction(SetNode * node, int score);
 SetNode * SetAddExerciseSemanticAction(SetNode * node, ExerciseType type, void * exerciseNode);
 
+/* ── section ── */
+Item * SectionItemSemanticAction(SectionNode * section);
+SectionNode * CreateSectionNodeSemanticAction();
+SectionNode * SectionSetNameSemanticAction(SectionNode * node, char * name);
+SectionNode * SectionSetSelectSemanticAction(SectionNode * node, int select);
+SectionNode * SectionAddItemSemanticAction(SectionNode * node, Item * item);
+
 #endif
