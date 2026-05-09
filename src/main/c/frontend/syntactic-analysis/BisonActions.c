@@ -483,3 +483,70 @@ ChartNode * ChartSetScoreSemanticAction(ChartNode * node, int score) {
 	node->score = score;
 	return node;
 }
+
+/* ── set ── */
+SetNode * CreateSetNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	SetNode * node = calloc(1, sizeof(SetNode));
+	node->score = -1;
+	return node;
+}
+
+SetNode * SetSetTextSemanticAction(SetNode * node, char * text) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->text = text;
+	return node;
+}
+
+SetNode * SetSetScoreSemanticAction(SetNode * node, int score) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->score = score;
+	return node;
+}
+
+SetNode * SetAddExerciseSemanticAction(SetNode * node, ExerciseType type, void * exerciseNode) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	Exercise * exercise = calloc(1, sizeof(Exercise));
+	exercise->type = type;
+	exercise->next = NULL;
+
+	switch (type) {
+		case EXERCISE_MC:
+			exercise->mc = (McNode *) exerciseNode;
+			break;
+		case EXERCISE_BLANKS:
+			exercise->blanks = (BlanksNode *) exerciseNode;
+			break;
+		case EXERCISE_DIRECT:
+			exercise->direct = (DirectNode *) exerciseNode;
+			break;
+		case EXERCISE_CHOOSE_FROM:
+			exercise->chooseFrom = (ChooseFromNode *) exerciseNode;
+			break;
+		case EXERCISE_MATCH:
+			exercise->match = (MatchNode *) exerciseNode;
+			break;
+		case EXERCISE_TORF:
+			exercise->torf = (TorfNode *) exerciseNode;
+			break;
+		case EXERCISE_CHART:
+			exercise->chart = (ChartNode *) exerciseNode;
+			break;
+		case EXERCISE_SET:
+			exercise->set = (SetNode *) exerciseNode;
+			break;
+	}
+
+	if (node->exercises == NULL) {
+		node->exercises = exercise;
+	} else {
+		Exercise * current = node->exercises;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = exercise;
+	}
+
+	return node;
+}

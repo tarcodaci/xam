@@ -74,6 +74,7 @@ typedef struct MatchNode MatchNode;
 typedef struct ChartCell ChartCell;
 typedef struct ChartNode ChartNode;
 typedef struct ChooseFromNode ChooseFromNode;
+typedef struct SetNode SetNode;
 
 struct McOption {
 	char * value;

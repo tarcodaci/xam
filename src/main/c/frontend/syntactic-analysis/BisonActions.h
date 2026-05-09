@@ -88,4 +88,10 @@ ChartNode * ChartAddCellSemanticAction(ChartNode * node, int row, int col, char 
 ChartNode * ChartSetAnswerSemanticAction(ChartNode * node, StringList * answer);
 ChartNode * ChartSetScoreSemanticAction(ChartNode * node, int score);
 
+/* ── set ── */
+SetNode * CreateSetNodeSemanticAction();
+SetNode * SetSetTextSemanticAction(SetNode * node, char * text);
+SetNode * SetSetScoreSemanticAction(SetNode * node, int score);
+SetNode * SetAddExerciseSemanticAction(SetNode * node, ExerciseType tyoem void * exerciseNode);
+
 #endif
