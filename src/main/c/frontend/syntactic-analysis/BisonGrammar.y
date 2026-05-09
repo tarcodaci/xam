@@ -63,12 +63,14 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> CLOSE_BRACE
 %token <token> CLOSE_BRACKET
 %token <token> CLOSE_COMMENT
+%token <token> CLOSE_PARENTHESIS
 %token <token> COLON
 %token <token> COMMA
 %token <token> HASH
 %token <token> OPEN_BRACE
 %token <token> OPEN_BRACKET
 %token <token> OPEN_COMMENT
+%token <token> OPEN_PARENTHESIS
 %token <token> SEMICOLON
 
 %token <token> HEADER
@@ -257,7 +259,7 @@ chart_block: CHART OPEN_BRACE chart_props CLOSE_BRACE	{ $$ = $3; }
 
 chart_props: chart_props TASK COLON STRING SEMICOLON												{ $$ = ChartSetTaskSemanticAction($1, $4); }
 	| chart_props DIM COLON OPEN_BRACKET INTEGER COMMA INTEGER CLOSE_BRACKET SEMICOLON				{ $$ = ChartSetDimSemanticAction($1, $5, $7); }
-	| chart_props CELL COLON OPEN_BRACKET INTEGER COMMA INTEGER COMMA STRING CLOSE_BRACKET SEMICOLON	{ $$ = ChartAddCellSemanticAction($1, $5, $7, $9); }
+	| chart_props OPEN_PARENTHESIS INTEGER COMMA INTEGER CLOSE_PARENTHESIS COLON STRING SEMICOLON	{ $$ = ChartAddCellSemanticAction($1, $3, $5, $8); }
 	| chart_props ANSWER COLON string_list SEMICOLON												{ $$ = ChartSetAnswerSemanticAction($1, $4); }
 	| chart_props SCORE COLON INTEGER SEMICOLON														{ $$ = ChartSetScoreSemanticAction($1, $4); }
 	| %empty																						{ $$ = CreateChartNodeSemanticAction(); }

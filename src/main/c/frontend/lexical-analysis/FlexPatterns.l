@@ -103,6 +103,8 @@ whitespace			[[:space:]]+
 ";"									{ return DelimiterLexemeAction(SEMICOLON); }
 ","									{ return DelimiterLexemeAction(COMMA); }
 "#"									{ return DelimiterLexemeAction(HASH); }
+"("									{ return DelimiterLexemeAction(OPEN_PARENTHESIS); }
+")"									{ return DelimiterLexemeAction(CLOSE_PARENTHESIS); }
 
 "/*"								{ return EnterMultilineCommentLexemeAction(MULTILINE_COMMENT); }
 <MULTILINE_COMMENT>"*/"				{ return LeaveMultilineCommentLexemeAction(); }
