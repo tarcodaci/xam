@@ -38,6 +38,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	ChooseFromNode * chooseFromNode;
 	MatchNode * matchNode;
 	ChartNode * chartNode;
+	SetNode * setNode;
 	StringList * stringList;
 	IntList * intList;
 	Program * program;
@@ -130,6 +131,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <matchNode> match_props
 %type <chartNode> chart_block
 %type <chartNode> chart_props
+%type <setNode> set_block
+%type <setNode> set_props
 %type <stringList> string_list
 %type <stringList> string_items
 %type <intList> int_list
@@ -181,6 +184,7 @@ item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
 	| choose_from_block					{ $$ = ExerciseItemSemanticAction(EXERCISE_CHOOSE_FROM, $1); }
 	| match_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_MATCH, $1); }
 	| chart_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_CHART, $1); }
+	| set_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_SET, $1); }
 	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
 	;
 
@@ -272,6 +276,23 @@ choose_from_props: choose_from_props TASK COLON STRING SEMICOLON			{ $$ = Choose
 	| choose_from_props SHUFFLE COLON TRUE SEMICOLON						{ $$ = ChooseFromSetShuffleSemanticAction($1, 1); }
 	| choose_from_props SHUFFLE COLON FALSE SEMICOLON						{ $$ = ChooseFromSetShuffleSemanticAction($1, 0); }
 	| %empty																{ $$ = CreateChooseFromNodeSemanticAction(); }
+	;
+
+/* ── set ── */
+
+set_block: SET OPEN_BRACE set_props CLOSE_BRACE								{ $$ = $3; }
+	;
+
+set_props: set_props TEXT_KW COLON STRING SEMICOLON							{ $$ = SetSetTextSemanticAction($1, $4); }
+	| set_props SCORE COLON INTEGER SEMICOLON								{ $$ = SetSetScoreSemanticAction($1, $4); }
+	| set_props mc_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_MC, $2); }
+	| set_props torf_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_TORF, $2); }
+	| set_props direct_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_DIRECT, $2); }
+	| set_props blanks_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_BLANKS, $2); }
+	| set_props choose_from_block											{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHOOSE_FROM, $2); }
+	| set_props match_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_MATCH, $2); }
+	| set_props chart_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHART, $2); }
+	| %empty																{ $$ = CreateSetNodeSemanticAction(); }
 	;
 
 /* ── lists ── */
