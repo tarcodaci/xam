@@ -489,6 +489,7 @@ ChartNode * ChartSetScoreSemanticAction(ChartNode * node, int score) {
 SetNode * CreateSetNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	SetNode * node = calloc(1, sizeof(SetNode));
+	node->shuffle = -1;
 	node->score = -1;
 	return node;
 }
@@ -502,6 +503,12 @@ SetNode * SetSetTextSemanticAction(SetNode * node, char * text) {
 SetNode * SetSetScoreSemanticAction(SetNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->score = score;
+	return node;
+}
+
+SetNode * SetSetShuffleSemanticAction(SetNode * node, int shuffle) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->shuffle = shuffle;
 	return node;
 }
 
@@ -534,8 +541,7 @@ SetNode * SetAddExerciseSemanticAction(SetNode * node, ExerciseType type, void *
 		case EXERCISE_CHART:
 			exercise->chart = (ChartNode *) exerciseNode;
 			break;
-		case EXERCISE_SET:
-			exercise->set = (SetNode *) exerciseNode;
+		default:
 			break;
 	}
 

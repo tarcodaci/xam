@@ -291,6 +291,8 @@ set_block: SET OPEN_BRACE set_props CLOSE_BRACE								{ $$ = $3; }
 
 set_props: set_props TEXT_KW COLON STRING SEMICOLON							{ $$ = SetSetTextSemanticAction($1, $4); }
 	| set_props SCORE COLON INTEGER SEMICOLON								{ $$ = SetSetScoreSemanticAction($1, $4); }
+	| set_props SHUFFLE COLON TRUE SEMICOLON								{ $$ = SetSetShuffleSemanticAction($1, 1); }
+	| set_props SHUFFLE COLON FALSE SEMICOLON								{ $$ = SetSetShuffleSemanticAction($1, 0); }
 	| set_props mc_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_MC, $2); }
 	| set_props torf_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_TORF, $2); }
 	| set_props direct_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_DIRECT, $2); }

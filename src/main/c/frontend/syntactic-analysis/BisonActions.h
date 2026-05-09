@@ -92,6 +92,7 @@ ChartNode * ChartSetScoreSemanticAction(ChartNode * node, int score);
 SetNode * CreateSetNodeSemanticAction();
 SetNode * SetSetTextSemanticAction(SetNode * node, char * text);
 SetNode * SetSetScoreSemanticAction(SetNode * node, int score);
+SetNode * SetSetShuffleSemanticAction(SetNode * node, int shuffle);
 SetNode * SetAddExerciseSemanticAction(SetNode * node, ExerciseType type, void * exerciseNode);
 
 /* ── section ── */
