@@ -1,0 +1,21 @@
+header {
+    title: "Examen con secciones anidadas";
+}
+
+section Parte1 {
+    select: 2;
+
+    mc {
+        question: "Pregunta 1";
+        option: "A";
+        option: "B";
+    }
+
+    section SubParte {
+        mc {
+            question: "Pregunta anidada";
+            option: "X";
+            option: "Y";
+        }
+    }
+}
