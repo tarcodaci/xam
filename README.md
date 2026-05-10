@@ -4,7 +4,7 @@
 
 # Xam
 
-A base compiler example, developed with Flex and Bison.
+A DSL compiler for academic exams and exercises. Outputs LaTeX. Built with Flex and Bison.
 
 * [Requirements](#requirements)
 * [Configuration](#configuration)

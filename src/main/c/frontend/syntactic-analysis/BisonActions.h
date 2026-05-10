@@ -88,4 +88,18 @@ ChartNode * ChartAddCellSemanticAction(ChartNode * node, int row, int col, char 
 ChartNode * ChartSetAnswerSemanticAction(ChartNode * node, StringList * answer);
 ChartNode * ChartSetScoreSemanticAction(ChartNode * node, int score);
 
+/* ── set ── */
+SetNode * CreateSetNodeSemanticAction();
+SetNode * SetSetTextSemanticAction(SetNode * node, char * text);
+SetNode * SetSetScoreSemanticAction(SetNode * node, int score);
+SetNode * SetSetShuffleSemanticAction(SetNode * node, int shuffle);
+SetNode * SetAddExerciseSemanticAction(SetNode * node, ExerciseType type, void * exerciseNode);
+
+/* ── section ── */
+Item * SectionItemSemanticAction(SectionNode * section);
+SectionNode * CreateSectionNodeSemanticAction();
+SectionNode * SectionSetNameSemanticAction(SectionNode * node, char * name);
+SectionNode * SectionSetSelectSemanticAction(SectionNode * node, int select);
+SectionNode * SectionAddItemSemanticAction(SectionNode * node, Item * item);
+
 #endif

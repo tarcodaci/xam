@@ -1,0 +1,20 @@
+header {
+    title: "Guía Cardinalidad";
+    subject: "Lógica Computacional";
+}
+
+section Seccion1 {
+    select: 1;
+    match {
+        question: "";
+        pair: [ "N", "\aleph0"];
+        pair: [ "[0,1]", "c"];
+        pair: [ "\void", "\void"];
+        pair: [ "I\sub(5)", "5"];
+    }
+
+    chooseFrom {
+        options: ["finito", "numerable", "coordinable", "biyectiva", "inyectiva"];
+        text: "Dos conjuntos A y B son ___ si existe una función ___ f : A          \-> B. Un conjunto X es ___ si es finito o existe f : X \-> N __.";
+    }
+}

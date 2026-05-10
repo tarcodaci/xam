@@ -1,0 +1,19 @@
+header {
+    title: "Primer Parcial";
+    subject: "Logica Computacional";
+    date: "2026-05-10";
+    duration: 180;
+    score_grid: true;
+    answer_sheet: true;
+    student_name: true;
+    student_id: true;
+    course: true;
+    instructions: "Justificar todas las respuestas.";
+}
+
+mc {
+    score: 10;
+    question: "Pregunta de ejemplo";
+    option: "A" #;
+    option: "B";
+}

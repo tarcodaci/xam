@@ -1,0 +1,7 @@
+match {
+    question: "Relacionar los conjuntos con su cardinal.";
+    pair: ["N", "\aleph0"];
+    pair: ["[0, 1]", "c"];
+    pair: ["P(N)", "2^c"];
+    pair: ["I_5", "5"];
+}

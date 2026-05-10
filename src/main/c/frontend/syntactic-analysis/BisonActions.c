@@ -483,3 +483,133 @@ ChartNode * ChartSetScoreSemanticAction(ChartNode * node, int score) {
 	node->score = score;
 	return node;
 }
+
+/* ── set ── */
+
+SetNode * CreateSetNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	SetNode * node = calloc(1, sizeof(SetNode));
+	node->shuffle = -1;
+	node->score = -1;
+	return node;
+}
+
+SetNode * SetSetTextSemanticAction(SetNode * node, char * text) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->text = text;
+	return node;
+}
+
+SetNode * SetSetScoreSemanticAction(SetNode * node, int score) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->score = score;
+	return node;
+}
+
+SetNode * SetSetShuffleSemanticAction(SetNode * node, int shuffle) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->shuffle = shuffle;
+	return node;
+}
+
+SetNode * SetAddExerciseSemanticAction(SetNode * node, ExerciseType type, void * exerciseNode) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	Exercise * exercise = calloc(1, sizeof(Exercise));
+	exercise->type = type;
+	exercise->next = NULL;
+
+	switch (type) {
+		case EXERCISE_MC:
+			exercise->mc = (McNode *) exerciseNode;
+			break;
+		case EXERCISE_BLANKS:
+			exercise->blanks = (BlanksNode *) exerciseNode;
+			break;
+		case EXERCISE_DIRECT:
+			exercise->direct = (DirectNode *) exerciseNode;
+			break;
+		case EXERCISE_CHOOSE_FROM:
+			exercise->chooseFrom = (ChooseFromNode *) exerciseNode;
+			break;
+		case EXERCISE_MATCH:
+			exercise->match = (MatchNode *) exerciseNode;
+			break;
+		case EXERCISE_TORF:
+			exercise->torf = (TorfNode *) exerciseNode;
+			break;
+		case EXERCISE_CHART:
+			exercise->chart = (ChartNode *) exerciseNode;
+			break;
+		default:
+			break;
+	}
+
+	if (node->exercises == NULL) {
+		node->exercises = exercise;
+	} else {
+		Exercise * current = node->exercises;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = exercise;
+	}
+
+	return node;
+}
+
+/* ── section ── */
+
+Item * SectionItemSemanticAction(SectionNode * section) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	Item * item = calloc(1, sizeof(Item));
+	item->type = ITEM_SECTION;
+	item->section = section;
+	item->next = NULL;
+
+	return item;
+}
+
+SectionNode * CreateSectionNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	SectionNode * node = calloc(1, sizeof(SectionNode));
+	node->select = -1;
+
+	return node;
+}
+
+SectionNode * SectionSetNameSemanticAction(SectionNode * node, char * name) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	node->name = name;
+
+	return node;
+}
+
+SectionNode * SectionSetSelectSemanticAction(SectionNode * node, int select) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	node->select = select;
+
+	return node;
+}
+
+SectionNode * SectionAddItemSemanticAction(SectionNode * node, Item * item) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+
+	if (node->items == NULL) {
+		node->items = item;
+	} else {
+		Item * current = node->items;
+
+		while (current->next != NULL) {
+			current = current->next;
+		}
+
+		current->next = item;
+	}
+
+	return node;
+}

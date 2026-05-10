@@ -1,0 +1,4 @@
+chooseFrom{
+    options: ["finito", "numerable"];
+    text: "Dos conjuntos A y B son ___ si existe una función ___ f : A -> B. Un conjunto X es ___ si es finito o coordinable con N.";
+}

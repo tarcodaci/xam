@@ -1,0 +1,7 @@
+header{
+    title:        "Primer Parcial — Lógica";
+    subject:      "Lógica";
+    date:         "2026-05-10";
+    student_name: true;
+    student_id:   true;
+}

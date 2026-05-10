@@ -20,6 +20,7 @@ extern CompilationStatus DelimiterLexemeAction(TokenLabel label);
 extern CompilationStatus IdentifierLexemeAction();
 extern CompilationStatus EnterMultilineCommentLexemeAction(FlexContext context);
 extern CompilationStatus EnterStringLiteralLexemeAction(FlexContext context);
+extern CompilationStatus StringContentLexemeAction();
 extern CompilationStatus EOFLexemeAction();
 extern CompilationStatus IgnoredLexemeAction();
 extern CompilationStatus IntegerLexemeAction();
@@ -102,6 +103,8 @@ whitespace			[[:space:]]+
 ";"									{ return DelimiterLexemeAction(SEMICOLON); }
 ","									{ return DelimiterLexemeAction(COMMA); }
 "#"									{ return DelimiterLexemeAction(HASH); }
+"("									{ return DelimiterLexemeAction(OPEN_PARENTHESIS); }
+")"									{ return DelimiterLexemeAction(CLOSE_PARENTHESIS); }
 
 "/*"								{ return EnterMultilineCommentLexemeAction(MULTILINE_COMMENT); }
 <MULTILINE_COMMENT>"*/"				{ return LeaveMultilineCommentLexemeAction(); }
@@ -117,7 +120,8 @@ whitespace			[[:space:]]+
 [a-zA-Z][a-zA-Z0-9_]*				{ return IdentifierLexemeAction(); }
 
 "\""							{ return EnterStringLiteralLexemeAction(STRING_LITERAL); }
-<STRING_LITERAL>[^"\n]*			{ return LeaveStringLiteralLexemeAction(); }
+<STRING_LITERAL>[^"\n]*			{ return StringContentLexemeAction(); }
+<STRING_LITERAL>"\""			{ return LeaveStringLiteralLexemeAction(); }
 <STRING_LITERAL>"\n"			{ return UnknownLexemeAction(); }
 
 {whitespace}						{ return IgnoredLexemeAction(); }

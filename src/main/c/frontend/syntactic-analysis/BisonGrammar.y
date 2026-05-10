@@ -38,6 +38,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	ChooseFromNode * chooseFromNode;
 	MatchNode * matchNode;
 	ChartNode * chartNode;
+	SetNode * setNode;
+	SectionNode * sectionNode;
 	StringList * stringList;
 	IntList * intList;
 	Program * program;
@@ -62,12 +64,14 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> CLOSE_BRACE
 %token <token> CLOSE_BRACKET
 %token <token> CLOSE_COMMENT
+%token <token> CLOSE_PARENTHESIS
 %token <token> COLON
 %token <token> COMMA
 %token <token> HASH
 %token <token> OPEN_BRACE
 %token <token> OPEN_BRACKET
 %token <token> OPEN_COMMENT
+%token <token> OPEN_PARENTHESIS
 %token <token> SEMICOLON
 
 %token <token> HEADER
@@ -130,6 +134,10 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <matchNode> match_props
 %type <chartNode> chart_block
 %type <chartNode> chart_props
+%type <setNode> set_block
+%type <setNode> set_props
+%type <sectionNode> section_block
+%type <sectionNode> section_props
 %type <stringList> string_list
 %type <stringList> string_items
 %type <intList> int_list
@@ -181,6 +189,8 @@ item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
 	| choose_from_block					{ $$ = ExerciseItemSemanticAction(EXERCISE_CHOOSE_FROM, $1); }
 	| match_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_MATCH, $1); }
 	| chart_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_CHART, $1); }
+	| set_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_SET, $1); }
+	| section_block						{ $$ = SectionItemSemanticAction($1); }
 	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
 	;
 
@@ -253,7 +263,7 @@ chart_block: CHART OPEN_BRACE chart_props CLOSE_BRACE	{ $$ = $3; }
 
 chart_props: chart_props TASK COLON STRING SEMICOLON												{ $$ = ChartSetTaskSemanticAction($1, $4); }
 	| chart_props DIM COLON OPEN_BRACKET INTEGER COMMA INTEGER CLOSE_BRACKET SEMICOLON				{ $$ = ChartSetDimSemanticAction($1, $5, $7); }
-	| chart_props CELL COLON OPEN_BRACKET INTEGER COMMA INTEGER COMMA STRING CLOSE_BRACKET SEMICOLON	{ $$ = ChartAddCellSemanticAction($1, $5, $7, $9); }
+	| chart_props OPEN_PARENTHESIS INTEGER COMMA INTEGER CLOSE_PARENTHESIS COLON STRING SEMICOLON	{ $$ = ChartAddCellSemanticAction($1, $3, $5, $8); }
 	| chart_props ANSWER COLON string_list SEMICOLON												{ $$ = ChartSetAnswerSemanticAction($1, $4); }
 	| chart_props SCORE COLON INTEGER SEMICOLON														{ $$ = ChartSetScoreSemanticAction($1, $4); }
 	| %empty																						{ $$ = CreateChartNodeSemanticAction(); }
@@ -272,6 +282,35 @@ choose_from_props: choose_from_props TASK COLON STRING SEMICOLON			{ $$ = Choose
 	| choose_from_props SHUFFLE COLON TRUE SEMICOLON						{ $$ = ChooseFromSetShuffleSemanticAction($1, 1); }
 	| choose_from_props SHUFFLE COLON FALSE SEMICOLON						{ $$ = ChooseFromSetShuffleSemanticAction($1, 0); }
 	| %empty																{ $$ = CreateChooseFromNodeSemanticAction(); }
+	;
+
+/* ── set ── */
+
+set_block: SET OPEN_BRACE set_props CLOSE_BRACE								{ $$ = $3; }
+	;
+
+set_props: set_props TEXT_KW COLON STRING SEMICOLON							{ $$ = SetSetTextSemanticAction($1, $4); }
+	| set_props SCORE COLON INTEGER SEMICOLON								{ $$ = SetSetScoreSemanticAction($1, $4); }
+	| set_props SHUFFLE COLON TRUE SEMICOLON								{ $$ = SetSetShuffleSemanticAction($1, 1); }
+	| set_props SHUFFLE COLON FALSE SEMICOLON								{ $$ = SetSetShuffleSemanticAction($1, 0); }
+	| set_props mc_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_MC, $2); }
+	| set_props torf_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_TORF, $2); }
+	| set_props direct_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_DIRECT, $2); }
+	| set_props blanks_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_BLANKS, $2); }
+	| set_props choose_from_block											{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHOOSE_FROM, $2); }
+	| set_props match_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_MATCH, $2); }
+	| set_props chart_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHART, $2); }
+	| %empty																{ $$ = CreateSetNodeSemanticAction(); }
+	;
+
+/* ── section ── */
+
+section_block: SECTION IDENTIFIER OPEN_BRACE section_props CLOSE_BRACE		{ $$ = SectionSetNameSemanticAction($4, $2); }
+	;
+
+section_props: section_props SELECT COLON INTEGER SEMICOLON					{ $$ = SectionSetSelectSemanticAction($1, $4); }
+	| section_props item													{ $$ = SectionAddItemSemanticAction($1, $2); }
+	| %empty																{ $$ = CreateSectionNodeSemanticAction(); }
 	;
 
 /* ── lists ── */

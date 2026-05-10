@@ -1,0 +1,7 @@
+blanks {
+    question: "Un conjunto X es _ si es _ o existe f : X -> N _.";
+    answer: "numerable";
+    answer: "finito";
+    answer: "biyectiva";
+    score: 5;
+}
