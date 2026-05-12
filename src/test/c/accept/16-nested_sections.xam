@@ -5,14 +5,14 @@ header {
 section Parte1 {
     select: 2;
 
-    mc {
+    multiplechoice {
         question: "Pregunta 1";
         option: "A";
         option: "B";
     }
 
     section SubParte {
-        mc {
+        multiplechoice {
             question: "Pregunta anidada";
             option: "X";
             option: "Y";

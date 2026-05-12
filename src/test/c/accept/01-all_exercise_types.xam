@@ -5,7 +5,7 @@ header{
     answer_sheet: true;
 }
 
-mc {
+multiplechoice {
     score: 20;
     question: "¿Cuántos bits tiene un byte?";
     option: "4";
@@ -13,27 +13,27 @@ mc {
     option: "16";
 }
 
-torf {
+trueorfalse {
     score: 10;
     question: "Todo conjunto infinito es coordinable con N.";
     answer: false;
     justify: true;
 }
 
-direct {
+openquestion {
     score: 20;
     question: "Definir conjunto numerable.";
     lines: 3;
     answer: "Un conjunto es numerable si es finito o coordinable con N.";
 }
 
-blanks {
+fillblanks {
     score: 10;
     question: "El conjunto de los naturales tiene cardinal _.";
     answer: "\aleph0";
 }
 
-chooseFrom {
+choosefrom {
     score: 20;
     options: ["Finito", "Numerable", "Coordinable", "Biyectiva", "Inyectiva"];
     text: "Dos conjuntos A y B son ___ si existe una función ___ f : A \-> B.";

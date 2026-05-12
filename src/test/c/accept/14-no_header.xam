@@ -1,11 +1,11 @@
-mc {
+multiplechoice {
     question: "What is 2 + 2?";
     option: "3";
     option: "4" #;
     option: "5";
 }
 
-torf {
+trueorfalse {
     question: "The sky is green.";
     answer: false;
 }

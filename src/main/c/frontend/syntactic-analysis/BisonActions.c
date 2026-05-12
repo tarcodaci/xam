@@ -132,12 +132,12 @@ Item * ExerciseItemSemanticAction(ExerciseType type, void * node) {
 	exercise->type = type;
 	exercise->next = NULL;
 	switch (type) {
-		case EXERCISE_MC: exercise->mc = (McNode *) node; break;
-		case EXERCISE_BLANKS: exercise->blanks = (BlanksNode *) node; break;
-		case EXERCISE_DIRECT: exercise->direct = (DirectNode *) node; break;
-		case EXERCISE_CHOOSE_FROM: exercise->chooseFrom = (ChooseFromNode *) node; break;
+		case EXERCISE_MULTIPLECHOICE: exercise->multiplechoice = (MultiplechoiceNode *) node; break;
+		case EXERCISE_FILLBLANKS: exercise->fillblanks = (FillblanksNode *) node; break;
+		case EXERCISE_OPENQUESTION: exercise->openquestion = (OpenquestionNode *) node; break;
+		case EXERCISE_CHOOSEFROM: exercise->choosefrom = (ChoosefromNode *) node; break;
 		case EXERCISE_MATCH: exercise->match = (MatchNode *) node; break;
-		case EXERCISE_TORF: exercise->torf = (TorfNode *) node; break;
+		case EXERCISE_TRUEORFALSE: exercise->trueorfalse = (TrueorfalseNode *) node; break;
 		case EXERCISE_CHART: exercise->chart = (ChartNode *) node; break;
 		case EXERCISE_SET: exercise->set = (SetNode *) node; break;
 	}
@@ -150,22 +150,22 @@ Item * ExerciseItemSemanticAction(ExerciseType type, void * node) {
 
 /* ── mc ── */
 
-McNode * CreateMcNodeSemanticAction() {
+MultiplechoiceNode * CreateMultiplechoiceNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	McNode * node = calloc(1, sizeof(McNode));
+	MultiplechoiceNode * node = calloc(1, sizeof(MultiplechoiceNode));
 	node->score = -1;
 	return node;
 }
 
-McNode * McSetQuestionSemanticAction(McNode * node, char * question) {
+MultiplechoiceNode * MultiplechoiceSetQuestionSemanticAction(MultiplechoiceNode * node, char * question) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->question = question;
 	return node;
 }
 
-McNode * McAddOptionSemanticAction(McNode * node, char * value, int isCorrect) {
+MultiplechoiceNode * MultiplechoiceAddOptionSemanticAction(MultiplechoiceNode * node, char * value, int isCorrect) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	McOption * option = calloc(1, sizeof(McOption));
+	MultiplechoiceOption * option = calloc(1, sizeof(MultiplechoiceOption));
 	option->value = value;
 	option->is_correct = isCorrect;
 	option->next = NULL;
@@ -173,7 +173,7 @@ McNode * McAddOptionSemanticAction(McNode * node, char * value, int isCorrect) {
 	if (node->options == NULL) {
 		node->options = option;
 	} else {
-		McOption * current = node->options;
+		MultiplechoiceOption * current = node->options;
 		while (current->next != NULL) {
 			current = current->next;
 		}
@@ -182,14 +182,14 @@ McNode * McAddOptionSemanticAction(McNode * node, char * value, int isCorrect) {
 	return node;
 }
 
-McNode * McAddIntOptionSemanticAction(McNode * node, int value, int isCorrect) {
+MultiplechoiceNode * MultiplechoiceAddIntOptionSemanticAction(MultiplechoiceNode * node, int value, int isCorrect) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	char buf[32];
 	snprintf(buf, sizeof(buf), "%d", value);
-	return McAddOptionSemanticAction(node, strdup(buf), isCorrect);
+	return MultiplechoiceAddOptionSemanticAction(node, strdup(buf), isCorrect);
 }
 
-McNode * McSetScoreSemanticAction(McNode * node, int score) {
+MultiplechoiceNode * MultiplechoiceSetScoreSemanticAction(MultiplechoiceNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->score = score;
 	return node;
@@ -197,34 +197,34 @@ McNode * McSetScoreSemanticAction(McNode * node, int score) {
 
 /* ── torf ── */
 
-TorfNode * CreateTorfNodeSemanticAction() {
+TrueorfalseNode * CreateTrueorfalseNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	TorfNode * node = calloc(1, sizeof(TorfNode));
+	TrueorfalseNode * node = calloc(1, sizeof(TrueorfalseNode));
 	node->justify = -1;
 	node->answer = -1;
 	node->score = -1;
 	return node;
 }
 
-TorfNode * TorfSetQuestionSemanticAction(TorfNode * node, char * question) {
+TrueorfalseNode * TrueorfalseSetQuestionSemanticAction(TrueorfalseNode * node, char * question) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->question = question;
 	return node;
 }
 
-TorfNode * TorfSetJustifySemanticAction(TorfNode * node, int justify) {
+TrueorfalseNode * TrueorfalseSetJustifySemanticAction(TrueorfalseNode * node, int justify) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->justify = justify;
 	return node;
 }
 
-TorfNode * TorfSetAnswerSemanticAction(TorfNode * node, int answer) {
+TrueorfalseNode * TrueorfalseSetAnswerSemanticAction(TrueorfalseNode * node, int answer) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->answer = answer;
 	return node;
 }
 
-TorfNode * TorfSetScoreSemanticAction(TorfNode * node, int score) {
+TrueorfalseNode * TrueorfalseSetScoreSemanticAction(TrueorfalseNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->score = score;
 	return node;
@@ -232,33 +232,33 @@ TorfNode * TorfSetScoreSemanticAction(TorfNode * node, int score) {
 
 /* ── direct ── */
 
-DirectNode * CreateDirectNodeSemanticAction() {
+OpenquestionNode * CreateOpenquestionNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	DirectNode * node = calloc(1, sizeof(DirectNode));
+	OpenquestionNode * node = calloc(1, sizeof(OpenquestionNode));
 	node->lines = -1;
 	node->score = -1;
 	return node;
 }
 
-DirectNode * DirectSetQuestionSemanticAction(DirectNode * node, char * question) {
+OpenquestionNode * OpenquestionSetQuestionSemanticAction(OpenquestionNode * node, char * question) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->question = question;
 	return node;
 }
 
-DirectNode * DirectSetLinesSemanticAction(DirectNode * node, int lines) {
+OpenquestionNode * OpenquestionSetLinesSemanticAction(OpenquestionNode * node, int lines) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->lines = lines;
 	return node;
 }
 
-DirectNode * DirectSetAnswerSemanticAction(DirectNode * node, char * answer) {
+OpenquestionNode * OpenquestionSetAnswerSemanticAction(OpenquestionNode * node, char * answer) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->answer = answer;
 	return node;
 }
 
-DirectNode * DirectSetScoreSemanticAction(DirectNode * node, int score) {
+OpenquestionNode * OpenquestionSetScoreSemanticAction(OpenquestionNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->score = score;
 	return node;
@@ -266,20 +266,20 @@ DirectNode * DirectSetScoreSemanticAction(DirectNode * node, int score) {
 
 /* ── blanks ── */
 
-BlanksNode * CreateBlanksNodeSemanticAction() {
+FillblanksNode * CreateFillblanksNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	BlanksNode * node = calloc(1, sizeof(BlanksNode));
+	FillblanksNode * node = calloc(1, sizeof(FillblanksNode));
 	node->score = -1;
 	return node;
 }
 
-BlanksNode * BlanksSetQuestionSemanticAction(BlanksNode * node, char * question) {
+FillblanksNode * FillblanksSetQuestionSemanticAction(FillblanksNode * node, char * question) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->question = question;
 	return node;
 }
 
-BlanksNode * BlanksAddAnswerSemanticAction(BlanksNode * node, char * answer) {
+FillblanksNode * FillblanksAddAnswerSemanticAction(FillblanksNode * node, char * answer) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	StringList * entry = calloc(1, sizeof(StringList));
 	entry->value = answer;
@@ -296,7 +296,7 @@ BlanksNode * BlanksAddAnswerSemanticAction(BlanksNode * node, char * answer) {
 	return node;
 }
 
-BlanksNode * BlanksSetScoreSemanticAction(BlanksNode * node, int score) {
+FillblanksNode * FillblanksSetScoreSemanticAction(FillblanksNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->score = score;
 	return node;
@@ -348,45 +348,45 @@ IntList * AppendIntListSemanticAction(IntList * list, int value) {
 
 /* ── chooseFrom ── */
 
-ChooseFromNode * CreateChooseFromNodeSemanticAction() {
+ChoosefromNode * CreateChoosefromNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	ChooseFromNode * node = calloc(1, sizeof(ChooseFromNode));
+	ChoosefromNode * node = calloc(1, sizeof(ChoosefromNode));
 	node->score = -1;
 	node->shuffle = -1;
 	return node;
 }
 
-ChooseFromNode * ChooseFromSetTaskSemanticAction(ChooseFromNode * node, char * task) {
+ChoosefromNode * ChoosefromSetTaskSemanticAction(ChoosefromNode * node, char * task) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->task = task;
 	return node;
 }
 
-ChooseFromNode * ChooseFromSetOptionsSemanticAction(ChooseFromNode * node, StringList * options) {
+ChoosefromNode * ChoosefromSetOptionsSemanticAction(ChoosefromNode * node, StringList * options) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->options = options;
 	return node;
 }
 
-ChooseFromNode * ChooseFromSetTextSemanticAction(ChooseFromNode * node, char * text) {
+ChoosefromNode * ChoosefromSetTextSemanticAction(ChoosefromNode * node, char * text) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->text = text;
 	return node;
 }
 
-ChooseFromNode * ChooseFromSetAnswerSemanticAction(ChooseFromNode * node, IntList * answer) {
+ChoosefromNode * ChoosefromSetAnswerSemanticAction(ChoosefromNode * node, IntList * answer) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->answer = answer;
 	return node;
 }
 
-ChooseFromNode * ChooseFromSetScoreSemanticAction(ChooseFromNode * node, int score) {
+ChoosefromNode * ChoosefromSetScoreSemanticAction(ChoosefromNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->score = score;
 	return node;
 }
 
-ChooseFromNode * ChooseFromSetShuffleSemanticAction(ChooseFromNode * node, int shuffle) {
+ChoosefromNode * ChoosefromSetShuffleSemanticAction(ChoosefromNode * node, int shuffle) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	node->shuffle = shuffle;
 	return node;
@@ -520,23 +520,23 @@ SetNode * SetAddExerciseSemanticAction(SetNode * node, ExerciseType type, void *
 	exercise->next = NULL;
 
 	switch (type) {
-		case EXERCISE_MC:
-			exercise->mc = (McNode *) exerciseNode;
+		case EXERCISE_MULTIPLECHOICE:
+			exercise->multiplechoice = (MultiplechoiceNode *) exerciseNode;
 			break;
-		case EXERCISE_BLANKS:
-			exercise->blanks = (BlanksNode *) exerciseNode;
+		case EXERCISE_FILLBLANKS:
+			exercise->fillblanks = (FillblanksNode *) exerciseNode;
 			break;
-		case EXERCISE_DIRECT:
-			exercise->direct = (DirectNode *) exerciseNode;
+		case EXERCISE_OPENQUESTION:
+			exercise->openquestion = (OpenquestionNode *) exerciseNode;
 			break;
-		case EXERCISE_CHOOSE_FROM:
-			exercise->chooseFrom = (ChooseFromNode *) exerciseNode;
+		case EXERCISE_CHOOSEFROM:
+			exercise->choosefrom = (ChoosefromNode *) exerciseNode;
 			break;
 		case EXERCISE_MATCH:
 			exercise->match = (MatchNode *) exerciseNode;
 			break;
-		case EXERCISE_TORF:
-			exercise->torf = (TorfNode *) exerciseNode;
+		case EXERCISE_TRUEORFALSE:
+			exercise->trueorfalse = (TrueorfalseNode *) exerciseNode;
 			break;
 		case EXERCISE_CHART:
 			exercise->chart = (ChartNode *) exerciseNode;

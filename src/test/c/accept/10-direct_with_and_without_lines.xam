@@ -1,8 +1,8 @@
-direct {
+openquestion {
     question: "Dar la definición de conjunto numerable.";
     lines: 4;
 }
 
-direct {
+openquestion {
     question: "Demostrar que si X es infinito no numerable y A es numerable, entonces X − A es coordinable con X.";
 }

@@ -1,4 +1,4 @@
-mc {
+multiplechoice {
     question: "Primera pregunta del ejercicio.";
     question: "Segunda pregunta del ejercicio.";
     option: "A"#;

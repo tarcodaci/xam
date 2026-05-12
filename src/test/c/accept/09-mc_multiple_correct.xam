@@ -1,4 +1,4 @@
-mc {
+multiplechoice {
     question: "¿Cuáles de los siguientes son colores de la bandera argentina?";
     option: "Rojo";
     option: "Celeste"#;

@@ -64,44 +64,44 @@ struct Header {
 
 /* ── Exercises ── */
 
-typedef struct McOption McOption;
-typedef struct McNode McNode;
-typedef struct BlanksNode BlanksNode;
-typedef struct DirectNode DirectNode;
-typedef struct TorfNode TorfNode;
+typedef struct MultiplechoiceOption MultiplechoiceOption;
+typedef struct MultiplechoiceNode MultiplechoiceNode;
+typedef struct FillblanksNode FillblanksNode;
+typedef struct OpenquestionNode OpenquestionNode;
+typedef struct TrueorfalseNode TrueorfalseNode;
 typedef struct MatchPair MatchPair;
 typedef struct MatchNode MatchNode;
 typedef struct ChartCell ChartCell;
 typedef struct ChartNode ChartNode;
-typedef struct ChooseFromNode ChooseFromNode;
+typedef struct ChoosefromNode ChoosefromNode;
 typedef struct SetNode SetNode;
 
-struct McOption {
+struct MultiplechoiceOption {
 	char * value;
 	int is_correct;
-	McOption * next;
+	MultiplechoiceOption * next;
 };
 
-struct McNode {
+struct MultiplechoiceNode {
 	char * question;
-	McOption * options;
+	MultiplechoiceOption * options;
 	int score;
 };
 
-struct BlanksNode {
+struct FillblanksNode {
 	char * question;
 	StringList * answers;
 	int score;
 };
 
-struct DirectNode {
+struct OpenquestionNode {
 	char * question;
 	int lines;
 	char * answer;
 	int score;
 };
 
-struct TorfNode {
+struct TrueorfalseNode {
 	char * question;
 	int justify;
 	int answer;
@@ -136,7 +136,7 @@ struct ChartNode {
 	int score;
 };
 
-struct ChooseFromNode {
+struct ChoosefromNode {
 	char * task;
 	StringList * options;
 	char * text;
@@ -151,12 +151,12 @@ typedef struct SetNode SetNode;
 typedef struct SectionNode SectionNode;
 
 enum ExerciseType {
-	EXERCISE_MC,
-	EXERCISE_BLANKS,
-	EXERCISE_DIRECT,
-	EXERCISE_CHOOSE_FROM,
+	EXERCISE_MULTIPLECHOICE,
+	EXERCISE_FILLBLANKS,
+	EXERCISE_OPENQUESTION,
+	EXERCISE_CHOOSEFROM,
 	EXERCISE_MATCH,
-	EXERCISE_TORF,
+	EXERCISE_TRUEORFALSE,
 	EXERCISE_CHART,
 	EXERCISE_SET
 };
@@ -164,12 +164,12 @@ enum ExerciseType {
 struct Exercise {
 	ExerciseType type;
 	union {
-		McNode * mc;
-		BlanksNode * blanks;
-		DirectNode * direct;
-		ChooseFromNode * chooseFrom;
+		MultiplechoiceNode * multiplechoice;
+		FillblanksNode * fillblanks;
+		OpenquestionNode * openquestion;
+		ChoosefromNode * choosefrom;
 		MatchNode * match;
-		TorfNode * torf;
+		TrueorfalseNode * trueorfalse;
 		ChartNode * chart;
 		SetNode * set;
 	};
@@ -215,16 +215,16 @@ struct Program {
 void destroyStringList(StringList * list);
 void destroyIntList(IntList * list);
 void destroyHeader(Header * header);
-void destroyMcOption(McOption * option);
-void destroyMcNode(McNode * node);
-void destroyBlanksNode(BlanksNode * node);
-void destroyDirectNode(DirectNode * node);
-void destroyTorfNode(TorfNode * node);
+void destroyMultiplechoiceOption(MultiplechoiceOption * option);
+void destroyMultiplechoiceNode(MultiplechoiceNode * node);
+void destroyFillblanksNode(FillblanksNode * node);
+void destroyOpenquestionNode(OpenquestionNode * node);
+void destroyTrueorfalseNode(TrueorfalseNode * node);
 void destroyMatchPair(MatchPair * pair);
 void destroyMatchNode(MatchNode * node);
 void destroyChartCell(ChartCell * cell);
 void destroyChartNode(ChartNode * node);
-void destroyChooseFromNode(ChooseFromNode * node);
+void destroyChoosefromNode(ChoosefromNode * node);
 void destroyExercise(Exercise * exercise);
 void destroySetNode(SetNode * node);
 void destroyItem(Item * item);
