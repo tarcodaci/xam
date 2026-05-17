@@ -183,12 +183,21 @@ struct SetNode {
 	Exercise * exercises;
 };
 
+typedef struct ImageNode ImageNode;
+
+struct ImageNode {
+	char * path;
+	char * caption;
+	int width;
+};
+
 typedef enum ItemType ItemType;
 
 enum ItemType {
 	ITEM_EXERCISE,
 	ITEM_SECTION,
-	ITEM_TEXT
+	ITEM_TEXT,
+	ITEM_IMAGE
 };
 
 struct Item {
@@ -197,6 +206,7 @@ struct Item {
 		Exercise * exercise;
 		SectionNode * section;
 		char * text;
+		ImageNode * image;
 	};
 	Item * next;
 };
@@ -227,6 +237,7 @@ void destroyChartNode(ChartNode * node);
 void destroyChoosefromNode(ChoosefromNode * node);
 void destroyExercise(Exercise * exercise);
 void destroySetNode(SetNode * node);
+void destroyImageNode(ImageNode * node);
 void destroyItem(Item * item);
 void destroySectionNode(SectionNode * node);
 void destroyProgram(Program * program);
