@@ -613,3 +613,39 @@ SectionNode * SectionAddItemSemanticAction(SectionNode * node, Item * item) {
 
 	return node;
 }
+
+/* ── image ── */
+
+Item * ImageItemSemanticAction(ImageNode * image) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Item * item = calloc(1, sizeof(Item));
+	item->type = ITEM_IMAGE;
+	item->image = image;
+	item->next = NULL;
+	return item;
+}
+
+ImageNode * CreateImageNodeSemanticAction() {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	ImageNode * node = calloc(1, sizeof(ImageNode));
+	node->width = -1;
+	return node;
+}
+
+ImageNode * ImageSetPathSemanticAction(ImageNode * node, char * path) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->path = path;
+	return node;
+}
+
+ImageNode * ImageSetCaptionSemanticAction(ImageNode * node, char * caption) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->caption = caption;
+	return node;
+}
+
+ImageNode * ImageSetWidthSemanticAction(ImageNode * node, int width) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	node->width = width;
+	return node;
+}

@@ -40,6 +40,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	ChartNode * chartNode;
 	SetNode * setNode;
 	SectionNode * sectionNode;
+	ImageNode * imageNode;
 	StringList * stringList;
 	IntList * intList;
 	Program * program;
@@ -111,6 +112,11 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> SELECT
 %token <token> TEXT_KW
 
+%token <token> IMAGE
+%token <token> PATH
+%token <token> CAPTION
+%token <token> WIDTH
+
 %token <token> IGNORED
 %token <token> UNKNOWN
 
@@ -138,6 +144,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <setNode> set_props
 %type <sectionNode> section_block
 %type <sectionNode> section_props
+%type <imageNode> image_block
+%type <imageNode> image_props
 %type <stringList> string_list
 %type <stringList> string_items
 %type <intList> int_list
@@ -192,6 +200,7 @@ item: multiplechoice_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MULT
 	| set_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_SET, $1); }
 	| section_block						{ $$ = SectionItemSemanticAction($1); }
 	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
+	| image_block						{ $$ = ImageItemSemanticAction($1); }
 	;
 
 /* ── mc ── */
@@ -311,6 +320,17 @@ section_block: SECTION IDENTIFIER OPEN_BRACE section_props CLOSE_BRACE		{ $$ = S
 section_props: section_props SELECT COLON INTEGER SEMICOLON					{ $$ = SectionSetSelectSemanticAction($1, $4); }
 	| section_props item													{ $$ = SectionAddItemSemanticAction($1, $2); }
 	| %empty																{ $$ = CreateSectionNodeSemanticAction(); }
+	;
+
+/* ── image ── */
+
+image_block: IMAGE OPEN_BRACE image_props CLOSE_BRACE	{ $$ = $3; }
+	;
+
+image_props: image_props PATH COLON STRING SEMICOLON	{ $$ = ImageSetPathSemanticAction($1, $4); }
+	| image_props CAPTION COLON STRING SEMICOLON		{ $$ = ImageSetCaptionSemanticAction($1, $4); }
+	| image_props WIDTH COLON INTEGER SEMICOLON			{ $$ = ImageSetWidthSemanticAction($1, $4); }
+	| %empty											{ $$ = CreateImageNodeSemanticAction(); }
 	;
 
 /* ── lists ── */

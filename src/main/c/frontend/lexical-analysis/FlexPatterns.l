@@ -95,6 +95,11 @@ whitespace			[[:space:]]+
 "select"							{ return KeywordLexemeAction(SELECT); }
 "text"								{ return KeywordLexemeAction(TEXT_KW); }
 
+"image"								{ return KeywordLexemeAction(IMAGE); }
+"path"								{ return KeywordLexemeAction(PATH); }
+"caption"							{ return KeywordLexemeAction(CAPTION); }
+"width"								{ return KeywordLexemeAction(WIDTH); }
+
 "{"									{ return DelimiterLexemeAction(OPEN_BRACE); }
 "}"									{ return DelimiterLexemeAction(CLOSE_BRACE); }
 "["									{ return DelimiterLexemeAction(OPEN_BRACKET); }

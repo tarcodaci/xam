@@ -102,4 +102,11 @@ SectionNode * SectionSetNameSemanticAction(SectionNode * node, char * name);
 SectionNode * SectionSetSelectSemanticAction(SectionNode * node, int select);
 SectionNode * SectionAddItemSemanticAction(SectionNode * node, Item * item);
 
+/* ── image ── */
+Item * ImageItemSemanticAction(ImageNode * image);
+ImageNode * CreateImageNodeSemanticAction();
+ImageNode * ImageSetPathSemanticAction(ImageNode * node, char * path);
+ImageNode * ImageSetCaptionSemanticAction(ImageNode * node, char * caption);
+ImageNode * ImageSetWidthSemanticAction(ImageNode * node, int width);
+
 #endif
