@@ -1,4 +1,4 @@
-mc {
+multiplechoice {
     question: "¿Cuántos bits tiene un byte?";
     option: "4";
     option: "8"#;
@@ -6,7 +6,7 @@ mc {
 }
 text: "Nota: Recuerde que 1 byte = 8 bits en la mayoría de los sistemas modernos.";
 
-torf {
+trueorfalse {
     question: "Todo conjunto infinito es coordinable con N.";
     answer: false;
 }

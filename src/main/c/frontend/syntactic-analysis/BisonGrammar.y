@@ -31,11 +31,11 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	Header * header;
 	HeaderProperty * headerProperty;
 	Item * item;
-	McNode * mcNode;
-	TorfNode * torfNode;
-	DirectNode * directNode;
-	BlanksNode * blanksNode;
-	ChooseFromNode * chooseFromNode;
+	MultiplechoiceNode * multiplechoiceNode;
+	TrueorfalseNode * trueorfalseNode;
+	OpenquestionNode * openquestionNode;
+	FillblanksNode * fillblanksNode;
+	ChoosefromNode * choosefromNode;
 	MatchNode * matchNode;
 	ChartNode * chartNode;
 	SetNode * setNode;
@@ -75,12 +75,12 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> SEMICOLON
 
 %token <token> HEADER
-%token <token> MC
-%token <token> BLANKS
-%token <token> DIRECT
-%token <token> CHOOSE_FROM
+%token <token> MULTIPLECHOICE
+%token <token> FILLBLANKS
+%token <token> OPENQUESTION
+%token <token> CHOOSEFROM
 %token <token> MATCH
-%token <token> TORF
+%token <token> TRUEORFALSE
 %token <token> CHART
 %token <token> SET
 %token <token> SECTION
@@ -120,16 +120,16 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <headerProperty> header_prop
 %type <item> items
 %type <item> item
-%type <mcNode> mc_block
-%type <mcNode> mc_props
-%type <torfNode> torf_block
-%type <torfNode> torf_props
-%type <directNode> direct_block
-%type <directNode> direct_props
-%type <blanksNode> blanks_block
-%type <blanksNode> blanks_props
-%type <chooseFromNode> choose_from_block
-%type <chooseFromNode> choose_from_props
+%type <multiplechoiceNode> multiplechoice_block
+%type <multiplechoiceNode> multiplechoice_props
+%type <trueorfalseNode> trueorfalse_block
+%type <trueorfalseNode> trueorfalse_props
+%type <openquestionNode> openquestion_block
+%type <openquestionNode> openquestion_props
+%type <fillblanksNode> fillblanks_block
+%type <fillblanksNode> fillblanks_props
+%type <choosefromNode> choosefrom_block
+%type <choosefromNode> choosefrom_props
 %type <matchNode> match_block
 %type <matchNode> match_props
 %type <chartNode> chart_block
@@ -182,11 +182,11 @@ items: items item						{ $$ = AppendItemSemanticAction($1, $2); }
 	| %empty							{ $$ = NULL; }
 	;
 
-item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
-	| torf_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_TORF, $1); }
-	| direct_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_DIRECT, $1); }
-	| blanks_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_BLANKS, $1); }
-	| choose_from_block					{ $$ = ExerciseItemSemanticAction(EXERCISE_CHOOSE_FROM, $1); }
+item: multiplechoice_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MULTIPLECHOICE, $1); }
+	| trueorfalse_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_TRUEORFALSE, $1); }
+	| openquestion_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_OPENQUESTION, $1); }
+	| fillblanks_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_FILLBLANKS, $1); }
+	| choosefrom_block					{ $$ = ExerciseItemSemanticAction(EXERCISE_CHOOSEFROM, $1); }
 	| match_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_MATCH, $1); }
 	| chart_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_CHART, $1); }
 	| set_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_SET, $1); }
@@ -196,53 +196,53 @@ item: mc_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MC, $1); }
 
 /* ── mc ── */
 
-mc_block: MC OPEN_BRACE mc_props CLOSE_BRACE			{ $$ = $3; }
+multiplechoice_block: MULTIPLECHOICE OPEN_BRACE multiplechoice_props CLOSE_BRACE			{ $$ = $3; }
 	;
 
-mc_props: mc_props QUESTION COLON STRING SEMICOLON		{ $$ = McSetQuestionSemanticAction($1, $4); }
-	| mc_props OPTION COLON STRING SEMICOLON			{ $$ = McAddOptionSemanticAction($1, $4, 0); }
-	| mc_props OPTION COLON STRING HASH SEMICOLON		{ $$ = McAddOptionSemanticAction($1, $4, 1); }
-	| mc_props OPTION COLON INTEGER SEMICOLON			{ $$ = McAddIntOptionSemanticAction($1, $4, 0); }
-	| mc_props OPTION COLON INTEGER HASH SEMICOLON		{ $$ = McAddIntOptionSemanticAction($1, $4, 1); }
-	| mc_props SCORE COLON INTEGER SEMICOLON			{ $$ = McSetScoreSemanticAction($1, $4); }
-	| %empty											{ $$ = CreateMcNodeSemanticAction(); }
+multiplechoice_props: multiplechoice_props QUESTION COLON STRING SEMICOLON		{ $$ = MultiplechoiceSetQuestionSemanticAction($1, $4); }
+	| multiplechoice_props OPTION COLON STRING SEMICOLON			{ $$ = MultiplechoiceAddOptionSemanticAction($1, $4, 0); }
+	| multiplechoice_props OPTION COLON STRING HASH SEMICOLON		{ $$ = MultiplechoiceAddOptionSemanticAction($1, $4, 1); }
+	| multiplechoice_props OPTION COLON INTEGER SEMICOLON			{ $$ = MultiplechoiceAddIntOptionSemanticAction($1, $4, 0); }
+	| multiplechoice_props OPTION COLON INTEGER HASH SEMICOLON		{ $$ = MultiplechoiceAddIntOptionSemanticAction($1, $4, 1); }
+	| multiplechoice_props SCORE COLON INTEGER SEMICOLON			{ $$ = MultiplechoiceSetScoreSemanticAction($1, $4); }
+	| %empty											{ $$ = CreateMultiplechoiceNodeSemanticAction(); }
 	;
 
 /* ── torf ── */
 
-torf_block: TORF OPEN_BRACE torf_props CLOSE_BRACE		{ $$ = $3; }
+trueorfalse_block: TRUEORFALSE OPEN_BRACE trueorfalse_props CLOSE_BRACE		{ $$ = $3; }
 	;
 
-torf_props: torf_props QUESTION COLON STRING SEMICOLON	{ $$ = TorfSetQuestionSemanticAction($1, $4); }
-	| torf_props JUSTIFY COLON TRUE SEMICOLON			{ $$ = TorfSetJustifySemanticAction($1, 1); }
-	| torf_props JUSTIFY COLON FALSE SEMICOLON			{ $$ = TorfSetJustifySemanticAction($1, 0); }
-	| torf_props ANSWER COLON TRUE SEMICOLON			{ $$ = TorfSetAnswerSemanticAction($1, 1); }
-	| torf_props ANSWER COLON FALSE SEMICOLON			{ $$ = TorfSetAnswerSemanticAction($1, 0); }
-	| torf_props SCORE COLON INTEGER SEMICOLON			{ $$ = TorfSetScoreSemanticAction($1, $4); }
-	| %empty											{ $$ = CreateTorfNodeSemanticAction(); }
+trueorfalse_props: trueorfalse_props QUESTION COLON STRING SEMICOLON	{ $$ = TrueorfalseSetQuestionSemanticAction($1, $4); }
+	| trueorfalse_props JUSTIFY COLON TRUE SEMICOLON			{ $$ = TrueorfalseSetJustifySemanticAction($1, 1); }
+	| trueorfalse_props JUSTIFY COLON FALSE SEMICOLON			{ $$ = TrueorfalseSetJustifySemanticAction($1, 0); }
+	| trueorfalse_props ANSWER COLON TRUE SEMICOLON			{ $$ = TrueorfalseSetAnswerSemanticAction($1, 1); }
+	| trueorfalse_props ANSWER COLON FALSE SEMICOLON			{ $$ = TrueorfalseSetAnswerSemanticAction($1, 0); }
+	| trueorfalse_props SCORE COLON INTEGER SEMICOLON			{ $$ = TrueorfalseSetScoreSemanticAction($1, $4); }
+	| %empty											{ $$ = CreateTrueorfalseNodeSemanticAction(); }
 	;
 
 /* ── direct ── */
 
-direct_block: DIRECT OPEN_BRACE direct_props CLOSE_BRACE	{ $$ = $3; }
+openquestion_block: OPENQUESTION OPEN_BRACE openquestion_props CLOSE_BRACE	{ $$ = $3; }
 	;
 
-direct_props: direct_props QUESTION COLON STRING SEMICOLON	{ $$ = DirectSetQuestionSemanticAction($1, $4); }
-	| direct_props LINES COLON INTEGER SEMICOLON			{ $$ = DirectSetLinesSemanticAction($1, $4); }
-	| direct_props ANSWER COLON STRING SEMICOLON			{ $$ = DirectSetAnswerSemanticAction($1, $4); }
-	| direct_props SCORE COLON INTEGER SEMICOLON			{ $$ = DirectSetScoreSemanticAction($1, $4); }
-	| %empty												{ $$ = CreateDirectNodeSemanticAction(); }
+openquestion_props: openquestion_props QUESTION COLON STRING SEMICOLON	{ $$ = OpenquestionSetQuestionSemanticAction($1, $4); }
+	| openquestion_props LINES COLON INTEGER SEMICOLON			{ $$ = OpenquestionSetLinesSemanticAction($1, $4); }
+	| openquestion_props ANSWER COLON STRING SEMICOLON			{ $$ = OpenquestionSetAnswerSemanticAction($1, $4); }
+	| openquestion_props SCORE COLON INTEGER SEMICOLON			{ $$ = OpenquestionSetScoreSemanticAction($1, $4); }
+	| %empty												{ $$ = CreateOpenquestionNodeSemanticAction(); }
 	;
 
 /* ── blanks ── */
 
-blanks_block: BLANKS OPEN_BRACE blanks_props CLOSE_BRACE	{ $$ = $3; }
+fillblanks_block: FILLBLANKS OPEN_BRACE fillblanks_props CLOSE_BRACE	{ $$ = $3; }
 	;
 
-blanks_props: blanks_props QUESTION COLON STRING SEMICOLON	{ $$ = BlanksSetQuestionSemanticAction($1, $4); }
-	| blanks_props ANSWER COLON STRING SEMICOLON			{ $$ = BlanksAddAnswerSemanticAction($1, $4); }
-	| blanks_props SCORE COLON INTEGER SEMICOLON			{ $$ = BlanksSetScoreSemanticAction($1, $4); }
-	| %empty												{ $$ = CreateBlanksNodeSemanticAction(); }
+fillblanks_props: fillblanks_props QUESTION COLON STRING SEMICOLON	{ $$ = FillblanksSetQuestionSemanticAction($1, $4); }
+	| fillblanks_props ANSWER COLON STRING SEMICOLON			{ $$ = FillblanksAddAnswerSemanticAction($1, $4); }
+	| fillblanks_props SCORE COLON INTEGER SEMICOLON			{ $$ = FillblanksSetScoreSemanticAction($1, $4); }
+	| %empty												{ $$ = CreateFillblanksNodeSemanticAction(); }
 	;
 
 /* ── match ── */
@@ -271,17 +271,17 @@ chart_props: chart_props TASK COLON STRING SEMICOLON												{ $$ = ChartSetT
 
 /* ── chooseFrom ── */
 
-choose_from_block: CHOOSE_FROM OPEN_BRACE choose_from_props CLOSE_BRACE		{ $$ = $3; }
+choosefrom_block: CHOOSEFROM OPEN_BRACE choosefrom_props CLOSE_BRACE		{ $$ = $3; }
 	;
 
-choose_from_props: choose_from_props TASK COLON STRING SEMICOLON			{ $$ = ChooseFromSetTaskSemanticAction($1, $4); }
-	| choose_from_props OPTIONS COLON string_list SEMICOLON					{ $$ = ChooseFromSetOptionsSemanticAction($1, $4); }
-	| choose_from_props TEXT_KW COLON STRING SEMICOLON						{ $$ = ChooseFromSetTextSemanticAction($1, $4); }
-	| choose_from_props ANSWER COLON int_list SEMICOLON						{ $$ = ChooseFromSetAnswerSemanticAction($1, $4); }
-	| choose_from_props SCORE COLON INTEGER SEMICOLON						{ $$ = ChooseFromSetScoreSemanticAction($1, $4); }
-	| choose_from_props SHUFFLE COLON TRUE SEMICOLON						{ $$ = ChooseFromSetShuffleSemanticAction($1, 1); }
-	| choose_from_props SHUFFLE COLON FALSE SEMICOLON						{ $$ = ChooseFromSetShuffleSemanticAction($1, 0); }
-	| %empty																{ $$ = CreateChooseFromNodeSemanticAction(); }
+choosefrom_props: choosefrom_props TASK COLON STRING SEMICOLON			{ $$ = ChoosefromSetTaskSemanticAction($1, $4); }
+	| choosefrom_props OPTIONS COLON string_list SEMICOLON					{ $$ = ChoosefromSetOptionsSemanticAction($1, $4); }
+	| choosefrom_props TEXT_KW COLON STRING SEMICOLON						{ $$ = ChoosefromSetTextSemanticAction($1, $4); }
+	| choosefrom_props ANSWER COLON int_list SEMICOLON						{ $$ = ChoosefromSetAnswerSemanticAction($1, $4); }
+	| choosefrom_props SCORE COLON INTEGER SEMICOLON						{ $$ = ChoosefromSetScoreSemanticAction($1, $4); }
+	| choosefrom_props SHUFFLE COLON TRUE SEMICOLON						{ $$ = ChoosefromSetShuffleSemanticAction($1, 1); }
+	| choosefrom_props SHUFFLE COLON FALSE SEMICOLON						{ $$ = ChoosefromSetShuffleSemanticAction($1, 0); }
+	| %empty																{ $$ = CreateChoosefromNodeSemanticAction(); }
 	;
 
 /* ── set ── */
@@ -293,11 +293,11 @@ set_props: set_props TEXT_KW COLON STRING SEMICOLON							{ $$ = SetSetTextSeman
 	| set_props SCORE COLON INTEGER SEMICOLON								{ $$ = SetSetScoreSemanticAction($1, $4); }
 	| set_props SHUFFLE COLON TRUE SEMICOLON								{ $$ = SetSetShuffleSemanticAction($1, 1); }
 	| set_props SHUFFLE COLON FALSE SEMICOLON								{ $$ = SetSetShuffleSemanticAction($1, 0); }
-	| set_props mc_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_MC, $2); }
-	| set_props torf_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_TORF, $2); }
-	| set_props direct_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_DIRECT, $2); }
-	| set_props blanks_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_BLANKS, $2); }
-	| set_props choose_from_block											{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHOOSE_FROM, $2); }
+	| set_props multiplechoice_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_MULTIPLECHOICE, $2); }
+	| set_props trueorfalse_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_TRUEORFALSE, $2); }
+	| set_props openquestion_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_OPENQUESTION, $2); }
+	| set_props fillblanks_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_FILLBLANKS, $2); }
+	| set_props choosefrom_block											{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHOOSEFROM, $2); }
 	| set_props match_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_MATCH, $2); }
 	| set_props chart_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHART, $2); }
 	| %empty																{ $$ = CreateSetNodeSemanticAction(); }

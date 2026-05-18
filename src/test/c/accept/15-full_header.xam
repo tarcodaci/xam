@@ -11,7 +11,7 @@ header {
     instructions: "Justificar todas las respuestas.";
 }
 
-mc {
+multiplechoice {
     score: 10;
     question: "Pregunta de ejemplo";
     option: "A" #;

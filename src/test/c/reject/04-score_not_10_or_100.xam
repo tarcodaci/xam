@@ -3,7 +3,7 @@ header{
     score_grid: true;
 }
 
-mc {
+multiplechoice {
     score: 7;
     question: "¿Cuántos bits tiene un byte?";
     option: "4";

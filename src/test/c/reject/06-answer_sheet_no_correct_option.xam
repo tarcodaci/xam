@@ -3,6 +3,6 @@ header{
     answer_sheet: true;
 }
 
-blanks {
+fillblanks {
     question: "El lenguaje de programación _ es de tipado _ y hace uso de _.";
 }

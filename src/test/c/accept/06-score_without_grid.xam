@@ -3,7 +3,7 @@ header{
     subject: "Lógica Computacional";
 }
 
-mc {
+multiplechoice {
     score: 50;
     question: "¿Cuántos bits tiene un byte?";
     option: "4";
@@ -11,7 +11,7 @@ mc {
     option: "16";
 }
 
-torf {
+trueorfalse {
     score: 50;
     question: "Todo conjunto infinito es coordinable con N.";
     answer: false;

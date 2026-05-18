@@ -33,31 +33,31 @@ Header * CreateHeaderSemanticAction(HeaderProperty * firstProp);
 Header * AddHeaderPropertySemanticAction(Header * header, HeaderProperty * prop);
 
 /* ── mc ── */
-McNode * CreateMcNodeSemanticAction();
-McNode * McSetQuestionSemanticAction(McNode * node, char * question);
-McNode * McAddOptionSemanticAction(McNode * node, char * value, int isCorrect);
-McNode * McAddIntOptionSemanticAction(McNode * node, int value, int isCorrect);
-McNode * McSetScoreSemanticAction(McNode * node, int score);
+MultiplechoiceNode * CreateMultiplechoiceNodeSemanticAction();
+MultiplechoiceNode * MultiplechoiceSetQuestionSemanticAction(MultiplechoiceNode * node, char * question);
+MultiplechoiceNode * MultiplechoiceAddOptionSemanticAction(MultiplechoiceNode * node, char * value, int isCorrect);
+MultiplechoiceNode * MultiplechoiceAddIntOptionSemanticAction(MultiplechoiceNode * node, int value, int isCorrect);
+MultiplechoiceNode * MultiplechoiceSetScoreSemanticAction(MultiplechoiceNode * node, int score);
 
 /* ── torf ── */
-TorfNode * CreateTorfNodeSemanticAction();
-TorfNode * TorfSetQuestionSemanticAction(TorfNode * node, char * question);
-TorfNode * TorfSetJustifySemanticAction(TorfNode * node, int justify);
-TorfNode * TorfSetAnswerSemanticAction(TorfNode * node, int answer);
-TorfNode * TorfSetScoreSemanticAction(TorfNode * node, int score);
+TrueorfalseNode * CreateTrueorfalseNodeSemanticAction();
+TrueorfalseNode * TrueorfalseSetQuestionSemanticAction(TrueorfalseNode * node, char * question);
+TrueorfalseNode * TrueorfalseSetJustifySemanticAction(TrueorfalseNode * node, int justify);
+TrueorfalseNode * TrueorfalseSetAnswerSemanticAction(TrueorfalseNode * node, int answer);
+TrueorfalseNode * TrueorfalseSetScoreSemanticAction(TrueorfalseNode * node, int score);
 
 /* ── direct ── */
-DirectNode * CreateDirectNodeSemanticAction();
-DirectNode * DirectSetQuestionSemanticAction(DirectNode * node, char * question);
-DirectNode * DirectSetLinesSemanticAction(DirectNode * node, int lines);
-DirectNode * DirectSetAnswerSemanticAction(DirectNode * node, char * answer);
-DirectNode * DirectSetScoreSemanticAction(DirectNode * node, int score);
+OpenquestionNode * CreateOpenquestionNodeSemanticAction();
+OpenquestionNode * OpenquestionSetQuestionSemanticAction(OpenquestionNode * node, char * question);
+OpenquestionNode * OpenquestionSetLinesSemanticAction(OpenquestionNode * node, int lines);
+OpenquestionNode * OpenquestionSetAnswerSemanticAction(OpenquestionNode * node, char * answer);
+OpenquestionNode * OpenquestionSetScoreSemanticAction(OpenquestionNode * node, int score);
 
 /* ── blanks ── */
-BlanksNode * CreateBlanksNodeSemanticAction();
-BlanksNode * BlanksSetQuestionSemanticAction(BlanksNode * node, char * question);
-BlanksNode * BlanksAddAnswerSemanticAction(BlanksNode * node, char * answer);
-BlanksNode * BlanksSetScoreSemanticAction(BlanksNode * node, int score);
+FillblanksNode * CreateFillblanksNodeSemanticAction();
+FillblanksNode * FillblanksSetQuestionSemanticAction(FillblanksNode * node, char * question);
+FillblanksNode * FillblanksAddAnswerSemanticAction(FillblanksNode * node, char * answer);
+FillblanksNode * FillblanksSetScoreSemanticAction(FillblanksNode * node, int score);
 
 /* ── lists ── */
 StringList * CreateStringListSemanticAction(char * value);
@@ -66,13 +66,13 @@ IntList * CreateIntListSemanticAction(int value);
 IntList * AppendIntListSemanticAction(IntList * list, int value);
 
 /* ── chooseFrom ── */
-ChooseFromNode * CreateChooseFromNodeSemanticAction();
-ChooseFromNode * ChooseFromSetTaskSemanticAction(ChooseFromNode * node, char * task);
-ChooseFromNode * ChooseFromSetOptionsSemanticAction(ChooseFromNode * node, StringList * options);
-ChooseFromNode * ChooseFromSetTextSemanticAction(ChooseFromNode * node, char * text);
-ChooseFromNode * ChooseFromSetAnswerSemanticAction(ChooseFromNode * node, IntList * answer);
-ChooseFromNode * ChooseFromSetScoreSemanticAction(ChooseFromNode * node, int score);
-ChooseFromNode * ChooseFromSetShuffleSemanticAction(ChooseFromNode * node, int shuffle);
+ChoosefromNode * CreateChoosefromNodeSemanticAction();
+ChoosefromNode * ChoosefromSetTaskSemanticAction(ChoosefromNode * node, char * task);
+ChoosefromNode * ChoosefromSetOptionsSemanticAction(ChoosefromNode * node, StringList * options);
+ChoosefromNode * ChoosefromSetTextSemanticAction(ChoosefromNode * node, char * text);
+ChoosefromNode * ChoosefromSetAnswerSemanticAction(ChoosefromNode * node, IntList * answer);
+ChoosefromNode * ChoosefromSetScoreSemanticAction(ChoosefromNode * node, int score);
+ChoosefromNode * ChoosefromSetShuffleSemanticAction(ChoosefromNode * node, int shuffle);
 
 /* ── match ── */
 MatchNode * CreateMatchNodeSemanticAction();

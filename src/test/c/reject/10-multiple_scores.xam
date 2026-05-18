@@ -1,4 +1,4 @@
-mc {
+multiplechoice {
     score: 5;
     score: 3;
     question: "¿Cuántos bits tiene un byte?";

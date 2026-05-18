@@ -3,7 +3,7 @@ header{
     answer_sheet: true;
 }
 
-mc {
+multiplechoice {
     question: "¿Cuántos bits tiene un byte?";
     option: "4";
     option: "8";

@@ -1,4 +1,4 @@
-mc {
+multiplechoice {
     score: 10;
     option: "4";
     option: "8"#;

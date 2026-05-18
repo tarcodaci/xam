@@ -59,26 +59,26 @@ void destroyHeader(Header * header) {
 	}
 }
 
-void destroyMcOption(McOption * option) {
+void destroyMultiplechoiceOption(MultiplechoiceOption * option) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	while (option != NULL) {
-		McOption * next = option->next;
+		MultiplechoiceOption * next = option->next;
 		free(option->value);
 		free(option);
 		option = next;
 	}
 }
 
-void destroyMcNode(McNode * node) {
+void destroyMultiplechoiceNode(MultiplechoiceNode * node) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (node != NULL) {
 		free(node->question);
-		destroyMcOption(node->options);
+		destroyMultiplechoiceOption(node->options);
 		free(node);
 	}
 }
 
-void destroyBlanksNode(BlanksNode * node) {
+void destroyFillblanksNode(FillblanksNode * node) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (node != NULL) {
 		free(node->question);
@@ -87,7 +87,7 @@ void destroyBlanksNode(BlanksNode * node) {
 	}
 }
 
-void destroyDirectNode(DirectNode * node) {
+void destroyOpenquestionNode(OpenquestionNode * node) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (node != NULL) {
 		free(node->question);
@@ -96,7 +96,7 @@ void destroyDirectNode(DirectNode * node) {
 	}
 }
 
-void destroyTorfNode(TorfNode * node) {
+void destroyTrueorfalseNode(TrueorfalseNode * node) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (node != NULL) {
 		free(node->question);
@@ -144,7 +144,7 @@ void destroyChartNode(ChartNode * node) {
 	}
 }
 
-void destroyChooseFromNode(ChooseFromNode * node) {
+void destroyChoosefromNode(ChoosefromNode * node) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (node != NULL) {
 		free(node->task);
@@ -160,12 +160,12 @@ void destroyExercise(Exercise * exercise) {
 	while (exercise != NULL) {
 		Exercise * next = exercise->next;
 		switch (exercise->type) {
-			case EXERCISE_MC: destroyMcNode(exercise->mc); break;
-			case EXERCISE_BLANKS: destroyBlanksNode(exercise->blanks); break;
-			case EXERCISE_DIRECT: destroyDirectNode(exercise->direct); break;
-			case EXERCISE_CHOOSE_FROM: destroyChooseFromNode(exercise->chooseFrom); break;
+			case EXERCISE_MULTIPLECHOICE: destroyMultiplechoiceNode(exercise->multiplechoice); break;
+			case EXERCISE_FILLBLANKS: destroyFillblanksNode(exercise->fillblanks); break;
+			case EXERCISE_OPENQUESTION: destroyOpenquestionNode(exercise->openquestion); break;
+			case EXERCISE_CHOOSEFROM: destroyChoosefromNode(exercise->choosefrom); break;
 			case EXERCISE_MATCH: destroyMatchNode(exercise->match); break;
-			case EXERCISE_TORF: destroyTorfNode(exercise->torf); break;
+			case EXERCISE_TRUEORFALSE: destroyTrueorfalseNode(exercise->trueorfalse); break;
 			case EXERCISE_CHART: destroyChartNode(exercise->chart); break;
 			case EXERCISE_SET: destroySetNode(exercise->set); break;
 		}

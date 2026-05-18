@@ -59,12 +59,12 @@ whitespace			[[:space:]]+
 %}
 
 "header"							{ return KeywordLexemeAction(HEADER); }
-"mc"								{ return KeywordLexemeAction(MC); }
-"blanks"							{ return KeywordLexemeAction(BLANKS); }
-"direct"							{ return KeywordLexemeAction(DIRECT); }
-"chooseFrom"						{ return KeywordLexemeAction(CHOOSE_FROM); }
+"multiplechoice"								{ return KeywordLexemeAction(MULTIPLECHOICE); }
+"fillblanks"							{ return KeywordLexemeAction(FILLBLANKS); }
+"openquestion"							{ return KeywordLexemeAction(OPENQUESTION); }
+"choosefrom"						{ return KeywordLexemeAction(CHOOSEFROM); }
 "match"								{ return KeywordLexemeAction(MATCH); }
-"torf"								{ return KeywordLexemeAction(TORF); }
+"trueorfalse"								{ return KeywordLexemeAction(TRUEORFALSE); }
 "chart"								{ return KeywordLexemeAction(CHART); }
 "set"								{ return KeywordLexemeAction(SET); }
 "section"							{ return KeywordLexemeAction(SECTION); }

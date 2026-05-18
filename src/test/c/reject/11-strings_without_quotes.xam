@@ -1,4 +1,4 @@
-mc {
+multiplechoice {
     question: Pregunta sin comillas;
     option: "A"#;
     option: "B";
