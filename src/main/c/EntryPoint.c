@@ -1,4 +1,5 @@
 #include "backend/code-generation/Generator.h"
+#include "backend/domain-specific/SemanticAnalyzer.h"
 #include "frontend/Frontend.h"
 #include "frontend/lexical-analysis/FlexActions.h"
 #include "frontend/syntactic-analysis/BisonActions.h"
@@ -26,16 +27,24 @@
 		initializeFlexActionsModule(lexicalAnalyzer),
 		initializeBisonActionsModule(&compilerState),
 		initializeFrontendModule(lexicalAnalyzer),
+		initializeSemanticAnalyzerModule(),
 		initializeGeneratorModule()
 	};
 	CompilationStatus compilationStatus = executeSyntacticAnalysis();
 	Program * program = compilerState.abstractSyntaxtTree;
 	if (compilationStatus == SUCCEEDED) {
-		// ----------------------------------------------------------------------------------------
-		// Beginning of the Backend... ------------------------------------------------------------
-		executeGenerator(&compilerState);
-		// ...end of the Backend. -----------------------------------------------------------------
-		// ----------------------------------------------------------------------------------------
+		SemanticError * errors = validateProgram(program);
+		if (errors != NULL) {
+			SemanticError * current = errors;
+			while (current != NULL) {
+				logError(logger, "Semantic error: %s", current->message);
+				current = current->next;
+			}
+			destroySemanticErrors(errors);
+			compilationStatus = FAILED;
+		} else {
+			executeGenerator(&compilerState);
+		}
 	}
 	else {
 		logError(logger, "The syntactic-analysis phase rejects the input program.");
