@@ -40,6 +40,40 @@ static SemanticError * _appendError(SemanticError * list, SemanticError * error)
 	return list;
 }
 
+static int _countOptions(MultiplechoiceOption * options) {
+	int count = 0;
+	while (options != NULL) {
+		count++;
+		options = options->next;
+	}
+	return count;
+}
+
+static SemanticError * _validateExercise(Exercise * exercise) {
+	switch (exercise->type) {
+		case EXERCISE_MULTIPLECHOICE:
+			if (_countOptions(exercise->multiplechoice->options) < 2) {
+				return _createError("multiplechoice: must have at least 2 options.");
+			}
+			return NULL;
+		default:
+			return NULL;
+	}
+}
+
+static SemanticError * _validateItems(Item * items) {
+	SemanticError * errors = NULL;
+	while (items != NULL) {
+		if (items->type == ITEM_EXERCISE) {
+			errors = _appendError(errors, _validateExercise(items->exercise));
+		} else if (items->type == ITEM_SECTION) {
+			errors = _appendError(errors, _validateItems(items->section->items));
+		}
+		items = items->next;
+	}
+	return errors;
+}
+
 /* PUBLIC FUNCTIONS */
 
 SemanticError * validateProgram(Program * program) {
@@ -49,6 +83,8 @@ SemanticError * validateProgram(Program * program) {
 	if (program->header != NULL && program->header->title == NULL) {
 		errors = _appendError(errors, _createError("header: 'title' property is mandatory."));
 	}
+
+	errors = _appendError(errors, _validateItems(program->items));
 
 	return errors;
 }
