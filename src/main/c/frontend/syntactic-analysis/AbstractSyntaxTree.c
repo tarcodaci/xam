@@ -183,6 +183,15 @@ void destroySetNode(SetNode * node) {
 	}
 }
 
+void destroyImageNode(ImageNode * node) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (node != NULL) {
+		free(node->path);
+		free(node->caption);
+		free(node);
+	}
+}
+
 void destroyItem(Item * item) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	while (item != NULL) {
@@ -191,6 +200,7 @@ void destroyItem(Item * item) {
 			case ITEM_EXERCISE: destroyExercise(item->exercise); break;
 			case ITEM_SECTION: destroySectionNode(item->section); break;
 			case ITEM_TEXT: free(item->text); break;
+			case ITEM_IMAGE: destroyImageNode(item->image); break;
 		}
 		free(item);
 		item = next;

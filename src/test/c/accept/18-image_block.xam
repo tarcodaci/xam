@@ -1,0 +1,20 @@
+header {
+    title: "Examen con imagen";
+}
+
+multiplechoice {
+    question: "Observar la figura y responder.";
+    option: "A";
+    option: "B" #;
+}
+
+image {
+    path: "figures/automata.png";
+    caption: "Automata M del ejercicio 3";
+    width: 80;
+}
+
+openquestion {
+    question: "Describir el automata de la figura.";
+    lines: 5;
+}
