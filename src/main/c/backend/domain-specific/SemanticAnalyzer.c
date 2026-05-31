@@ -79,12 +79,18 @@ static int _countUnderscores(const char * str) {
 static SemanticError * _validateExercise(Exercise * exercise) {
 	switch (exercise->type) {
 		case EXERCISE_MULTIPLECHOICE:
+			if (exercise->multiplechoice->question == NULL) {
+				return _createError("multiplechoice: 'question' property is mandatory.");
+			}
 			if (_countOptions(exercise->multiplechoice->options) < 2) {
 				return _createError("multiplechoice: must have at least 2 options.");
 			}
 			return NULL;
 		case EXERCISE_FILLBLANKS:
-			if (exercise->fillblanks->question != NULL && _countUnderscores(exercise->fillblanks->question) == 0) {
+			if (exercise->fillblanks->question == NULL) {
+				return _createError("fillblanks: 'question' property is mandatory.");
+			}
+			if (_countUnderscores(exercise->fillblanks->question) == 0) {
 				return _createError("fillblanks: 'question' must contain at least one '_'.");
 			}
 			return NULL;
@@ -99,6 +105,16 @@ static SemanticError * _validateExercise(Exercise * exercise) {
 			}
 			return NULL;
 		}
+		case EXERCISE_TRUEORFALSE:
+			if (exercise->trueorfalse->question == NULL) {
+				return _createError("trueorfalse: 'question' property is mandatory.");
+			}
+			return NULL;
+		case EXERCISE_OPENQUESTION:
+			if (exercise->openquestion->question == NULL) {
+				return _createError("openquestion: 'question' property is mandatory.");
+			}
+			return NULL;
 		default:
 			return NULL;
 	}
