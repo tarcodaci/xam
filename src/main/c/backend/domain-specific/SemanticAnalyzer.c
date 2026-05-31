@@ -233,6 +233,19 @@ SemanticError * validateProgram(Program * program) {
 
 	if (program->header != NULL && program->header->score_grid == 1) {
 		errors = _appendError(errors, _validateScoreGrid(program->items));
+		/* Score total must be 10 or 100. */
+		int total = 0;
+		Item * it = program->items;
+		while (it != NULL) {
+			if (it->type == ITEM_EXERCISE) {
+				int s = _getExerciseScore(it->exercise);
+				if (s > 0) total += s;
+			}
+			it = it->next;
+		}
+		if (total != 10 && total != 100) {
+			errors = _appendError(errors, _createError("score_grid: total score must be 10 or 100."));
+		}
 	}
 
 	if (program->header != NULL && program->header->answer_sheet == 1) {
