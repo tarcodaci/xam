@@ -44,7 +44,13 @@ static SemanticError * _appendError(SemanticError * list, SemanticError * error)
 
 SemanticError * validateProgram(Program * program) {
 	logDebugging(_logger, "Validating program...");
-	return NULL;
+	SemanticError * errors = NULL;
+
+	if (program->header != NULL && program->header->title == NULL) {
+		errors = _appendError(errors, _createError("header: 'title' property is mandatory."));
+	}
+
+	return errors;
 }
 
 void destroySemanticErrors(SemanticError * errors) {
