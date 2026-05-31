@@ -49,11 +49,25 @@ static int _countOptions(MultiplechoiceOption * options) {
 	return count;
 }
 
+static int _countUnderscores(const char * str) {
+	int count = 0;
+	if (str == NULL) return 0;
+	for (int i = 0; str[i] != '\0'; i++) {
+		if (str[i] == '_') count++;
+	}
+	return count;
+}
+
 static SemanticError * _validateExercise(Exercise * exercise) {
 	switch (exercise->type) {
 		case EXERCISE_MULTIPLECHOICE:
 			if (_countOptions(exercise->multiplechoice->options) < 2) {
 				return _createError("multiplechoice: must have at least 2 options.");
+			}
+			return NULL;
+		case EXERCISE_FILLBLANKS:
+			if (exercise->fillblanks->question != NULL && _countUnderscores(exercise->fillblanks->question) == 0) {
+				return _createError("fillblanks: 'question' must contain at least one '_'.");
 			}
 			return NULL;
 		default:
