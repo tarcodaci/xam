@@ -133,6 +133,33 @@ static SemanticError * _validateItems(Item * items) {
 	return errors;
 }
 
+static int _getExerciseScore(Exercise * exercise) {
+	switch (exercise->type) {
+		case EXERCISE_MULTIPLECHOICE: return exercise->multiplechoice->score;
+		case EXERCISE_FILLBLANKS: return exercise->fillblanks->score;
+		case EXERCISE_OPENQUESTION: return exercise->openquestion->score;
+		case EXERCISE_TRUEORFALSE: return exercise->trueorfalse->score;
+		case EXERCISE_MATCH: return exercise->match->score;
+		case EXERCISE_CHOOSEFROM: return exercise->choosefrom->score;
+		case EXERCISE_CHART: return exercise->chart->score;
+		case EXERCISE_SET: return exercise->set->score;
+		default: return -1;
+	}
+}
+
+static SemanticError * _validateScoreGrid(Item * items) {
+	SemanticError * errors = NULL;
+	while (items != NULL) {
+		if (items->type == ITEM_EXERCISE) {
+			if (_getExerciseScore(items->exercise) == -1) {
+				errors = _appendError(errors, _createError("score_grid: every exercise must declare 'score'."));
+			}
+		}
+		items = items->next;
+	}
+	return errors;
+}
+
 /* PUBLIC FUNCTIONS */
 
 SemanticError * validateProgram(Program * program) {
@@ -144,6 +171,10 @@ SemanticError * validateProgram(Program * program) {
 	}
 
 	errors = _appendError(errors, _validateItems(program->items));
+
+	if (program->header != NULL && program->header->score_grid == 1) {
+		errors = _appendError(errors, _validateScoreGrid(program->items));
+	}
 
 	return errors;
 }
