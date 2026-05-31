@@ -219,6 +219,18 @@ SemanticError * validateProgram(Program * program) {
 
 	errors = _appendError(errors, _validateItems(program->items));
 
+	/* A program must have at least one exercise. */
+	int hasExercise = 0;
+	Item * item = program->items;
+	while (item != NULL) {
+		if (item->type == ITEM_EXERCISE) { hasExercise = 1; break; }
+		if (item->type == ITEM_SECTION) { hasExercise = 1; break; }
+		item = item->next;
+	}
+	if (!hasExercise) {
+		errors = _appendError(errors, _createError("program: must contain at least one exercise."));
+	}
+
 	if (program->header != NULL && program->header->score_grid == 1) {
 		errors = _appendError(errors, _validateScoreGrid(program->items));
 	}
