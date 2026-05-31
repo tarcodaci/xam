@@ -169,6 +169,44 @@ static SemanticError * _validateScoreGrid(Item * items) {
 	return errors;
 }
 
+static int _hasCorrectOption(MultiplechoiceOption * options) {
+	while (options != NULL) {
+		if (options->is_correct) return 1;
+		options = options->next;
+	}
+	return 0;
+}
+
+static SemanticError * _validateAnswerSheet(Item * items) {
+	SemanticError * errors = NULL;
+	while (items != NULL) {
+		if (items->type == ITEM_EXERCISE) {
+			Exercise * ex = items->exercise;
+			switch (ex->type) {
+				case EXERCISE_MULTIPLECHOICE:
+					if (!_hasCorrectOption(ex->multiplechoice->options)) {
+						errors = _appendError(errors, _createError("answer_sheet: multiplechoice must mark at least one correct option with '#'."));
+					}
+					break;
+				case EXERCISE_FILLBLANKS:
+					if (ex->fillblanks->answers == NULL) {
+						errors = _appendError(errors, _createError("answer_sheet: fillblanks must declare 'answer'."));
+					}
+					break;
+				case EXERCISE_TRUEORFALSE:
+					if (ex->trueorfalse->answer == -1) {
+						errors = _appendError(errors, _createError("answer_sheet: trueorfalse must declare 'answer'."));
+					}
+					break;
+				default:
+					break;
+			}
+		}
+		items = items->next;
+	}
+	return errors;
+}
+
 /* PUBLIC FUNCTIONS */
 
 SemanticError * validateProgram(Program * program) {
@@ -183,6 +221,10 @@ SemanticError * validateProgram(Program * program) {
 
 	if (program->header != NULL && program->header->score_grid == 1) {
 		errors = _appendError(errors, _validateScoreGrid(program->items));
+	}
+
+	if (program->header != NULL && program->header->answer_sheet == 1) {
+		errors = _appendError(errors, _validateAnswerSheet(program->items));
 	}
 
 	return errors;
