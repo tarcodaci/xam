@@ -49,11 +49,29 @@ static int _countOptions(MultiplechoiceOption * options) {
 	return count;
 }
 
+static int _countStringList(StringList * list) {
+	int count = 0;
+	while (list != NULL) {
+		count++;
+		list = list->next;
+	}
+	return count;
+}
+
+/* Counts groups of consecutive underscores (each group = one blank). */
 static int _countUnderscores(const char * str) {
 	int count = 0;
+	int inGroup = 0;
 	if (str == NULL) return 0;
 	for (int i = 0; str[i] != '\0'; i++) {
-		if (str[i] == '_') count++;
+		if (str[i] == '_') {
+			if (!inGroup) {
+				count++;
+				inGroup = 1;
+			}
+		} else {
+			inGroup = 0;
+		}
 	}
 	return count;
 }
@@ -70,6 +88,17 @@ static SemanticError * _validateExercise(Exercise * exercise) {
 				return _createError("fillblanks: 'question' must contain at least one '_'.");
 			}
 			return NULL;
+		case EXERCISE_CHOOSEFROM: {
+			int optionCount = _countStringList(exercise->choosefrom->options);
+			int blanks = exercise->choosefrom->text != NULL ? _countUnderscores(exercise->choosefrom->text) : 0;
+			if (optionCount < 2) {
+				return _createError("choosefrom: must have at least 2 options.");
+			}
+			if (blanks >= optionCount) {
+				return _createError("choosefrom: must have more options than blanks in 'text'.");
+			}
+			return NULL;
+		}
 		default:
 			return NULL;
 	}
