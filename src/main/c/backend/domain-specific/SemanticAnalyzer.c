@@ -115,6 +115,15 @@ static SemanticError * _validateExercise(Exercise * exercise) {
 				return _createError("openquestion: 'question' property is mandatory.");
 			}
 			return NULL;
+		case EXERCISE_MATCH: {
+			int pairCount = 0;
+			MatchPair * p = exercise->match->pairs;
+			while (p != NULL) { pairCount++; p = p->next; }
+			if (pairCount < 2) {
+				return _createError("match: must have at least 2 pairs.");
+			}
+			return NULL;
+		}
 		default:
 			return NULL;
 	}
