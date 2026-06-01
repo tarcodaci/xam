@@ -34,6 +34,11 @@ static void _logSyntacticAnalyzerAction(const char * functionName) {
 	logDebugging(_logger, "%s", functionName);
 }
 
+static void _duplicatePropertyError(const char * block, const char * property) {
+	logError(_logger, "%s: duplicate '%s' property.", block, property);
+	_compilerState->duplicateProperty = true;
+}
+
 /* PUBLIC FUNCTIONS */
 
 /* ── program ── */
@@ -159,6 +164,9 @@ MultiplechoiceNode * CreateMultiplechoiceNodeSemanticAction() {
 
 MultiplechoiceNode * MultiplechoiceSetQuestionSemanticAction(MultiplechoiceNode * node, char * question) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->question != NULL) {
+		_duplicatePropertyError("multiplechoice", "question");
+	}
 	node->question = question;
 	return node;
 }
@@ -191,6 +199,9 @@ MultiplechoiceNode * MultiplechoiceAddIntOptionSemanticAction(MultiplechoiceNode
 
 MultiplechoiceNode * MultiplechoiceSetScoreSemanticAction(MultiplechoiceNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->score != -1) {
+		_duplicatePropertyError("multiplechoice", "score");
+	}
 	node->score = score;
 	return node;
 }
@@ -220,12 +231,18 @@ TrueorfalseNode * TrueorfalseSetJustifySemanticAction(TrueorfalseNode * node, in
 
 TrueorfalseNode * TrueorfalseSetAnswerSemanticAction(TrueorfalseNode * node, int answer) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->answer != -1) {
+		_duplicatePropertyError("trueorfalse", "answer");
+	}
 	node->answer = answer;
 	return node;
 }
 
 TrueorfalseNode * TrueorfalseSetScoreSemanticAction(TrueorfalseNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->score != -1) {
+		_duplicatePropertyError("trueorfalse", "score");
+	}
 	node->score = score;
 	return node;
 }
