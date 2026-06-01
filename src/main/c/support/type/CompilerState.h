@@ -7,6 +7,7 @@
  */
 typedef struct {
 	void * abstractSyntaxtTree;
+	bool duplicateProperty;
 } CompilerState;
 
 #endif

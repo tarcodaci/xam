@@ -20,7 +20,8 @@
 		logDebugging(logger, "Argument %d: \"%s\"", k, arguments[k]);
 	}
 	CompilerState compilerState = {
-		.abstractSyntaxtTree = NULL
+		.abstractSyntaxtTree = NULL,
+		.duplicateProperty = false
 	};
 	ModuleDestructor moduleDestructors[] = {
 		initializeAbstractSyntaxTreeModule(),
@@ -32,7 +33,7 @@
 	};
 	CompilationStatus compilationStatus = executeSyntacticAnalysis();
 	Program * program = compilerState.abstractSyntaxtTree;
-	if (compilationStatus == SUCCEEDED) {
+	if (compilationStatus == SUCCEEDED && !compilerState.duplicateProperty) {
 		SemanticError * errors = validateProgram(program);
 		if (errors != NULL) {
 			SemanticError * current = errors;
