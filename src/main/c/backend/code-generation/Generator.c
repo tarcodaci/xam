@@ -50,7 +50,7 @@ static void _generatePreamble(Header * header) {
 	_line("\n");
 	_line("\\pointname{ pts}\n");
 	_line("\\pointformat{}\n");
-	_line("\\qformat{\\textbf{\\thequestion.}\\hfill}\n");
+	_line("\\qformat{\\textbf{Ejercicio \\thequestion.} }\n");
 	_line("\\renewcommand{\\totalformat}{Total}\n");
 	_line("\\hqword{Ejercicio}\n");
 	_line("\\hpword{Puntos}\n");
@@ -75,6 +75,47 @@ static void _generatePreamble(Header * header) {
 
 static void _generateEpilogue() {
 	_line("\\end{document}\n");
+}
+
+static void _generateOpenquestion(OpenquestionNode * node) {
+	if (node->score >= 0) {
+		_line("\\question[%d] %s\n", node->score, node->question);
+	} else {
+		_line("\\question %s\n", node->question);
+	}
+	int lines = node->lines >= 0 ? node->lines : 3;
+	if (lines > 0) {
+		_line("\\fillwithlines{%d\\baselineskip}\n", lines);
+	}
+	_line("\n");
+}
+
+static void _generateExercise(Exercise * exercise) {
+	switch (exercise->type) {
+		case EXERCISE_OPENQUESTION: _generateOpenquestion(exercise->openquestion); break;
+		default: break;
+	}
+}
+
+static void _generateItems(Item * items) {
+	_line("\\begin{questions}\n");
+	_line("\n");
+	_indent++;
+	while (items != NULL) {
+		if (items->type == ITEM_EXERCISE) {
+			_generateExercise(items->exercise);
+		} else if (items->type == ITEM_TEXT) {
+			_indent--;
+			_line("\\end{questions}\n");
+			_line("\\noindent %s\n\n", items->text);
+			_line("\\begin{questions}\n");
+			_indent++;
+		}
+		items = items->next;
+	}
+	_indent--;
+	_line("\\end{questions}\n");
+	_line("\n");
 }
 
 static void _generateHeaderBlock(Header * header) {
@@ -131,6 +172,7 @@ void executeGenerator(CompilerState * compilerState) {
 
 	_generatePreamble(program->header);
 	_generateHeaderBlock(program->header);
+	_generateItems(program->items);
 	_generateEpilogue();
 
 	logDebugging(_logger, "Generation is done.");
