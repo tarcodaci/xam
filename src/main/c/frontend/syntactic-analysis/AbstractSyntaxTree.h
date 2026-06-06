@@ -15,6 +15,7 @@ typedef enum HeaderPropertyType HeaderPropertyType;
 enum HeaderPropertyType {
 	HEADER_PROP_TITLE,
 	HEADER_PROP_SUBJECT,
+	HEADER_PROP_PROFESSOR,
 	HEADER_PROP_DATE,
 	HEADER_PROP_DURATION,
 	HEADER_PROP_SCORE_GRID,
@@ -52,6 +53,7 @@ struct IntList {
 struct Header {
 	char * title;
 	char * subject;
+	char * professor;
 	char * date;
 	int duration;
 	int score_grid;

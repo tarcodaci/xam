@@ -53,6 +53,7 @@ void destroyHeader(Header * header) {
 	if (header != NULL) {
 		free(header->title);
 		free(header->subject);
+		free(header->professor);
 		free(header->date);
 		free(header->instructions);
 		free(header);

@@ -100,6 +100,7 @@ static void _applyHeaderProperty(Header * header, HeaderProperty * prop) {
 	switch (prop->type) {
 		case HEADER_PROP_TITLE: header->title = prop->stringValue; break;
 		case HEADER_PROP_SUBJECT: header->subject = prop->stringValue; break;
+		case HEADER_PROP_PROFESSOR: header->professor = prop->stringValue; break;
 		case HEADER_PROP_DATE: header->date = prop->stringValue; break;
 		case HEADER_PROP_DURATION: header->duration = prop->intValue; break;
 		case HEADER_PROP_SCORE_GRID: header->score_grid = prop->intValue; break;

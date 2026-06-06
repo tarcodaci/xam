@@ -79,6 +79,7 @@ whitespace			[[:space:]]+
 "student_id"						{ return KeywordLexemeAction(STUDENT_ID); }
 "course"							{ return KeywordLexemeAction(COURSE); }
 "instructions"						{ return KeywordLexemeAction(INSTRUCTIONS); }
+"professor"							{ return KeywordLexemeAction(PROFESSOR); }
 
 "question"							{ return KeywordLexemeAction(QUESTION); }
 "option"							{ return KeywordLexemeAction(OPTION); }
