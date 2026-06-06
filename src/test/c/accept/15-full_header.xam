@@ -1,6 +1,7 @@
 header {
     title: "Primer Parcial";
     subject: "Logica Computacional";
+    professor: "Lic. Jane Doe";
     date: "2026-05-10";
     duration: 180;
     score_grid: true;
