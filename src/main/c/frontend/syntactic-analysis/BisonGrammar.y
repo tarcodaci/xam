@@ -96,6 +96,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> STUDENT_ID
 %token <token> COURSE
 %token <token> INSTRUCTIONS
+%token <token> PROFESSOR
 
 %token <token> QUESTION
 %token <token> OPTION
@@ -182,6 +183,7 @@ header_prop: TITLE COLON STRING SEMICOLON				{ $$ = HeaderPropertySemanticAction
 	| COURSE COLON TRUE SEMICOLON						{ $$ = HeaderPropertySemanticAction(HEADER_PROP_COURSE, NULL, 1); }
 	| COURSE COLON FALSE SEMICOLON						{ $$ = HeaderPropertySemanticAction(HEADER_PROP_COURSE, NULL, 0); }
 	| INSTRUCTIONS COLON STRING SEMICOLON				{ $$ = HeaderPropertySemanticAction(HEADER_PROP_INSTRUCTIONS, $3, 0); }
+	| PROFESSOR COLON STRING SEMICOLON					{ $$ = HeaderPropertySemanticAction(HEADER_PROP_PROFESSOR, $3, 0); }
 	;
 
 /* ── items ── */
