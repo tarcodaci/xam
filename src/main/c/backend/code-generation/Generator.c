@@ -130,11 +130,33 @@ static void _generateTrueorfalse(TrueorfalseNode * node) {
 	_line("\n");
 }
 
+static void _generateFillblanks(FillblanksNode * node) {
+	if (node->score >= 0) {
+		_line("\\question[%d] ", node->score);
+	} else {
+		_line("\\question ");
+	}
+	/* Replace groups of _ with proportional underlines (1 underscore = 1cm) */
+	const char * p = node->question;
+	while (*p != '\0') {
+		if (*p == '_') {
+			int count = 0;
+			while (*p == '_') { count++; p++; }
+			_append("\\underline{\\hspace{%dcm}}", count);
+		} else {
+			_append("%c", *p);
+			p++;
+		}
+	}
+	_append("\n\n");
+}
+
 static void _generateExercise(Exercise * exercise) {
 	switch (exercise->type) {
 		case EXERCISE_OPENQUESTION: _generateOpenquestion(exercise->openquestion); break;
 		case EXERCISE_MULTIPLECHOICE: _generateMultiplechoice(exercise->multiplechoice); break;
 		case EXERCISE_TRUEORFALSE: _generateTrueorfalse(exercise->trueorfalse); break;
+		case EXERCISE_FILLBLANKS: _generateFillblanks(exercise->fillblanks); break;
 		default: break;
 	}
 }
