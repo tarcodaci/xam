@@ -112,10 +112,29 @@ static void _generateMultiplechoice(MultiplechoiceNode * node) {
 	_line("\n");
 }
 
+static void _generateTrueorfalse(TrueorfalseNode * node) {
+	if (node->score >= 0) {
+		_line("\\question[%d] %s\n", node->score, node->question);
+	} else {
+		_line("\\question %s\n", node->question);
+	}
+	_line("\\begin{choices}\n");
+	_indent++;
+	_line("\\choice Verdadero\n");
+	_line("\\choice Falso\n");
+	_indent--;
+	_line("\\end{choices}\n");
+	if (node->justify == 1) {
+		_line("Justifique:\\fillwithlines{2\\baselineskip}\n");
+	}
+	_line("\n");
+}
+
 static void _generateExercise(Exercise * exercise) {
 	switch (exercise->type) {
 		case EXERCISE_OPENQUESTION: _generateOpenquestion(exercise->openquestion); break;
 		case EXERCISE_MULTIPLECHOICE: _generateMultiplechoice(exercise->multiplechoice); break;
+		case EXERCISE_TRUEORFALSE: _generateTrueorfalse(exercise->trueorfalse); break;
 		default: break;
 	}
 }
