@@ -98,17 +98,39 @@ HeaderProperty * HeaderPropertySemanticAction(HeaderPropertyType type, char * st
 
 static void _applyHeaderProperty(Header * header, HeaderProperty * prop) {
 	switch (prop->type) {
-		case HEADER_PROP_TITLE: header->title = prop->stringValue; break;
-		case HEADER_PROP_SUBJECT: header->subject = prop->stringValue; break;
-		case HEADER_PROP_PROFESSOR: header->professor = prop->stringValue; break;
-		case HEADER_PROP_DATE: header->date = prop->stringValue; break;
-		case HEADER_PROP_DURATION: header->duration = prop->intValue; break;
-		case HEADER_PROP_SCORE_GRID: header->score_grid = prop->intValue; break;
-		case HEADER_PROP_ANSWER_SHEET: header->answer_sheet = prop->intValue; break;
-		case HEADER_PROP_STUDENT_NAME: header->student_name = prop->intValue; break;
-		case HEADER_PROP_STUDENT_ID: header->student_id = prop->intValue; break;
-		case HEADER_PROP_COURSE: header->course = prop->intValue; break;
-		case HEADER_PROP_INSTRUCTIONS: header->instructions = prop->stringValue; break;
+		case HEADER_PROP_TITLE:
+			if (header->title != NULL) _duplicatePropertyError("header", "title");
+			header->title = prop->stringValue; break;
+		case HEADER_PROP_SUBJECT:
+			if (header->subject != NULL) _duplicatePropertyError("header", "subject");
+			header->subject = prop->stringValue; break;
+		case HEADER_PROP_PROFESSOR:
+			if (header->professor != NULL) _duplicatePropertyError("header", "professor");
+			header->professor = prop->stringValue; break;
+		case HEADER_PROP_DATE:
+			if (header->date != NULL) _duplicatePropertyError("header", "date");
+			header->date = prop->stringValue; break;
+		case HEADER_PROP_DURATION:
+			if (header->duration != -1) _duplicatePropertyError("header", "duration");
+			header->duration = prop->intValue; break;
+		case HEADER_PROP_SCORE_GRID:
+			if (header->score_grid != -1) _duplicatePropertyError("header", "score_grid");
+			header->score_grid = prop->intValue; break;
+		case HEADER_PROP_ANSWER_SHEET:
+			if (header->answer_sheet != -1) _duplicatePropertyError("header", "answer_sheet");
+			header->answer_sheet = prop->intValue; break;
+		case HEADER_PROP_STUDENT_NAME:
+			if (header->student_name != -1) _duplicatePropertyError("header", "student_name");
+			header->student_name = prop->intValue; break;
+		case HEADER_PROP_STUDENT_ID:
+			if (header->student_id != -1) _duplicatePropertyError("header", "student_id");
+			header->student_id = prop->intValue; break;
+		case HEADER_PROP_COURSE:
+			if (header->course != -1) _duplicatePropertyError("header", "course");
+			header->course = prop->intValue; break;
+		case HEADER_PROP_INSTRUCTIONS:
+			if (header->instructions != NULL) _duplicatePropertyError("header", "instructions");
+			header->instructions = prop->stringValue; break;
 	}
 	free(prop);
 }
