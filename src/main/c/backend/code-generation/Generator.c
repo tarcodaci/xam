@@ -130,14 +130,8 @@ static void _generateTrueorfalse(TrueorfalseNode * node) {
 	_line("\n");
 }
 
-static void _generateFillblanks(FillblanksNode * node) {
-	if (node->score >= 0) {
-		_line("\\question[%d] ", node->score);
-	} else {
-		_line("\\question ");
-	}
-	/* Replace groups of _ with proportional underlines (1 underscore = 1cm) */
-	const char * p = node->question;
+static void _emitTextWithBlanks(const char * text) {
+	const char * p = text;
 	while (*p != '\0') {
 		if (*p == '_') {
 			int count = 0;
@@ -148,7 +142,43 @@ static void _generateFillblanks(FillblanksNode * node) {
 			p++;
 		}
 	}
+}
+
+static void _generateFillblanks(FillblanksNode * node) {
+	if (node->score >= 0) {
+		_line("\\question[%d] ", node->score);
+	} else {
+		_line("\\question ");
+	}
+	_emitTextWithBlanks(node->question);
 	_append("\n\n");
+}
+
+static void _generateChoosefrom(ChoosefromNode * node) {
+	if (node->score >= 0) {
+		_line("\\question[%d] ", node->score);
+	} else {
+		_line("\\question ");
+	}
+	if (node->task != NULL) {
+		_append("%s\n", node->task);
+	} else {
+		_append("\n");
+	}
+	_line("\\textbf{Opciones:} ");
+	StringList * opt = node->options;
+	while (opt != NULL) {
+		_append("%s", opt->value);
+		if (opt->next != NULL) _append(" -- ");
+		opt = opt->next;
+	}
+	_append("\\\\[0.5em]\n");
+	if (node->text != NULL) {
+		_line("");
+		_emitTextWithBlanks(node->text);
+		_append("\n");
+	}
+	_line("\n");
 }
 
 static void _generateExercise(Exercise * exercise) {
@@ -157,6 +187,7 @@ static void _generateExercise(Exercise * exercise) {
 		case EXERCISE_MULTIPLECHOICE: _generateMultiplechoice(exercise->multiplechoice); break;
 		case EXERCISE_TRUEORFALSE: _generateTrueorfalse(exercise->trueorfalse); break;
 		case EXERCISE_FILLBLANKS: _generateFillblanks(exercise->fillblanks); break;
+		case EXERCISE_CHOOSEFROM: _generateChoosefrom(exercise->choosefrom); break;
 		default: break;
 	}
 }
