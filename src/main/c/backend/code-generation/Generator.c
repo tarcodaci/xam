@@ -90,9 +90,32 @@ static void _generateOpenquestion(OpenquestionNode * node) {
 	_line("\n");
 }
 
+static void _generateMultiplechoice(MultiplechoiceNode * node) {
+	if (node->score >= 0) {
+		_line("\\question[%d] %s\n", node->score, node->question);
+	} else {
+		_line("\\question %s\n", node->question);
+	}
+	_line("\\begin{choices}\n");
+	_indent++;
+	MultiplechoiceOption * opt = node->options;
+	while (opt != NULL) {
+		if (opt->is_correct) {
+			_line("\\CorrectChoice %s\n", opt->value);
+		} else {
+			_line("\\choice %s\n", opt->value);
+		}
+		opt = opt->next;
+	}
+	_indent--;
+	_line("\\end{choices}\n");
+	_line("\n");
+}
+
 static void _generateExercise(Exercise * exercise) {
 	switch (exercise->type) {
 		case EXERCISE_OPENQUESTION: _generateOpenquestion(exercise->openquestion); break;
+		case EXERCISE_MULTIPLECHOICE: _generateMultiplechoice(exercise->multiplechoice); break;
 		default: break;
 	}
 }
