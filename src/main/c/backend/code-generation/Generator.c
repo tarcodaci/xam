@@ -181,6 +181,32 @@ static void _generateChoosefrom(ChoosefromNode * node) {
 	_line("\n");
 }
 
+static void _generateMatch(MatchNode * node) {
+	if (node->score >= 0) {
+		_line("\\question[%d] %s\n", node->score, node->question);
+	} else {
+		_line("\\question %s\n", node->question);
+	}
+	_line("\\begin{tabular}{r@{\\hspace{2cm}}l}\n");
+	_indent++;
+	MatchPair * pair = node->pairs;
+	while (pair != NULL) {
+		_line("%s & \\rule{3cm}{0.4pt} \\\\\n", pair->left);
+		pair = pair->next;
+	}
+	_indent--;
+	_line("\\end{tabular}\n");
+	_line("\\vspace{0.5em}\n");
+	_line("\\\\\\textbf{Columna B:} ");
+	pair = node->pairs;
+	while (pair != NULL) {
+		_append("%s", pair->right);
+		if (pair->next != NULL) _append(" -- ");
+		pair = pair->next;
+	}
+	_append("\n\n");
+}
+
 static void _generateExercise(Exercise * exercise) {
 	switch (exercise->type) {
 		case EXERCISE_OPENQUESTION: _generateOpenquestion(exercise->openquestion); break;
@@ -188,6 +214,7 @@ static void _generateExercise(Exercise * exercise) {
 		case EXERCISE_TRUEORFALSE: _generateTrueorfalse(exercise->trueorfalse); break;
 		case EXERCISE_FILLBLANKS: _generateFillblanks(exercise->fillblanks); break;
 		case EXERCISE_CHOOSEFROM: _generateChoosefrom(exercise->choosefrom); break;
+		case EXERCISE_MATCH: _generateMatch(exercise->match); break;
 		default: break;
 	}
 }
