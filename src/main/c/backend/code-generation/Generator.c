@@ -223,6 +223,41 @@ static void _generateSet(SetNode * node) {
 	_line("\\end{parts}\n\n");
 }
 
+static void _generateChart(ChartNode * node) {
+	if (node->score >= 0) {
+		_line("\\question[%d] %s\n", node->score, node->task);
+	} else {
+		_line("\\question %s\n", node->task);
+	}
+	_line("\\begin{center}\n");
+	_indent++;
+	_line("\\begin{tabular}{|");
+	for (int c = 0; c < node->dim_cols; c++) _append("c|");
+	_append("}\n");
+	_line("\\hline\n");
+	for (int r = 1; r <= node->dim_rows; r++) {
+		_line("");
+		for (int c = 1; c <= node->dim_cols; c++) {
+			/* Check if this cell is pre-filled */
+			char * value = NULL;
+			ChartCell * cell = node->cells;
+			while (cell != NULL) {
+				if (cell->row == r && cell->col == c) { value = cell->value; break; }
+				cell = cell->next;
+			}
+			if (value != NULL) _append("%s", value);
+			else _append("\\hspace{2cm}");
+			if (c < node->dim_cols) _append(" & ");
+		}
+		_append(" \\\\\n");
+		_line("\\hline\n");
+	}
+	_indent--;
+	_line("\\end{tabular}\n");
+	_line("\\end{center}\n");
+	_line("\n");
+}
+
 static void _generateExercise(Exercise * exercise) {
 	switch (exercise->type) {
 		case EXERCISE_OPENQUESTION: _generateOpenquestion(exercise->openquestion, "\\question"); break;
@@ -231,6 +266,7 @@ static void _generateExercise(Exercise * exercise) {
 		case EXERCISE_FILLBLANKS: _generateFillblanks(exercise->fillblanks, "\\question"); break;
 		case EXERCISE_CHOOSEFROM: _generateChoosefrom(exercise->choosefrom, "\\question"); break;
 		case EXERCISE_MATCH: _generateMatch(exercise->match); break;
+		case EXERCISE_CHART: _generateChart(exercise->chart); break;
 		case EXERCISE_SET: _generateSet(exercise->set); break;
 		default: break;
 	}
