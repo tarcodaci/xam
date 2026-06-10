@@ -1,0 +1,35 @@
+header {
+    title: "Parcial 1";
+    subject: "Automatas, Teoria de Lenguajes y Compiladores (72.39)";
+    professor: "Lic. Ana Maria Arias Roig";
+    score_grid: true;
+    student_name: true;
+    student_id: true;
+    instructions: "Condicion minima de aprobacion: Acumular 6 puntos.";
+    instructions: "Todos los ejercicios deben resolverse utilizando los algoritmos vistos en clase.";
+    instructions: "El examen se evalua por lo que esta escrito.";
+}
+
+openquestion {
+    score: 2;
+    question: "El conjunto $P \subseteq \Sigma^*$, donde $\Sigma = \{a, b\}$ se define recursivamente. Demostrar por induccion estructural que $P \subset L$.";
+    lines: 0;
+}
+
+openquestion {
+    score: 2;
+    question: "Demostrar usando el Lema de Bombeo que el lenguaje $L = \{\omega \in \{a, b, c\}^* / \omega = \omega_1\omega_2\omega_1^R\omega_2^R\}$ no es regular.";
+    lines: 0;
+}
+
+openquestion {
+    score: 3;
+    question: "Mostrar que la Expresion Regular $(abb^*a)^*a(ab)^*$ equivale a L(M) siendo: $M = \langle\{a, b\}, \{p, q, r, s, t, u\}, \delta, p, \{u\}\rangle$, con $\delta$ dada por la siguiente tabla:";
+    lines: 0;
+}
+
+openquestion {
+    score: 3;
+    question: "Construir un AFD Minimo $M$ que acepte $L = \{\omega \in \{a,b,c\}^* / \omega = a^nb^mc^p$ con $n+m \equiv 0(2) \wedge p \equiv 0(3)\}$.";
+    lines: 0;
+}

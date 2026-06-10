@@ -60,9 +60,9 @@ static void _generatePreamble(Header * header) {
 	_line("\\pagestyle{headandfoot}\n");
 	if (header != NULL && (header->student_name == 1 || header->student_id == 1 || header->course == 1)) {
 		_line("\\header{");
-		if (header->student_name == 1) _append("Nombre y Apellido:\\hrulefill\\hspace{1em} ");
-		if (header->student_id == 1) _append("Legajo:\\rule{2cm}{0.4pt} ");
-		if (header->course == 1) _append("Curso:\\rule{2cm}{0.4pt}\\hspace{1em}");
+		if (header->student_name == 1) _append("Nombre y Apellido:\\rule{5cm}{0.4pt}\\hspace{1em} ");
+		if (header->student_id == 1) _append("Legajo:\\rule{1.5cm}{0.4pt}\\hspace{1em} ");
+		if (header->course == 1) _append("Curso:\\rule{1.5cm}{0.4pt}\\hspace{1em}");
 		_append("}{}{\\thepage}\n");
 	} else {
 		_line("\\header{}{}{\\thepage}\n");
@@ -70,6 +70,7 @@ static void _generatePreamble(Header * header) {
 	_line("\\footer{}{}{}\n");
 	_line("\n");
 	_line("\\begin{document}\n");
+	_line("\\sloppy\n");
 	_line("\n");
 }
 
@@ -286,6 +287,7 @@ static void _generateImage(ImageNode * node) {
 }
 
 static void _generateItems(Item * items) {
+	_line("\\noindent\\textbf{Ejercicios}\n");
 	_line("\\begin{questions}\n");
 	_line("\n");
 	_indent++;
@@ -293,11 +295,7 @@ static void _generateItems(Item * items) {
 		if (items->type == ITEM_EXERCISE) {
 			_generateExercise(items->exercise);
 		} else if (items->type == ITEM_TEXT) {
-			_indent--;
-			_line("\\end{questions}\n");
-			_line("\\noindent %s\n\n", items->text);
-			_line("\\begin{questions}\n");
-			_indent++;
+			_line("\\uplevel{%s}\n", items->text);
 		} else if (items->type == ITEM_IMAGE) {
 			_indent--;
 			_line("\\end{questions}\n");
@@ -351,8 +349,10 @@ static void _generateHeaderBlock(Header * header) {
 		if (header->duration >= 0) {
 			_line("\\item Duraci\\'{o}n: %d minutos.\n", header->duration);
 		}
-		if (header->instructions != NULL) {
-			_line("\\item %s\n", header->instructions);
+		StringList * instr = header->instructions;
+		while (instr != NULL) {
+			_line("\\item %s\n", instr->value);
+			instr = instr->next;
 		}
 		_indent--;
 		_line("\\end{itemize}\n");

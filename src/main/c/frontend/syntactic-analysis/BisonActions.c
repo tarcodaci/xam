@@ -128,9 +128,19 @@ static void _applyHeaderProperty(Header * header, HeaderProperty * prop) {
 		case HEADER_PROP_COURSE:
 			if (header->course != -1) _duplicatePropertyError("header", "course");
 			header->course = prop->intValue; break;
-		case HEADER_PROP_INSTRUCTIONS:
-			if (header->instructions != NULL) _duplicatePropertyError("header", "instructions");
-			header->instructions = prop->stringValue; break;
+		case HEADER_PROP_INSTRUCTIONS: {
+			StringList * node = calloc(1, sizeof(StringList));
+			node->value = prop->stringValue;
+			node->next = NULL;
+			if (header->instructions == NULL) {
+				header->instructions = node;
+			} else {
+				StringList * current = header->instructions;
+				while (current->next != NULL) current = current->next;
+				current->next = node;
+			}
+			break;
+		}
 	}
 	free(prop);
 }

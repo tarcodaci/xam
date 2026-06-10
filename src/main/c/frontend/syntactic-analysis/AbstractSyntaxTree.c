@@ -55,7 +55,7 @@ void destroyHeader(Header * header) {
 		free(header->subject);
 		free(header->professor);
 		free(header->date);
-		free(header->instructions);
+		destroyStringList(header->instructions);
 		free(header);
 	}
 }

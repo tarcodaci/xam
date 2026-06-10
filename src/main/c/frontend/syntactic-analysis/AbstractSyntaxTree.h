@@ -61,7 +61,7 @@ struct Header {
 	int student_name;
 	int student_id;
 	int course;
-	char * instructions;
+	StringList * instructions;
 };
 
 /* ── Exercises ── */
