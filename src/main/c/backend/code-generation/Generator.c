@@ -236,6 +236,19 @@ static void _generateExercise(Exercise * exercise) {
 	}
 }
 
+static void _generateImage(ImageNode * node) {
+	_line("\\begin{center}\n");
+	_indent++;
+	int width = node->width > 0 ? node->width : 100;
+	_line("\\includegraphics[width=0.%d\\textwidth]{%s}\n", width, node->path);
+	if (node->caption != NULL) {
+		_line("\\\\{\\small %s}\n", node->caption);
+	}
+	_indent--;
+	_line("\\end{center}\n");
+	_line("\n");
+}
+
 static void _generateItems(Item * items) {
 	_line("\\begin{questions}\n");
 	_line("\n");
@@ -249,6 +262,14 @@ static void _generateItems(Item * items) {
 			_line("\\noindent %s\n\n", items->text);
 			_line("\\begin{questions}\n");
 			_indent++;
+		} else if (items->type == ITEM_IMAGE) {
+			_indent--;
+			_line("\\end{questions}\n");
+			_generateImage(items->image);
+			_line("\\begin{questions}\n");
+			_indent++;
+		} else if (items->type == ITEM_SECTION) {
+			_generateItems(items->section->items);
 		}
 		items = items->next;
 	}
