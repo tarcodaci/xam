@@ -50,7 +50,7 @@ static void _generatePreamble(Header * header) {
 	_line("\n");
 	_line("\\pointname{ pts}\n");
 	_line("\\pointformat{}\n");
-	_line("\\qformat{\\textbf{Ejercicio \\thequestion.} }\n");
+	_line("\\renewcommand{\\questionlabel}{\\textbf{\\thequestion.}}\n");
 	_line("\\renewcommand{\\totalformat}{Total}\n");
 	_line("\\hqword{Ejercicio}\n");
 	_line("\\hpword{Puntos}\n");
@@ -77,12 +77,17 @@ static void _generateEpilogue() {
 	_line("\\end{document}\n");
 }
 
-static void _generateOpenquestion(OpenquestionNode * node) {
-	if (node->score >= 0) {
-		_line("\\question[%d] %s\n", node->score, node->question);
+static void _emitQuestionPrefix(const char * prefix, int score) {
+	if (score >= 0) {
+		_line("%s[%d] ", prefix, score);
 	} else {
-		_line("\\question %s\n", node->question);
+		_line("%s ", prefix);
 	}
+}
+
+static void _generateOpenquestion(OpenquestionNode * node, const char * prefix) {
+	_emitQuestionPrefix(prefix, node->score);
+	_append("%s\n", node->question);
 	int lines = node->lines >= 0 ? node->lines : 3;
 	if (lines > 0) {
 		_line("\\fillwithlines{%d\\baselineskip}\n", lines);
@@ -90,12 +95,9 @@ static void _generateOpenquestion(OpenquestionNode * node) {
 	_line("\n");
 }
 
-static void _generateMultiplechoice(MultiplechoiceNode * node) {
-	if (node->score >= 0) {
-		_line("\\question[%d] %s\n", node->score, node->question);
-	} else {
-		_line("\\question %s\n", node->question);
-	}
+static void _generateMultiplechoice(MultiplechoiceNode * node, const char * prefix) {
+	_emitQuestionPrefix(prefix, node->score);
+	_append("%s\n", node->question);
 	_line("\\begin{choices}\n");
 	_indent++;
 	MultiplechoiceOption * opt = node->options;
@@ -112,12 +114,9 @@ static void _generateMultiplechoice(MultiplechoiceNode * node) {
 	_line("\n");
 }
 
-static void _generateTrueorfalse(TrueorfalseNode * node) {
-	if (node->score >= 0) {
-		_line("\\question[%d] %s\n", node->score, node->question);
-	} else {
-		_line("\\question %s\n", node->question);
-	}
+static void _generateTrueorfalse(TrueorfalseNode * node, const char * prefix) {
+	_emitQuestionPrefix(prefix, node->score);
+	_append("%s\n", node->question);
 	_line("\\begin{choices}\n");
 	_indent++;
 	_line("\\choice Verdadero\n");
@@ -144,22 +143,14 @@ static void _emitTextWithBlanks(const char * text) {
 	}
 }
 
-static void _generateFillblanks(FillblanksNode * node) {
-	if (node->score >= 0) {
-		_line("\\question[%d] ", node->score);
-	} else {
-		_line("\\question ");
-	}
+static void _generateFillblanks(FillblanksNode * node, const char * prefix) {
+	_emitQuestionPrefix(prefix, node->score);
 	_emitTextWithBlanks(node->question);
 	_append("\n\n");
 }
 
-static void _generateChoosefrom(ChoosefromNode * node) {
-	if (node->score >= 0) {
-		_line("\\question[%d] ", node->score);
-	} else {
-		_line("\\question ");
-	}
+static void _generateChoosefrom(ChoosefromNode * node, const char * prefix) {
+	_emitQuestionPrefix(prefix, node->score);
 	if (node->task != NULL) {
 		_append("%s\n", node->task);
 	} else {
@@ -207,14 +198,40 @@ static void _generateMatch(MatchNode * node) {
 	_append("\n\n");
 }
 
+static void _generateSet(SetNode * node) {
+	_emitQuestionPrefix("\\question", node->score);
+	if (node->text != NULL) {
+		_append("%s", node->text);
+	}
+	_append("\n");
+	_line("\\begin{parts}\n");
+	_indent++;
+	Exercise * ex = node->exercises;
+	while (ex != NULL) {
+		switch (ex->type) {
+			case EXERCISE_MULTIPLECHOICE: _generateMultiplechoice(ex->multiplechoice, "\\part"); break;
+			case EXERCISE_TRUEORFALSE: _generateTrueorfalse(ex->trueorfalse, "\\part"); break;
+			case EXERCISE_OPENQUESTION: _generateOpenquestion(ex->openquestion, "\\part"); break;
+			case EXERCISE_FILLBLANKS: _generateFillblanks(ex->fillblanks, "\\part"); break;
+			case EXERCISE_CHOOSEFROM: _generateChoosefrom(ex->choosefrom, "\\part"); break;
+			case EXERCISE_MATCH: _generateMatch(ex->match); break;
+			default: break;
+		}
+		ex = ex->next;
+	}
+	_indent--;
+	_line("\\end{parts}\n\n");
+}
+
 static void _generateExercise(Exercise * exercise) {
 	switch (exercise->type) {
-		case EXERCISE_OPENQUESTION: _generateOpenquestion(exercise->openquestion); break;
-		case EXERCISE_MULTIPLECHOICE: _generateMultiplechoice(exercise->multiplechoice); break;
-		case EXERCISE_TRUEORFALSE: _generateTrueorfalse(exercise->trueorfalse); break;
-		case EXERCISE_FILLBLANKS: _generateFillblanks(exercise->fillblanks); break;
-		case EXERCISE_CHOOSEFROM: _generateChoosefrom(exercise->choosefrom); break;
+		case EXERCISE_OPENQUESTION: _generateOpenquestion(exercise->openquestion, "\\question"); break;
+		case EXERCISE_MULTIPLECHOICE: _generateMultiplechoice(exercise->multiplechoice, "\\question"); break;
+		case EXERCISE_TRUEORFALSE: _generateTrueorfalse(exercise->trueorfalse, "\\question"); break;
+		case EXERCISE_FILLBLANKS: _generateFillblanks(exercise->fillblanks, "\\question"); break;
+		case EXERCISE_CHOOSEFROM: _generateChoosefrom(exercise->choosefrom, "\\question"); break;
 		case EXERCISE_MATCH: _generateMatch(exercise->match); break;
+		case EXERCISE_SET: _generateSet(exercise->set); break;
 		default: break;
 	}
 }
