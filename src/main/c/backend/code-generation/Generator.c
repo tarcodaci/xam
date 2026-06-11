@@ -21,12 +21,13 @@ ModuleDestructor initializeGeneratorModule() {
 /* PRIVATE FUNCTIONS */
 
 static int _indent = 0;
+static FILE * _output = NULL;
 
 static void _line(const char * format, ...) {
-	for (int i = 0; i < _indent; i++) fprintf(stdout, "\t");
+	for (int i = 0; i < _indent; i++) fprintf(_output, "\t");
 	va_list args;
 	va_start(args, format);
-	vfprintf(stdout, format, args);
+	vfprintf(_output, format, args);
 	va_end(args);
 }
 
@@ -34,7 +35,7 @@ static void _line(const char * format, ...) {
 static void _append(const char * format, ...) {
 	va_list args;
 	va_start(args, format);
-	vfprintf(stdout, format, args);
+	vfprintf(_output, format, args);
 	va_end(args);
 }
 
@@ -77,9 +78,6 @@ static void _generatePreamble(Header * header) {
 static void _generateAnswerSheet(Header * header, Item * items) {
 	if (header == NULL || header->answer_sheet != 1) return;
 
-	/* Second document: answer key */
-	_line("\n%% ========== ANSWER KEY ==========\n\n");
-	_indent = 0;
 	_line("\\documentclass[11pt, a4paper]{article}\n");
 	_line("\\usepackage[utf8]{inputenc}\n");
 	_line("\\usepackage[T1]{fontenc}\n");
@@ -515,11 +513,48 @@ void executeGenerator(CompilerState * compilerState) {
 	logDebugging(_logger, "Generating final output...");
 	Program * program = compilerState->abstractSyntaxtTree;
 
+	const char * base = compilerState->inputFilename;
+	const char * dot = strrchr(base, '.');
+	if (dot == NULL || strcmp(dot, ".xam") != 0) {
+		logError(_logger, "Input file must have .xam extension.");
+		return;
+	}
+	int baseLen = (int)(dot - base);
+
+	char examFile[256];
+	memcpy(examFile, base, baseLen);
+	strcpy(examFile + baseLen, ".tex");
+
+	char answersFile[256];
+	memcpy(answersFile, base, baseLen);
+	strcpy(answersFile + baseLen, "-answers.tex");
+
+	_output = fopen(examFile, "w");
+	if (_output == NULL) {
+		logError(_logger, "Cannot create %s", examFile);
+		return;
+	}
+
+	_indent = 0;
 	_generatePreamble(program->header);
 	_generateHeaderBlock(program->header);
 	_generateItems(program->items);
 	_generateEpilogue();
-	_generateAnswerSheet(program->header, program->items);
+	fclose(_output);
+	logDebugging(_logger, "Wrote %s", examFile);
 
+	if (program->header != NULL && program->header->answer_sheet == 1) {
+		_output = fopen(answersFile, "w");
+		if (_output == NULL) {
+			logError(_logger, "Cannot create %s", answersFile);
+			return;
+		}
+		_indent = 0;
+		_generateAnswerSheet(program->header, program->items);
+		fclose(_output);
+		logDebugging(_logger, "Wrote %s", answersFile);
+	}
+
+	_output = NULL;
 	logDebugging(_logger, "Generation is done.");
 }

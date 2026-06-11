@@ -8,6 +8,7 @@
 typedef struct {
 	void * abstractSyntaxtTree;
 	bool duplicateProperty;
+	const char * inputFilename;
 } CompilerState;
 
 #endif

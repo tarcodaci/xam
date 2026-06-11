@@ -36,7 +36,7 @@ fillblanks {
 choosefrom {
     score: 20;
     options: ["Finito", "Numerable", "Coordinable", "Biyectiva", "Inyectiva"];
-    text: "Dos conjuntos A y B son ___ si existe una función ___ f : A \-> B.";
+    text: "Dos conjuntos A y B son ___ si existe una función ___ f : A $\rightarrow$ B.";
     answer: [3, 4];
 }
 
