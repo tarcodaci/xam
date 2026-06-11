@@ -310,28 +310,23 @@ static void _generateChoosefrom(ChoosefromNode * node, const char * prefix) {
 
 static void _generateMatch(MatchNode * node) {
 	if (node->score >= 0) {
-		_line("\\question[%d] %s\n", node->score, node->question);
+		_line("\\question[%d] %s\\\\[0.5em]\n", node->score, node->question);
 	} else {
-		_line("\\question %s\n", node->question);
+		_line("\\question %s\\\\[0.5em]\n", node->question);
 	}
-	_line("\\begin{tabular}{r@{\\hspace{2cm}}l}\n");
+	_line("\\begin{tabular}{l@{\\hspace{4cm}}l}\n");
 	_indent++;
-	MatchPair * pair = node->pairs;
-	while (pair != NULL) {
-		_line("%s & \\rule{3cm}{0.4pt} \\\\\n", pair->left);
-		pair = pair->next;
+	/* Left column in order, right column listed separately */
+	MatchPair * left = node->pairs;
+	MatchPair * right = node->pairs;
+	while (left != NULL) {
+		_line("%s & %s \\\\\n", left->left, right->right);
+		left = left->next;
+		right = right->next;
 	}
 	_indent--;
 	_line("\\end{tabular}\n");
-	_line("\\vspace{0.5em}\n");
-	_line("\\\\\\textbf{Columna B:} ");
-	pair = node->pairs;
-	while (pair != NULL) {
-		_append("%s", pair->right);
-		if (pair->next != NULL) _append(" -- ");
-		pair = pair->next;
-	}
-	_append("\n\n");
+	_line("\n");
 }
 
 static void _generateSet(SetNode * node) {
