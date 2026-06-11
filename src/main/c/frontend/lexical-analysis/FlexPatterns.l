@@ -66,6 +66,7 @@ whitespace			[[:space:]]+
 "match"								{ return KeywordLexemeAction(MATCH); }
 "trueorfalse"								{ return KeywordLexemeAction(TRUEORFALSE); }
 "chart"								{ return KeywordLexemeAction(CHART); }
+"fillchart"							{ return KeywordLexemeAction(FILLCHART); }
 "set"								{ return KeywordLexemeAction(SET); }
 "section"							{ return KeywordLexemeAction(SECTION); }
 

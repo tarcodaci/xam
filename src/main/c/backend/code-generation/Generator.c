@@ -224,12 +224,7 @@ static void _generateSet(SetNode * node) {
 	_line("\\end{parts}\n\n");
 }
 
-static void _generateChart(ChartNode * node) {
-	if (node->score >= 0) {
-		_line("\\question[%d] %s\n", node->score, node->task);
-	} else {
-		_line("\\question %s\n", node->task);
-	}
+static void _emitChartTable(ChartNode * node) {
 	_line("\\begin{center}\n");
 	_indent++;
 	_line("\\begin{tabular}{|");
@@ -239,7 +234,6 @@ static void _generateChart(ChartNode * node) {
 	for (int r = 1; r <= node->dim_rows; r++) {
 		_line("");
 		for (int c = 1; c <= node->dim_cols; c++) {
-			/* Check if this cell is pre-filled */
 			char * value = NULL;
 			ChartCell * cell = node->cells;
 			while (cell != NULL) {
@@ -259,6 +253,22 @@ static void _generateChart(ChartNode * node) {
 	_line("\n");
 }
 
+static void _generateFillchart(ChartNode * node) {
+	if (node->score >= 0) {
+		_line("\\question[%d] %s\n", node->score, node->task);
+	} else {
+		_line("\\question %s\n", node->task);
+	}
+	_emitChartTable(node);
+}
+
+static void _generateChart(ChartNode * node) {
+	if (node->task != NULL && node->task[0] != '\0') {
+		_line("\\uplevel{%s}\n", node->task);
+	}
+	_emitChartTable(node);
+}
+
 static void _generateExercise(Exercise * exercise) {
 	switch (exercise->type) {
 		case EXERCISE_OPENQUESTION: _generateOpenquestion(exercise->openquestion, "\\question"); break;
@@ -267,7 +277,7 @@ static void _generateExercise(Exercise * exercise) {
 		case EXERCISE_FILLBLANKS: _generateFillblanks(exercise->fillblanks, "\\question"); break;
 		case EXERCISE_CHOOSEFROM: _generateChoosefrom(exercise->choosefrom, "\\question"); break;
 		case EXERCISE_MATCH: _generateMatch(exercise->match); break;
-		case EXERCISE_CHART: _generateChart(exercise->chart); break;
+		case EXERCISE_CHART: _generateFillchart(exercise->chart); break;
 		case EXERCISE_SET: _generateSet(exercise->set); break;
 		default: break;
 	}
@@ -302,6 +312,8 @@ static void _generateItems(Item * items) {
 			_generateImage(items->image);
 			_line("\\begin{questions}\n");
 			_indent++;
+		} else if (items->type == ITEM_CHART) {
+			_generateChart(items->chart);
 		} else if (items->type == ITEM_SECTION) {
 			_generateItems(items->section->items);
 		}

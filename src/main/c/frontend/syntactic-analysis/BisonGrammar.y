@@ -83,6 +83,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> MATCH
 %token <token> TRUEORFALSE
 %token <token> CHART
+%token <token> FILLCHART
 %token <token> SET
 %token <token> SECTION
 
@@ -141,6 +142,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <matchNode> match_props
 %type <chartNode> chart_block
 %type <chartNode> chart_props
+%type <chartNode> fillchart_block
 %type <setNode> set_block
 %type <setNode> set_props
 %type <sectionNode> section_block
@@ -198,11 +200,12 @@ item: multiplechoice_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_MULT
 	| fillblanks_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_FILLBLANKS, $1); }
 	| choosefrom_block					{ $$ = ExerciseItemSemanticAction(EXERCISE_CHOOSEFROM, $1); }
 	| match_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_MATCH, $1); }
-	| chart_block						{ $$ = ExerciseItemSemanticAction(EXERCISE_CHART, $1); }
+	| fillchart_block					{ $$ = ExerciseItemSemanticAction(EXERCISE_CHART, $1); }
 	| set_block							{ $$ = ExerciseItemSemanticAction(EXERCISE_SET, $1); }
 	| section_block						{ $$ = SectionItemSemanticAction($1); }
 	| TEXT_KW COLON STRING SEMICOLON	{ $$ = TextItemSemanticAction($3); }
 	| image_block						{ $$ = ImageItemSemanticAction($1); }
+	| chart_block						{ $$ = ChartItemSemanticAction($1); }
 	;
 
 /* ── mc ── */
@@ -272,6 +275,9 @@ match_props: match_props QUESTION COLON STRING SEMICOLON										{ $$ = MatchSe
 chart_block: CHART OPEN_BRACE chart_props CLOSE_BRACE	{ $$ = $3; }
 	;
 
+fillchart_block: FILLCHART OPEN_BRACE chart_props CLOSE_BRACE	{ $$ = $3; }
+	;
+
 chart_props: chart_props TASK COLON STRING SEMICOLON												{ $$ = ChartSetTaskSemanticAction($1, $4); }
 	| chart_props DIM COLON OPEN_BRACKET INTEGER COMMA INTEGER CLOSE_BRACKET SEMICOLON				{ $$ = ChartSetDimSemanticAction($1, $5, $7); }
 	| chart_props OPEN_PARENTHESIS INTEGER COMMA INTEGER CLOSE_PARENTHESIS COLON STRING SEMICOLON	{ $$ = ChartAddCellSemanticAction($1, $3, $5, $8); }
@@ -310,7 +316,7 @@ set_props: set_props TEXT_KW COLON STRING SEMICOLON							{ $$ = SetSetTextSeman
 	| set_props fillblanks_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_FILLBLANKS, $2); }
 	| set_props choosefrom_block											{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHOOSEFROM, $2); }
 	| set_props match_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_MATCH, $2); }
-	| set_props chart_block													{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHART, $2); }
+	| set_props fillchart_block												{ $$ = SetAddExerciseSemanticAction($1, EXERCISE_CHART, $2); }
 	| %empty																{ $$ = CreateSetNodeSemanticAction(); }
 	;
 

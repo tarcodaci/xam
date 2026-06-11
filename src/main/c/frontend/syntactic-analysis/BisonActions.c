@@ -675,6 +675,15 @@ Item * ImageItemSemanticAction(ImageNode * image) {
 	return item;
 }
 
+Item * ChartItemSemanticAction(ChartNode * chart) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Item * item = calloc(1, sizeof(Item));
+	item->type = ITEM_CHART;
+	item->chart = chart;
+	item->next = NULL;
+	return item;
+}
+
 ImageNode * CreateImageNodeSemanticAction() {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	ImageNode * node = calloc(1, sizeof(ImageNode));

@@ -48,7 +48,7 @@ match {
     pair: ["\void", "\void"];
 }
 
-chart {
+fillchart {
     score: 10;
     task: "Completar la tabla de verdad para A AND B.";
     dim: [3, 3];

@@ -199,7 +199,8 @@ enum ItemType {
 	ITEM_EXERCISE,
 	ITEM_SECTION,
 	ITEM_TEXT,
-	ITEM_IMAGE
+	ITEM_IMAGE,
+	ITEM_CHART
 };
 
 struct Item {
@@ -209,6 +210,7 @@ struct Item {
 		SectionNode * section;
 		char * text;
 		ImageNode * image;
+		ChartNode * chart;
 	};
 	Item * next;
 };

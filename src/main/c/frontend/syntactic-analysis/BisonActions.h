@@ -104,6 +104,7 @@ SectionNode * SectionAddItemSemanticAction(SectionNode * node, Item * item);
 
 /* ── image ── */
 Item * ImageItemSemanticAction(ImageNode * image);
+Item * ChartItemSemanticAction(ChartNode * chart);
 ImageNode * CreateImageNodeSemanticAction();
 ImageNode * ImageSetPathSemanticAction(ImageNode * node, char * path);
 ImageNode * ImageSetCaptionSemanticAction(ImageNode * node, char * caption);
