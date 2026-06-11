@@ -1,4 +1,5 @@
 #include "Generator.h"
+#include <time.h>
 
 /* MODULE INTERNAL STATE */
 
@@ -37,6 +38,16 @@ static void _append(const char * format, ...) {
 	va_start(args, format);
 	vfprintf(_output, format, args);
 	va_end(args);
+}
+
+/* Fisher-Yates shuffle for an array of char pointers. */
+static void _shuffleStrings(char ** array, int n) {
+	for (int i = n - 1; i > 0; i--) {
+		int j = rand() % (i + 1);
+		char * tmp = array[i];
+		array[i] = array[j];
+		array[j] = tmp;
+	}
 }
 
 static void _generatePreamble(Header * header) {
@@ -314,15 +325,22 @@ static void _generateMatch(MatchNode * node) {
 	} else {
 		_line("\\question %s\\\\[0.5em]\n", node->question);
 	}
+	/* Collect right column values and shuffle them */
+	int count = 0;
+	MatchPair * p = node->pairs;
+	while (p != NULL) { count++; p = p->next; }
+
+	char * rights[count];
+	p = node->pairs;
+	for (int i = 0; i < count; i++) { rights[i] = p->right; p = p->next; }
+	_shuffleStrings(rights, count);
+
 	_line("\\begin{tabular}{l@{\\hspace{4cm}}l}\n");
 	_indent++;
-	/* Left column in order, right column listed separately */
-	MatchPair * left = node->pairs;
-	MatchPair * right = node->pairs;
-	while (left != NULL) {
-		_line("%s & %s \\\\\n", left->left, right->right);
-		left = left->next;
-		right = right->next;
+	p = node->pairs;
+	for (int i = 0; i < count; i++) {
+		_line("%s & %s \\\\\n", p->left, rights[i]);
+		p = p->next;
 	}
 	_indent--;
 	_line("\\end{tabular}\n");
@@ -506,6 +524,7 @@ static void _generateHeaderBlock(Header * header) {
 
 void executeGenerator(CompilerState * compilerState) {
 	logDebugging(_logger, "Generating final output...");
+	srand(time(NULL));
 	Program * program = compilerState->abstractSyntaxtTree;
 
 	const char * base = compilerState->inputFilename;
