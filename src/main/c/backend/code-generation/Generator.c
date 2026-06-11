@@ -74,6 +74,143 @@ static void _generatePreamble(Header * header) {
 	_line("\n");
 }
 
+static void _generateAnswerSheet(Header * header, Item * items) {
+	if (header == NULL || header->answer_sheet != 1) return;
+
+	/* Second document: answer key */
+	_line("\n%% ========== ANSWER KEY ==========\n\n");
+	_indent = 0;
+	_line("\\documentclass[11pt, a4paper]{article}\n");
+	_line("\\usepackage[utf8]{inputenc}\n");
+	_line("\\usepackage[T1]{fontenc}\n");
+	_line("\\usepackage[spanish]{babel}\n");
+	_line("\\usepackage[margin=2.5cm]{geometry}\n");
+	_line("\\usepackage{amsmath, amssymb}\n");
+	_line("\\usepackage{enumitem}\n");
+	_line("\n");
+	_line("\\begin{document}\n");
+	_line("\\sloppy\n");
+	_line("\n");
+	_line("\\begin{center}\n");
+	_indent++;
+	_line("{\\Large\\bfseries Hoja de Respuestas}\n");
+	if (header->title != NULL) {
+		_line("{\\normalsize %s}\n", header->title);
+	}
+	_indent--;
+	_line("\\end{center}\n");
+	_line("\\vspace{1em}\n");
+	_line("\n");
+	_line("\\begin{enumerate}\n");
+	_indent++;
+	while (items != NULL) {
+		if (items->type == ITEM_EXERCISE) {
+			Exercise * ex = items->exercise;
+			switch (ex->type) {
+				case EXERCISE_MULTIPLECHOICE: {
+					MultiplechoiceOption * opt = ex->multiplechoice->options;
+					_line("\\item ");
+					while (opt != NULL) {
+						if (opt->is_correct) { _append("\\textbf{%s}", opt->value); break; }
+						opt = opt->next;
+					}
+					_append("\n");
+					break;
+				}
+				case EXERCISE_TRUEORFALSE:
+					if (ex->trueorfalse->answer == 1) {
+						_line("\\item Verdadero\n");
+					} else if (ex->trueorfalse->answer == 0) {
+						_line("\\item Falso\n");
+					} else {
+						_line("\\item ---\n");
+					}
+					break;
+				case EXERCISE_OPENQUESTION:
+					if (ex->openquestion->answer != NULL) {
+						_line("\\item %s\n", ex->openquestion->answer);
+					} else {
+						_line("\\item ---\n");
+					}
+					break;
+				case EXERCISE_FILLBLANKS:
+					if (ex->fillblanks->answers != NULL) {
+						_line("\\item ");
+						StringList * ans = ex->fillblanks->answers;
+						int i = 1;
+						while (ans != NULL) {
+							_append("%d) %s ", i++, ans->value);
+							ans = ans->next;
+						}
+						_append("\n");
+					} else {
+						_line("\\item ---\n");
+					}
+					break;
+				case EXERCISE_CHOOSEFROM:
+					if (ex->choosefrom->answer != NULL) {
+						_line("\\item ");
+						IntList * idx = ex->choosefrom->answer;
+						int i = 1;
+						while (idx != NULL) {
+							StringList * opt = ex->choosefrom->options;
+							int pos = 1;
+							while (opt != NULL && pos < idx->value) { opt = opt->next; pos++; }
+							if (opt != NULL) _append("%d) %s ", i, opt->value);
+							i++;
+							idx = idx->next;
+						}
+						_append("\n");
+					} else {
+						_line("\\item ---\n");
+					}
+					break;
+				case EXERCISE_MATCH: {
+					_line("\\item ");
+					MatchPair * mp = ex->match->pairs;
+					while (mp != NULL) {
+						_append("%s $\\rightarrow$ %s", mp->left, mp->right);
+						if (mp->next != NULL) _append(", ");
+						mp = mp->next;
+					}
+					_append("\n");
+					break;
+				}
+				case EXERCISE_CHART:
+					if (ex->chart->answer != NULL) {
+						_line("\\item ~\\\\\n");
+						_line("\\begin{tabular}{|");
+						for (int c = 0; c < ex->chart->dim_cols; c++) _append("c|");
+						_append("}\n");
+						_line("\\hline\n");
+						StringList * val = ex->chart->answer;
+						for (int r = 0; r < ex->chart->dim_rows; r++) {
+							_line("");
+							for (int c = 0; c < ex->chart->dim_cols; c++) {
+								if (val != NULL) { _append("%s", val->value); val = val->next; }
+								if (c < ex->chart->dim_cols - 1) _append(" & ");
+							}
+							_append(" \\\\\n");
+							_line("\\hline\n");
+						}
+						_line("\\end{tabular}\n");
+					} else {
+						_line("\\item ---\n");
+					}
+					break;
+				default:
+					_line("\\item ---\n");
+					break;
+			}
+		}
+		items = items->next;
+	}
+	_indent--;
+	_line("\\end{enumerate}\n");
+	_line("\n");
+	_line("\\end{document}\n");
+}
+
 static void _generateEpilogue() {
 	_line("\\end{document}\n");
 }
@@ -382,6 +519,7 @@ void executeGenerator(CompilerState * compilerState) {
 	_generateHeaderBlock(program->header);
 	_generateItems(program->items);
 	_generateEpilogue();
+	_generateAnswerSheet(program->header, program->items);
 
 	logDebugging(_logger, "Generation is done.");
 }

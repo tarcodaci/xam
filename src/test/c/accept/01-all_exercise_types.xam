@@ -30,7 +30,7 @@ openquestion {
 fillblanks {
     score: 10;
     question: "El conjunto de los naturales tiene cardinal _.";
-    answer: "\aleph0";
+    answer: "$\aleph_0$";
 }
 
 choosefrom {
@@ -43,9 +43,9 @@ choosefrom {
 match {
     score: 10;
     question: "Relacionar los conjuntos con su cardinal.";
-    pair: ["N", "\aleph0"];
-    pair: ["[0, 1]", "c"];
-    pair: ["\void", "\void"];
+    pair: ["$\mathbb{N}$", "$\aleph_0$"];
+    pair: ["$[0, 1]$", "$\mathfrak{c}$"];
+    pair: ["$\varnothing$", "$\varnothing$"];
 }
 
 fillchart {
