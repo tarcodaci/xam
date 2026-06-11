@@ -347,6 +347,18 @@ static void _generateMatch(MatchNode * node) {
 	_line("\n");
 }
 
+static void _generateSetExercise(Exercise * ex) {
+	switch (ex->type) {
+		case EXERCISE_MULTIPLECHOICE: _generateMultiplechoice(ex->multiplechoice, "\\part"); break;
+		case EXERCISE_TRUEORFALSE: _generateTrueorfalse(ex->trueorfalse, "\\part"); break;
+		case EXERCISE_OPENQUESTION: _generateOpenquestion(ex->openquestion, "\\part"); break;
+		case EXERCISE_FILLBLANKS: _generateFillblanks(ex->fillblanks, "\\part"); break;
+		case EXERCISE_CHOOSEFROM: _generateChoosefrom(ex->choosefrom, "\\part"); break;
+		case EXERCISE_MATCH: _generateMatch(ex->match); break;
+		default: break;
+	}
+}
+
 static void _generateSet(SetNode * node) {
 	_emitQuestionPrefix("\\question", node->score);
 	if (node->text != NULL) {
@@ -355,19 +367,30 @@ static void _generateSet(SetNode * node) {
 	_append("\n");
 	_line("\\begin{parts}\n");
 	_indent++;
+
+	/* Collect exercises into array */
+	int count = 0;
 	Exercise * ex = node->exercises;
-	while (ex != NULL) {
-		switch (ex->type) {
-			case EXERCISE_MULTIPLECHOICE: _generateMultiplechoice(ex->multiplechoice, "\\part"); break;
-			case EXERCISE_TRUEORFALSE: _generateTrueorfalse(ex->trueorfalse, "\\part"); break;
-			case EXERCISE_OPENQUESTION: _generateOpenquestion(ex->openquestion, "\\part"); break;
-			case EXERCISE_FILLBLANKS: _generateFillblanks(ex->fillblanks, "\\part"); break;
-			case EXERCISE_CHOOSEFROM: _generateChoosefrom(ex->choosefrom, "\\part"); break;
-			case EXERCISE_MATCH: _generateMatch(ex->match); break;
-			default: break;
+	while (ex != NULL) { count++; ex = ex->next; }
+
+	Exercise * exercises[count];
+	ex = node->exercises;
+	for (int i = 0; i < count; i++) { exercises[i] = ex; ex = ex->next; }
+
+	/* Shuffle if enabled */
+	if (node->shuffle == 1) {
+		for (int i = count - 1; i > 0; i--) {
+			int j = rand() % (i + 1);
+			Exercise * tmp = exercises[i];
+			exercises[i] = exercises[j];
+			exercises[j] = tmp;
 		}
-		ex = ex->next;
 	}
+
+	for (int i = 0; i < count; i++) {
+		_generateSetExercise(exercises[i]);
+	}
+
 	_indent--;
 	_line("\\end{parts}\n\n");
 }
@@ -463,7 +486,44 @@ static void _generateItems(Item * items) {
 		} else if (items->type == ITEM_CHART) {
 			_generateChart(items->chart);
 		} else if (items->type == ITEM_SECTION) {
-			_generateItems(items->section->items);
+			SectionNode * sec = items->section;
+			if (sec->select > 0) {
+				/* Collect items into array, shuffle, take first N */
+				int count = 0;
+				Item * it = sec->items;
+				while (it != NULL) { count++; it = it->next; }
+				int take = sec->select < count ? sec->select : count;
+
+				Item * arr[count];
+				it = sec->items;
+				for (int i = 0; i < count; i++) { arr[i] = it; it = it->next; }
+				
+				for (int i = count - 1; i > 0; i--) {
+					int j = rand() % (i + 1);
+					Item * tmp = arr[i];
+					arr[i] = arr[j];
+					arr[j] = tmp;
+				}
+				/* Generate only the selected items */
+				for (int i = 0; i < take; i++) {
+					if (arr[i]->type == ITEM_EXERCISE) {
+						_generateExercise(arr[i]->exercise);
+					} else if (arr[i]->type == ITEM_TEXT) {
+						_line("\\uplevel{%s}\n", arr[i]->text);
+					}
+				}
+			} else {
+				/* No select — render all items */
+				Item * it = sec->items;
+				while (it != NULL) {
+					if (it->type == ITEM_EXERCISE) {
+						_generateExercise(it->exercise);
+					} else if (it->type == ITEM_TEXT) {
+						_line("\\uplevel{%s}\n", it->text);
+					}
+					it = it->next;
+				}
+			}
 		}
 		items = items->next;
 	}
