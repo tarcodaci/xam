@@ -252,12 +252,18 @@ TrueorfalseNode * CreateTrueorfalseNodeSemanticAction() {
 
 TrueorfalseNode * TrueorfalseSetQuestionSemanticAction(TrueorfalseNode * node, char * question) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->question != NULL) {
+		_duplicatePropertyError("trueorfalse", "question");
+	}
 	node->question = question;
 	return node;
 }
 
 TrueorfalseNode * TrueorfalseSetJustifySemanticAction(TrueorfalseNode * node, int justify) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->justify != -1) {
+		_duplicatePropertyError("trueorfalse", "justify");
+	}
 	node->justify = justify;
 	return node;
 }
@@ -292,24 +298,36 @@ OpenquestionNode * CreateOpenquestionNodeSemanticAction() {
 
 OpenquestionNode * OpenquestionSetQuestionSemanticAction(OpenquestionNode * node, char * question) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->question != NULL) {
+		_duplicatePropertyError("openquestion", "question");
+	}
 	node->question = question;
 	return node;
 }
 
 OpenquestionNode * OpenquestionSetLinesSemanticAction(OpenquestionNode * node, int lines) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->lines != -1) {
+		_duplicatePropertyError("openquestion", "lines");
+	}
 	node->lines = lines;
 	return node;
 }
 
 OpenquestionNode * OpenquestionSetAnswerSemanticAction(OpenquestionNode * node, char * answer) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->answer != NULL) {
+		_duplicatePropertyError("openquestion", "answer");
+	}
 	node->answer = answer;
 	return node;
 }
 
 OpenquestionNode * OpenquestionSetScoreSemanticAction(OpenquestionNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->score != -1) {
+		_duplicatePropertyError("openquestion", "score");
+	}
 	node->score = score;
 	return node;
 }
@@ -325,6 +343,9 @@ FillblanksNode * CreateFillblanksNodeSemanticAction() {
 
 FillblanksNode * FillblanksSetQuestionSemanticAction(FillblanksNode * node, char * question) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->question != NULL) {
+		_duplicatePropertyError("fillblanks", "question");
+	}
 	node->question = question;
 	return node;
 }
@@ -348,6 +369,9 @@ FillblanksNode * FillblanksAddAnswerSemanticAction(FillblanksNode * node, char *
 
 FillblanksNode * FillblanksSetScoreSemanticAction(FillblanksNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->score != -1) {
+		_duplicatePropertyError("fillblanks", "score");
+	}
 	node->score = score;
 	return node;
 }
@@ -408,36 +432,54 @@ ChoosefromNode * CreateChoosefromNodeSemanticAction() {
 
 ChoosefromNode * ChoosefromSetTaskSemanticAction(ChoosefromNode * node, char * task) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->task != NULL) {
+		_duplicatePropertyError("choosefrom", "task");
+	}
 	node->task = task;
 	return node;
 }
 
 ChoosefromNode * ChoosefromSetOptionsSemanticAction(ChoosefromNode * node, StringList * options) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->options != NULL) {
+		_duplicatePropertyError("choosefrom", "options");
+	}
 	node->options = options;
 	return node;
 }
 
 ChoosefromNode * ChoosefromSetTextSemanticAction(ChoosefromNode * node, char * text) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->text != NULL) {
+		_duplicatePropertyError("choosefrom", "text");
+	}
 	node->text = text;
 	return node;
 }
 
 ChoosefromNode * ChoosefromSetAnswerSemanticAction(ChoosefromNode * node, IntList * answer) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->answer != NULL) {
+		_duplicatePropertyError("choosefrom", "answer");
+	}
 	node->answer = answer;
 	return node;
 }
 
 ChoosefromNode * ChoosefromSetScoreSemanticAction(ChoosefromNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->score != -1) {
+		_duplicatePropertyError("choosefrom", "score");
+	}
 	node->score = score;
 	return node;
 }
 
 ChoosefromNode * ChoosefromSetShuffleSemanticAction(ChoosefromNode * node, int shuffle) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->shuffle != -1) {
+		_duplicatePropertyError("choosefrom", "shuffle");
+	}
 	node->shuffle = shuffle;
 	return node;
 }
@@ -453,6 +495,9 @@ MatchNode * CreateMatchNodeSemanticAction() {
 
 MatchNode * MatchSetQuestionSemanticAction(MatchNode * node, char * question) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->question != NULL) {
+		_duplicatePropertyError("match", "question");
+	}
 	node->question = question;
 	return node;
 }
@@ -477,6 +522,9 @@ MatchNode * MatchAddPairSemanticAction(MatchNode * node, char * left, char * rig
 
 MatchNode * MatchSetScoreSemanticAction(MatchNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->score != -1) {
+		_duplicatePropertyError("match", "score");
+	}
 	node->score = score;
 	return node;
 }
@@ -492,12 +540,18 @@ ChartNode * CreateChartNodeSemanticAction() {
 
 ChartNode * ChartSetTaskSemanticAction(ChartNode * node, char * task) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->task != NULL) {
+		_duplicatePropertyError("chart", "task");
+	}
 	node->task = task;
 	return node;
 }
 
 ChartNode * ChartSetDimSemanticAction(ChartNode * node, int rows, int cols) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->dim_rows != 0) {
+		_duplicatePropertyError("chart", "dim");
+	}
 	node->dim_rows = rows;
 	node->dim_cols = cols;
 	return node;
@@ -524,12 +578,18 @@ ChartNode * ChartAddCellSemanticAction(ChartNode * node, int row, int col, char 
 
 ChartNode * ChartSetAnswerSemanticAction(ChartNode * node, StringList * answer) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->answer != NULL) {
+		_duplicatePropertyError("chart", "answer");
+	}
 	node->answer = answer;
 	return node;
 }
 
 ChartNode * ChartSetScoreSemanticAction(ChartNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->score != -1) {
+		_duplicatePropertyError("chart", "score");
+	}
 	node->score = score;
 	return node;
 }
@@ -546,18 +606,27 @@ SetNode * CreateSetNodeSemanticAction() {
 
 SetNode * SetSetTextSemanticAction(SetNode * node, char * text) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->text != NULL) {
+		_duplicatePropertyError("set", "text");
+	}
 	node->text = text;
 	return node;
 }
 
 SetNode * SetSetScoreSemanticAction(SetNode * node, int score) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->score != -1) {
+		_duplicatePropertyError("set", "score");
+	}
 	node->score = score;
 	return node;
 }
 
 SetNode * SetSetShuffleSemanticAction(SetNode * node, int shuffle) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->shuffle != -1) {
+		_duplicatePropertyError("set", "shuffle");
+	}
 	node->shuffle = shuffle;
 	return node;
 }
@@ -693,18 +762,27 @@ ImageNode * CreateImageNodeSemanticAction() {
 
 ImageNode * ImageSetPathSemanticAction(ImageNode * node, char * path) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->path != NULL) {
+		_duplicatePropertyError("image", "path");
+	}
 	node->path = path;
 	return node;
 }
 
 ImageNode * ImageSetCaptionSemanticAction(ImageNode * node, char * caption) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->caption != NULL) {
+		_duplicatePropertyError("image", "caption");
+	}
 	node->caption = caption;
 	return node;
 }
 
 ImageNode * ImageSetWidthSemanticAction(ImageNode * node, int width) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	if (node->width != -1) {
+		_duplicatePropertyError("image", "width");
+	}
 	node->width = width;
 	return node;
 }
