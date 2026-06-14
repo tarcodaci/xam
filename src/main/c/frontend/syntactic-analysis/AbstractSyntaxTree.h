@@ -149,7 +149,6 @@ struct ChoosefromNode {
 
 typedef enum ExerciseType ExerciseType;
 typedef struct Exercise Exercise;
-typedef struct SetNode SetNode;
 typedef struct SectionNode SectionNode;
 
 enum ExerciseType {

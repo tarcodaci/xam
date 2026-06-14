@@ -110,7 +110,6 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> PAIR
 %token <token> JUSTIFY
 %token <token> DIM
-%token <token> CELL
 %token <token> SELECT
 %token <token> TEXT_KW
 
