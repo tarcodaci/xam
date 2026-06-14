@@ -12,7 +12,7 @@ header {
 
 openquestion {
     score: 2;
-    question: "El conjunto $P \subseteq \Sigma^*$, donde $\Sigma = \{a, b\}$ se define recursivamente. Demostrar por induccion estructural que $P \subset L$.";
+    question: "El conjunto $P \subseteq \Sigma^*$, donde $\Sigma = \{a, b\}$ se define recursivamente de la siguiente manera: \begin{itemize} \item $\lambda \in P$ \item si $x \in P \Rightarrow axbxa \in P$ \end{itemize} Demostrar por induccion estructural que $P \subset L$ siendo $L = \{\omega \in \{a, b\}^* / \#_a(\omega) = \#_b(\omega) * 2 \wedge \omega = \omega^R \wedge \#_b(\omega) \geq 0\}$.";
     lines: 0;
 }
 
