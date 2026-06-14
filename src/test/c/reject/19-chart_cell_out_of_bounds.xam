@@ -1,0 +1,7 @@
+// fillchart with a cell at (4,1) but dim is [3, 3]
+fillchart {
+    task: "Completar.";
+    dim: [3, 3];
+    (1,1): "A";
+    (4,1): "out of bounds";
+}

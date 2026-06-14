@@ -1,0 +1,6 @@
+// choosefrom with 2 blanks but 3 answers
+choosefrom {
+    options: ["alpha", "beta", "gamma", "delta"];
+    text: "First is ___ and second is ___.";
+    answer: [1, 2, 3];
+}

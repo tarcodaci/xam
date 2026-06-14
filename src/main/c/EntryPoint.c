@@ -21,7 +21,8 @@
 	}
 	CompilerState compilerState = {
 		.abstractSyntaxtTree = NULL,
-		.duplicateProperty = false
+		.duplicateProperty = false,
+		.inputFilename = (length > 1) ? arguments[1] : "output"
 	};
 	ModuleDestructor moduleDestructors[] = {
 		initializeAbstractSyntaxTreeModule(),

@@ -30,25 +30,25 @@ openquestion {
 fillblanks {
     score: 10;
     question: "El conjunto de los naturales tiene cardinal _.";
-    answer: "\aleph0";
+    answer: "$\aleph_0$";
 }
 
 choosefrom {
     score: 20;
     options: ["Finito", "Numerable", "Coordinable", "Biyectiva", "Inyectiva"];
-    text: "Dos conjuntos A y B son ___ si existe una función ___ f : A \-> B.";
+    text: "Dos conjuntos A y B son ___ si existe una función ___ f : A $\rightarrow$ B.";
     answer: [3, 4];
 }
 
 match {
     score: 10;
     question: "Relacionar los conjuntos con su cardinal.";
-    pair: ["N", "\aleph0"];
-    pair: ["[0, 1]", "c"];
-    pair: ["\void", "\void"];
+    pair: ["$\mathbb{N}$", "$\aleph_0$"];
+    pair: ["$[0, 1]$", "$\mathfrak{c}$"];
+    pair: ["$\varnothing$", "$\varnothing$"];
 }
 
-chart {
+fillchart {
     score: 10;
     task: "Completar la tabla de verdad para A AND B.";
     dim: [3, 3];

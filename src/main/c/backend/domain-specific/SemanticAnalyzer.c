@@ -58,6 +58,15 @@ static int _countStringList(StringList * list) {
 	return count;
 }
 
+static int _countIntList(IntList * list) {
+	int count = 0;
+	while (list != NULL) {
+		count++;
+		list = list->next;
+	}
+	return count;
+}
+
 /* Counts groups of consecutive underscores (each group = one blank). */
 static int _countUnderscores(const char * str) {
 	int count = 0;
@@ -100,8 +109,14 @@ static SemanticError * _validateExercise(Exercise * exercise) {
 			if (optionCount < 2) {
 				return _createError("choosefrom: must have at least 2 options.");
 			}
-			if (blanks >= optionCount) {
-				return _createError("choosefrom: must have more options than blanks in 'text'.");
+			if (blanks > optionCount) {
+				return _createError("choosefrom: must have at least as many options as blanks in 'text'.");
+			}
+			if (exercise->choosefrom->answer != NULL) {
+				int answerCount = _countIntList(exercise->choosefrom->answer);
+				if (answerCount != blanks) {
+					return _createError("choosefrom: answer count must equal the number of blanks in 'text'.");
+				}
 			}
 			return NULL;
 		}
@@ -121,6 +136,18 @@ static SemanticError * _validateExercise(Exercise * exercise) {
 			while (p != NULL) { pairCount++; p = p->next; }
 			if (pairCount < 2) {
 				return _createError("match: must have at least 2 pairs.");
+			}
+			return NULL;
+		}
+		case EXERCISE_CHART: {
+			ChartNode * chart = exercise->chart;
+			ChartCell * cell = chart->cells;
+			while (cell != NULL) {
+				if (cell->row < 1 || cell->row > chart->dim_rows ||
+				    cell->col < 1 || cell->col > chart->dim_cols) {
+					return _createError("fillchart: cell position exceeds declared dimensions.");
+				}
+				cell = cell->next;
 			}
 			return NULL;
 		}

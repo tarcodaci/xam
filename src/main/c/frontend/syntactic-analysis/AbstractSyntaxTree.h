@@ -61,7 +61,7 @@ struct Header {
 	int student_name;
 	int student_id;
 	int course;
-	char * instructions;
+	StringList * instructions;
 };
 
 /* ── Exercises ── */
@@ -149,7 +149,6 @@ struct ChoosefromNode {
 
 typedef enum ExerciseType ExerciseType;
 typedef struct Exercise Exercise;
-typedef struct SetNode SetNode;
 typedef struct SectionNode SectionNode;
 
 enum ExerciseType {
@@ -199,7 +198,8 @@ enum ItemType {
 	ITEM_EXERCISE,
 	ITEM_SECTION,
 	ITEM_TEXT,
-	ITEM_IMAGE
+	ITEM_IMAGE,
+	ITEM_CHART
 };
 
 struct Item {
@@ -209,6 +209,7 @@ struct Item {
 		SectionNode * section;
 		char * text;
 		ImageNode * image;
+		ChartNode * chart;
 	};
 	Item * next;
 };

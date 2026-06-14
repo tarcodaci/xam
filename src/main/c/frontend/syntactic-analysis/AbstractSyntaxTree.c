@@ -55,7 +55,7 @@ void destroyHeader(Header * header) {
 		free(header->subject);
 		free(header->professor);
 		free(header->date);
-		free(header->instructions);
+		destroyStringList(header->instructions);
 		free(header);
 	}
 }
@@ -202,6 +202,7 @@ void destroyItem(Item * item) {
 			case ITEM_SECTION: destroySectionNode(item->section); break;
 			case ITEM_TEXT: free(item->text); break;
 			case ITEM_IMAGE: destroyImageNode(item->image); break;
+			case ITEM_CHART: destroyChartNode(item->chart); break;
 		}
 		free(item);
 		item = next;

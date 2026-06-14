@@ -14,7 +14,6 @@
  * @see https://westes.github.io/flex/manual/Definitions-Section.html#Definitions-Section
  */
 
-extern CompilationStatus ArithmeticOperatorLexemeAction(TokenLabel label);
 extern CompilationStatus BooleanLexemeAction(TokenLabel label);
 extern CompilationStatus DelimiterLexemeAction(TokenLabel label);
 extern CompilationStatus IdentifierLexemeAction();
@@ -27,7 +26,6 @@ extern CompilationStatus IntegerLexemeAction();
 extern CompilationStatus KeywordLexemeAction(TokenLabel label);
 extern CompilationStatus LeaveMultilineCommentLexemeAction();
 extern CompilationStatus LeaveStringLiteralLexemeAction();
-extern CompilationStatus ParenthesisLexemeAction(TokenLabel label);
 extern CompilationStatus UnknownLexemeAction();
 
 %}
@@ -66,6 +64,7 @@ whitespace			[[:space:]]+
 "match"								{ return KeywordLexemeAction(MATCH); }
 "trueorfalse"								{ return KeywordLexemeAction(TRUEORFALSE); }
 "chart"								{ return KeywordLexemeAction(CHART); }
+"fillchart"							{ return KeywordLexemeAction(FILLCHART); }
 "set"								{ return KeywordLexemeAction(SET); }
 "section"							{ return KeywordLexemeAction(SECTION); }
 
@@ -92,7 +91,6 @@ whitespace			[[:space:]]+
 "pair"								{ return KeywordLexemeAction(PAIR); }
 "justify"							{ return KeywordLexemeAction(JUSTIFY); }
 "dim"								{ return KeywordLexemeAction(DIM); }
-"cell"								{ return KeywordLexemeAction(CELL); }
 "select"							{ return KeywordLexemeAction(SELECT); }
 "text"								{ return KeywordLexemeAction(TEXT_KW); }
 
