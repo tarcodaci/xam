@@ -109,8 +109,8 @@ static SemanticError * _validateExercise(Exercise * exercise) {
 			if (optionCount < 2) {
 				return _createError("choosefrom: must have at least 2 options.");
 			}
-			if (blanks >= optionCount) {
-				return _createError("choosefrom: must have more options than blanks in 'text'.");
+			if (blanks > optionCount) {
+				return _createError("choosefrom: must have at least as many options as blanks in 'text'.");
 			}
 			if (exercise->choosefrom->answer != NULL) {
 				int answerCount = _countIntList(exercise->choosefrom->answer);
